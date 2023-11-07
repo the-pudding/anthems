@@ -18,7 +18,6 @@
 	const yKey = "frequency";
 	const zKey = "color";
 	const normalizeKey = "C";
-
 	const seriesColors = [
 		"#FF6B6B",
 		"#4ECDC4",
@@ -31,7 +30,6 @@
 		"#D3A4E6",
 		"#6BEDB5"
 	];
-
 	const data = [
 		{
 			singer: "carrie",
@@ -101,9 +99,11 @@
 		return transposeKeyIndex - originalKeyIndex;
 	};
 
-	//const timeFilter = (d) => true;
-	const timeFilter = (d) => d.timestamp < 40;
-
+	let toggles = [];
+	let timeDomain = [0, 0];
+	$: timeFilter = (d) =>
+		timeDomain[1] === 0 ||
+		(d.timestamp >= timeDomain[0] && d.timestamp <= timeDomain[1]);
 	$: groupedData = data
 		.map((l) => ({
 			i: l.i,
@@ -119,10 +119,7 @@
 				.filter(timeFilter)
 		}))
 		.filter((d, i) => toggles[d.i] === "on");
-	$: console.log({ groupedData });
 	$: flatData = groupedData.length ? flatten(groupedData, "values") : [];
-
-	let toggles = [];
 </script>
 
 <div class="chart-container">
@@ -143,28 +140,39 @@
 	</LayerCake>
 </div>
 
-<div class="names">
-	{#each data as { singer, i, color }}
-		<div style="display: flex; align-items: center">
-			<div
-				class="name"
-				style={`--color: ${color}`}
-				class:faded={toggles[i] !== "on"}
-			>
-				{singer}
+<div class="controls">
+	<div class="names">
+		<h3>singers</h3>
+		{#each data as { singer, i, color }}
+			{@const faded = toggles[i] !== "on"}
+			<div style="display: flex; align-items: center">
+				<audio src={`assets/sound/${singer}.mp3`} controls={true} class:faded />
+
+				<div class="name" style={`--color: ${color}`} class:faded>
+					{singer}
+				</div>
+				<Toggle label="" style="inner" bind:value={toggles[i]} />
 			</div>
-			<Toggle label="" style="inner" bind:value={toggles[i]} />
-		</div>
-	{/each}
+		{/each}
+	</div>
+
+	<div class="time">
+		<h3>timespan</h3>
+		<input
+			placeholder="start"
+			on:input={(e) => (timeDomain[0] = Number(e.target.value))}
+		/>
+		<input
+			placeholder="end"
+			on:input={(e) => (timeDomain[1] = Number(e.target.value))}
+		/>
+	</div>
 </div>
 
 <style>
 	.chart-container {
 		width: 100%;
 		height: 400px;
-	}
-	.names {
-		padding: 2rem;
 	}
 	.name {
 		width: fit-content;
@@ -173,5 +181,11 @@
 	}
 	.faded {
 		opacity: 0.2;
+	}
+	.controls {
+		display: flex;
+		align-items: start;
+		justify-content: space-evenly;
+		margin: 2rem;
 	}
 </style>
