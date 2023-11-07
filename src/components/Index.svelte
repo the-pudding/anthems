@@ -3,7 +3,8 @@
 	import AxisX from "$components/layercake/AxisX.svg.svelte";
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import { LayerCake, Svg, flatten } from "layercake";
-	import { scaleOrdinal } from "d3-scale";
+	import { scaleOrdinal, scaleLinear } from "d3-scale";
+	import _ from "lodash";
 	import jazmine from "$data/pitch/jazmine.csv";
 	import harry from "$data/pitch/harry.csv";
 	import carrie from "$data/pitch/carrie.csv";
@@ -20,7 +21,8 @@
 	const data = [
 		// {
 		// 	singer: "carrie",
-		// 	data: carrie.map(castValues).filter(filterValues)
+		// 	data: carrie,
+		// 	key: "G"
 		// },
 		// {
 		// 	singer: "demi",
@@ -30,15 +32,16 @@
 		// 	singer: "fergie",
 		// 	data: fergie.map(castValues).filter(filterValues)
 		// },
-		{
-			singer: "harry",
-			data: harry,
-			key: "G#"
-		},
 		// {
-		// 	singer: "jazmine",
-		// 	data: jazmine.map(castValues).filter(filterValues)
+		// 	singer: "harry",
+		// 	data: harry,
+		// 	key: "G#"
 		// },
+		{
+			singer: "jazmine",
+			data: jazmine,
+			key: "F"
+		},
 		// {
 		// 	singer: "legend",
 		// 	data: legend.map(castValues).filter(filterValues)
@@ -48,13 +51,26 @@
 			data: michelle,
 			key: "D"
 		}
-	];
+	].map((d) => ({
+		...d,
+		start: +d.data[0].timestamp,
+		end: +d.data[d.data.length - 1].timestamp
+	}));
 
+	const normalize = (timestamp, start, end) => {
+		const shortest = _.minBy(data, (d) => d.end - d.start);
+		const shortestDuration = shortest.end - shortest.start;
+		const scale = scaleLinear()
+			.domain([start, end])
+			.range([0, shortestDuration]);
+
+		return scale(timestamp);
+	};
 	const transpose = (originalHz, originalKey, transposeKey) => {
 		const stepsToTranspose = halfStepsBetween(originalKey, transposeKey);
 		let newFrequency = originalHz * 2 ** (stepsToTranspose / 12);
 
-		const octaveShift = originalKey === "D" ? 0 : 1;
+		const octaveShift = originalKey === "G#" ? 1 : 0;
 		newFrequency *= 2 ** octaveShift;
 
 		return newFrequency;
@@ -67,19 +83,15 @@
 	};
 
 	const timeFilter = (d) => true;
-	// const timeFilter = (d) => d.timestamp < 15;
+	//const timeFilter = (d) => d.timestamp < 15;
 	const groupedData = data.map((l) => ({
 		singer: l.singer,
 		values: l.data
 			.map((d) => ({
 				...d,
 				singer: l.singer,
-				frequency: +d.frequency,
-				timestamp: +d.timestamp
-			}))
-			.map((d) => ({
-				...d,
-				frequency: transpose(d.frequency, l.key, normalizeKey)
+				frequency: transpose(+d.frequency, l.key, normalizeKey),
+				timestamp: normalize(+d.timestamp, l.start, l.end)
 			}))
 			.filter(timeFilter)
 	}));
