@@ -5,7 +5,7 @@
 <script>
 	import { getContext } from "svelte";
 
-	const { data, xGet, yGet, zGet, y, z } = getContext("LayerCake");
+	const { data, xGet, yGet, y, z } = getContext("LayerCake");
 
 	$: path = (values) => {
 		return (
@@ -42,9 +42,9 @@
 <g class="multiline">
 	{#each $data as group}
 		{@const segments = segmentData(group.values)}
-		<g id={$z(group)}>
+		<g>
 			{#each segments as segment}
-				<path class="path-line" d={path(segment)} stroke={$zGet(segment[0])} />
+				<path class="path-line" d={path(segment)} stroke={$z(group)} />
 			{/each}
 		</g>
 	{/each}

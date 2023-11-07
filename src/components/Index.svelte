@@ -1,5 +1,6 @@
 <script>
 	import MultiLine from "$components/layercake/todo/MultiLine.svelte";
+	import Toggle from "$components/helpers/Toggle.svelte";
 	import AxisX from "$components/layercake/AxisX.svg.svelte";
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import { LayerCake, Svg, flatten } from "layercake";
@@ -15,44 +16,62 @@
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
-	const zKey = "singer";
+	const zKey = "color";
 	const normalizeKey = "C";
 
+	const seriesColors = [
+		"#FF6B6B",
+		"#4ECDC4",
+		"#FFD166",
+		"#A463F2",
+		"#83E377",
+		"#FF8C94",
+		"#5DA0D1",
+		"#FFAA5C",
+		"#D3A4E6",
+		"#6BEDB5"
+	];
+
 	const data = [
-		// {
-		// 	singer: "carrie",
-		// 	data: carrie,
-		// 	key: "G"
-		// },
-		// {
-		// 	singer: "demi",
-		// 	data: demi.map(castValues).filter(filterValues)
-		// },
-		// {
-		// 	singer: "fergie",
-		// 	data: fergie.map(castValues).filter(filterValues)
-		// },
-		// {
-		// 	singer: "harry",
-		// 	data: harry,
-		// 	key: "G#"
-		// },
+		{
+			singer: "carrie",
+			data: carrie,
+			key: "G"
+		},
+		{
+			singer: "demi",
+			data: demi,
+			key: "G#"
+		},
+		{
+			singer: "fergie",
+			data: fergie,
+			key: "G"
+		},
+		{
+			singer: "harry",
+			data: harry,
+			key: "G#"
+		},
 		{
 			singer: "jazmine",
 			data: jazmine,
 			key: "F"
 		},
-		// {
-		// 	singer: "legend",
-		// 	data: legend.map(castValues).filter(filterValues)
-		// },
+		{
+			singer: "legend",
+			data: legend,
+			key: "A#"
+		},
 		{
 			singer: "michelle",
 			data: michelle,
 			key: "D"
 		}
-	].map((d) => ({
+	].map((d, i) => ({
 		...d,
+		i: i,
+		color: seriesColors[i],
 		start: +d.data[0].timestamp,
 		end: +d.data[d.data.length - 1].timestamp
 	}));
@@ -66,11 +85,11 @@
 
 		return scale(timestamp);
 	};
-	const transpose = (originalHz, originalKey, transposeKey) => {
+	const transpose = (originalHz, originalKey, transposeKey, singer) => {
 		const stepsToTranspose = halfStepsBetween(originalKey, transposeKey);
 		let newFrequency = originalHz * 2 ** (stepsToTranspose / 12);
 
-		const octaveShift = originalKey === "G#" ? 1 : 0;
+		const octaveShift = singer === "harry" ? 1 : 0;
 		newFrequency *= 2 ** octaveShift;
 
 		return newFrequency;
@@ -82,34 +101,28 @@
 		return transposeKeyIndex - originalKeyIndex;
 	};
 
-	const timeFilter = (d) => true;
-	//const timeFilter = (d) => d.timestamp < 15;
-	const groupedData = data.map((l) => ({
-		singer: l.singer,
-		values: l.data
-			.map((d) => ({
-				...d,
-				singer: l.singer,
-				frequency: transpose(+d.frequency, l.key, normalizeKey),
-				timestamp: normalize(+d.timestamp, l.start, l.end)
-			}))
-			.filter(timeFilter)
-	}));
+	//const timeFilter = (d) => true;
+	const timeFilter = (d) => d.timestamp < 40;
 
-	const seriesNames = data.map((d) => d.singer);
-	const seriesColors = [
-		"#FF6B6B",
-		"#4ECDC4",
-		"#FFD166",
-		"#A463F2",
-		"#83E377",
-		"#FF8C94",
-		"#5DA0D1",
-		"#FFAA5C",
-		"#D3A4E6",
-		"#6BEDB5"
-	];
-	const zScale = scaleOrdinal().domain(seriesNames).range(seriesColors);
+	$: groupedData = data
+		.map((l) => ({
+			i: l.i,
+			color: seriesColors[l.i],
+			singer: l.singer,
+			values: l.data
+				.map((d) => ({
+					...d,
+					singer: l.singer,
+					frequency: transpose(+d.frequency, l.key, normalizeKey, l.singer),
+					timestamp: normalize(+d.timestamp, l.start, l.end)
+				}))
+				.filter(timeFilter)
+		}))
+		.filter((d, i) => toggles[d.i] === "on");
+	$: console.log({ groupedData });
+	$: flatData = groupedData.length ? flatten(groupedData, "values") : [];
+
+	let toggles = [];
 </script>
 
 <div class="chart-container">
@@ -119,9 +132,7 @@
 		y={yKey}
 		z={zKey}
 		yDomain={[0, null]}
-		zScale={scaleOrdinal()}
-		zRange={seriesColors}
-		flatData={flatten(groupedData, "values")}
+		{flatData}
 		data={groupedData}
 	>
 		<Svg>
@@ -133,8 +144,17 @@
 </div>
 
 <div class="names">
-	{#each data as { singer }}
-		<div class="name" style={`--color: ${zScale(singer)}`}>{singer}</div>
+	{#each data as { singer, i, color }}
+		<div style="display: flex; align-items: center">
+			<div
+				class="name"
+				style={`--color: ${color}`}
+				class:faded={toggles[i] !== "on"}
+			>
+				{singer}
+			</div>
+			<Toggle label="" style="inner" bind:value={toggles[i]} />
+		</div>
 	{/each}
 </div>
 
@@ -148,7 +168,10 @@
 	}
 	.name {
 		width: fit-content;
-		margin: 1rem 0;
+		margin: 1rem;
 		border-bottom: 6px solid var(--color);
+	}
+	.faded {
+		opacity: 0.2;
 	}
 </style>
