@@ -146,7 +146,11 @@
 		{#each data as { singer, i, color }}
 			{@const faded = toggles[i] !== "on"}
 			<div style="display: flex; align-items: center">
-				<audio src={`assets/sound/${singer}.mp3`} controls={true} class:faded />
+				{#if singer !== "michelle"}<audio
+						src={`assets/sound/${singer}.mp3`}
+						controls={true}
+						class:faded
+					/>{/if}
 
 				<div class="name" style={`--color: ${color}`} class:faded>
 					{singer}
