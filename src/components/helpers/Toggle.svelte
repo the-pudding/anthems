@@ -14,6 +14,10 @@
 		checked = state === "true" ? false : true;
 		value = checked ? options[0] : options[1];
 	};
+
+	$: {
+		checked = value === options[0];
+	}
 </script>
 
 <div class="toggle toggle--{style}">
