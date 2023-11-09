@@ -4,6 +4,7 @@
  -->
 <script>
 	import { getContext } from "svelte";
+	import _ from "lodash";
 
 	const { data, xGet, yGet, xScale, yScale, y, z } = getContext("LayerCake");
 	const { normalizeWords } = getContext("exploration");
@@ -36,7 +37,6 @@
 		if (currentSegment.length > 0) {
 			segments.push(currentSegment);
 		}
-		console.log({ segments });
 		return segments;
 	};
 </script>
@@ -58,8 +58,7 @@
 						{@const markWord =
 							$normalizeWords &&
 							group.singer === "michelle" &&
-							(prev === null || prev.word !== word)}
-
+							(prev === null || prev.word.split("-")[0] !== word.split("-")[0])}
 						<rect
 							x={$xScale(timestamp)}
 							y={$yScale(frequency) - 5}
@@ -77,7 +76,7 @@
 								y2={$yScale.range()[1]}
 								stroke="var(--color-gray-700)"
 							/>
-							<text x={$xScale(timestamp)}>{word}</text>
+							<text x={$xScale(timestamp)}>{word.split("-")[0]}</text>
 						{/if}
 					{/each}
 				</g>

@@ -2,7 +2,7 @@
 	import { getContext } from "svelte";
 	import Toggle from "$components/helpers/Toggle.svelte";
 
-	const { singers, toggles, timeDomain, normalizeKey, normalizeWords } =
+	const { singers, toggles, timeDomain, normalizeKey } =
 		getContext("exploration");
 
 	const solo = (singer) => {
@@ -18,9 +18,7 @@
 	};
 
 	let keyToggle = $normalizeKey ? "on" : "off";
-	let wordToggle = $normalizeWords ? "on" : "off";
 	$: $normalizeKey = keyToggle === "on";
-	$: $normalizeWords = wordToggle === "on";
 </script>
 
 <div class="controls">
@@ -49,7 +47,7 @@
 		{/each}
 	</div>
 
-	<div class="time">
+	<!-- <div class="time">
 		<h3>timespan</h3>
 		<input
 			placeholder="start"
@@ -59,12 +57,11 @@
 			placeholder="end"
 			on:input={(e) => ($timeDomain[1] = Number(e.target.value))}
 		/>
-	</div>
+	</div> -->
 
 	<div class="normalization">
 		<h3>normalization</h3>
 		<Toggle label="same key" style="inner" bind:value={keyToggle} />
-		<Toggle label="align words" style="inner" bind:value={wordToggle} />
 	</div>
 </div>
 

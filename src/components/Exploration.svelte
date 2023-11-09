@@ -1,11 +1,7 @@
 <script>
 	import Chart from "$components/Exploration.Chart.svelte";
 	import Controls from "$components/Exploration.Controls.svelte";
-	import MultiLine from "$components/layercake/todo/MultiLine.svelte";
-	import AxisX from "$components/layercake/AxisX.svg.svelte";
-	import AxisY from "$components/layercake/AxisY.svg.svelte";
-	import { LayerCake, Svg, flatten } from "layercake";
-	import { scaleLinear } from "d3-scale";
+	import Words from "$components/Exploration.Words.svelte";
 	import _ from "lodash";
 	import jazmine from "$data/pitch/jazmine.csv";
 	import harry from "$data/pitch/harry.csv";
@@ -45,7 +41,7 @@
 			singer: "carrie",
 			pitchData: carriePitch,
 			noteData: carrieNotes,
-			key: "G"
+			key: "F#"
 		},
 		// {
 		// 	singer: "demi",
@@ -106,39 +102,57 @@
 	const normalizeKey = writable(true);
 	const standardKey = "C";
 
-	$: timeFilter = (d) =>
-		$timeDomain[1] === 0 ||
-		(d.timestamp >= $timeDomain[0] && d.timestamp <= $timeDomain[1]);
+	const updateWordOccurrence = (word, wordOccurrenceMap) => {
+		if (!wordOccurrenceMap.has(word)) {
+			wordOccurrenceMap.set(word, 0);
+		} else {
+			const lastBlockIndex = wordOccurrenceMap.get(word);
+			wordOccurrenceMap.set(word, lastBlockIndex + 1);
+		}
+		return wordOccurrenceMap.get(word);
+	};
+
 	$: $lineData = singers
 		.map((d) => ({
 			...d,
 			start: +d.pitchData[0].timestamp,
 			end: +d.pitchData[d.pitchData.length - 1].timestamp
 		}))
-		.map((d) => ({
-			...d,
-			pitchData: d.pitchData
-				.map((p) => ({
+		.map((d) => {
+			let wordOccurrenceMap = new Map();
+			let prevWord = null;
+			let currentBlockIndex = -1;
+
+			return {
+				...d,
+				pitchData: d.pitchData.map((p) => ({
 					...p,
 					singer: d.singer,
 					frequency: $normalizeKey
 						? transpose(+p.frequency, d.key, standardKey, d.singer)
 						: +p.frequency,
 					timestamp: +p.timestamp
-				}))
-				.filter(timeFilter),
-			noteData: d.noteData.map((n) => ({
-				...n,
-				timestamp: +n.timestamp,
-				frequency: $normalizeKey
-					? transpose(+n.frequency, d.key, standardKey, d.singer)
-					: +n.frequency,
-				duration: +n.duration
-			}))
-		}))
+				})),
+				noteData: d.noteData.map((n, i) => {
+					if (n.word !== prevWord) {
+						currentBlockIndex = updateWordOccurrence(n.word, wordOccurrenceMap);
+						prevWord = n.word;
+					}
+					return {
+						...n,
+						timestamp: +n.timestamp,
+						frequency: $normalizeKey
+							? transpose(+n.frequency, d.key, standardKey, d.singer)
+							: +n.frequency,
+						duration: +n.duration,
+						word: `${_.kebabCase(n.word)}${
+							currentBlockIndex !== 0 ? `-${currentBlockIndex + 1}` : ""
+						}`
+					};
+				})
+			};
+		})
 		.filter((d, i) => $toggles[d.i] === "on");
-
-	$: console.log($lineData);
 
 	setContext("exploration", {
 		singers,
@@ -151,14 +165,6 @@
 		timeDomain
 	});
 
-	// const normalize = (timestamp, start, end) => {
-	// 	const shortest = _.minBy($lineData, (d) => d.end - d.start);
-	// 	const shortestDuration = shortest.end - shortest.start;
-	// 	const scale = scaleLinear()
-	// 		.domain([start, end])
-	// 		.range([0, shortestDuration]);
-	// 	return scale(timestamp);
-	// };
 	const transpose = (originalHz, originalKey, transposeKey, singer) => {
 		const stepsToTranspose = halfStepsBetween(originalKey, transposeKey);
 		let newFrequency = originalHz * 2 ** (stepsToTranspose / 12);
@@ -174,5 +180,6 @@
 	};
 </script>
 
-<Chart />
 <Controls />
+<Chart />
+<Words />

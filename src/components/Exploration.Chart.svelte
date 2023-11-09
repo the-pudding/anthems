@@ -12,6 +12,11 @@
 	const zKey = "color";
 
 	$: flatData = $lineData.length ? flatten($lineData, "pitchData") : [];
+
+	// TODO: bring this back just for big chart
+	// $: timeFilter = (d) =>
+	// 	$timeDomain[1] === 0 ||
+	// 	(d.timestamp >= $timeDomain[0] && d.timestamp <= $timeDomain[1]);
 </script>
 
 <div class="chart-container">
