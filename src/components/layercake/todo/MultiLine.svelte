@@ -57,7 +57,7 @@
 						{@const prev = i - 1 < 0 ? null : group.noteData[i - 1]}
 						{@const markWord =
 							$normalizeWords &&
-							group.singer === "michelle" &&
+							group.singer === "standard" &&
 							(prev === null || prev.word.split("-")[0] !== word.split("-")[0])}
 						<rect
 							x={$xScale(timestamp)}

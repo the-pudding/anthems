@@ -37,7 +37,7 @@
 					>{soloed ? "unsolo" : "solo"}</button
 				>
 
-				{#if singer !== "michelle"}<audio
+				{#if singer !== "standard"}<audio
 						src={`assets/sound/${singer}.mp3`}
 						controls={true}
 						class:faded
