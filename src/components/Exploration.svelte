@@ -3,18 +3,21 @@
 	import Controls from "$components/Exploration.Controls.svelte";
 	import Words from "$components/Exploration.Words.svelte";
 	import _ from "lodash";
-	import jazmine from "$data/pitch/jazmine.csv";
-	import harry from "$data/pitch/harry.csv";
-	import carriePitch from "$data/pitch/carrie.csv";
 	import xtina from "$data/pitch/xtina.csv";
 	import tpain from "$data/pitch/tpain.csv";
 	import snl from "$data/pitch/snl.csv";
 	import kelly from "$data/pitch/kelly.csv";
-	import demi from "$data/pitch/demi.csv";
 	import legend from "$data/pitch/legend.csv";
 	import fergie from "$data/pitch/fergie.csv";
+	import jazminePitch from "$data/pitch/jazmine.csv";
+	import jazmineNotes from "$data/words/jazmine.csv";
+	import harryPitch from "$data/pitch/harry.csv";
+	import harryNotes from "$data/words/harry.csv";
+	import demiPitch from "$data/pitch/demi.csv";
+	import demiNotes from "$data/words/demi.csv";
 	import michellePitch from "$data/pitch/michelle.csv";
 	import michelleNotes from "$data/words/michelle.csv";
+	import carriePitch from "$data/pitch/carrie.csv";
 	import carrieNotes from "$data/words/carrie.csv";
 	import { setContext } from "svelte";
 	import { writable } from "svelte/store";
@@ -43,26 +46,29 @@
 			noteData: carrieNotes,
 			key: "F#"
 		},
-		// {
-		// 	singer: "demi",
-		// 	data: demi,
-		// 	key: "G#"
-		// },
+		{
+			singer: "demi",
+			pitchData: demiPitch,
+			noteData: demiNotes,
+			key: "G#"
+		},
 		// {
 		// 	singer: "fergie",
 		// 	data: fergie,
 		// 	key: "G"
 		// },
-		// {
-		// 	singer: "harry",
-		// 	data: harry,
-		// 	key: "G#"
-		// },
-		// {
-		// 	singer: "jazmine",
-		// 	data: jazmine,
-		// 	key: "F"
-		// },
+		{
+			singer: "harry",
+			pitchData: harryPitch,
+			noteData: harryNotes,
+			key: "G#"
+		},
+		{
+			singer: "jazmine",
+			pitchData: jazminePitch,
+			noteData: jazmineNotes,
+			key: "F"
+		},
 		// {
 		// 	singer: "kelly",
 		// 	data: kelly,
@@ -94,7 +100,11 @@
 		// 	data: xtina,
 		// 	key: "F"
 		// }
-	].map((d, i) => ({ ...d, i, color: seriesColors[i] }));
+	].map((d, i) => ({
+		...d,
+		i,
+		color: d.singer === "michelle" ? "var(--color-gray-700)" : seriesColors[i]
+	}));
 	const toggles = writable(singers.map((d) => "on"));
 	const lineData = writable([]);
 	const timeDomain = writable([0, 20]);
