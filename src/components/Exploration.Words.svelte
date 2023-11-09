@@ -89,6 +89,7 @@
 </script>
 
 <div class="singer-scores">
+	<h4>chaos scores</h4>
 	{#each _.orderBy(chaosBySinger, (d) => d.score, "desc") as { singer, score, color }, i}
 		<div style={`--color: ${color}`}>
 			{singer}: {score.toFixed(1)}
