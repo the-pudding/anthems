@@ -80,7 +80,7 @@
 		// 	key: "A#"
 		// },
 		{
-			singer: "michelle",
+			singer: "standard",
 			pitchData: michellePitch,
 			noteData: michelleNotes,
 			key: "D"
@@ -103,7 +103,7 @@
 	].map((d, i) => ({
 		...d,
 		i,
-		color: d.singer === "michelle" ? "var(--color-gray-700)" : seriesColors[i]
+		color: d.singer === "standard" ? "var(--color-gray-700)" : seriesColors[i]
 	}));
 	const toggles = writable(singers.map((d) => "on"));
 	const lineData = writable([]);
