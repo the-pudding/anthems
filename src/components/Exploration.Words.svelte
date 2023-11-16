@@ -13,8 +13,9 @@
 	const xKey = "timestamp";
 	const yKey = "frequency";
 	const zKey = "color";
-
 	const uniqueWords = _.uniq($lineData[0].noteData.map((d) => d.word));
+
+	let chaosBySinger = [];
 
 	const getWordData = (word) => {
 		return $lineData.map((d) => {
@@ -40,8 +41,6 @@
 			};
 		});
 	};
-
-	let chaosBySinger = [];
 
 	const chaosByWord = (word, pitchData) => {
 		const standardNotes = $lineData
@@ -83,8 +82,7 @@
 				color: d.color
 			};
 		});
-		const sortedScores = _.orderBy(scores, (s) => s.score, "desc");
-		return sortedScores;
+		return scores;
 	};
 </script>
 
@@ -128,7 +126,7 @@
 					<summary style="font-weight: bold">
 						total: {total.toFixed(1)}
 					</summary>
-					{#each chaosScores as { singer, score, color }, i}
+					{#each _.orderBy(chaosScores, (s) => s.score, "desc") as { singer, score, color }, i}
 						<div style={`--color: ${color}`}>
 							{singer}: {score.toFixed(1)}
 						</div>

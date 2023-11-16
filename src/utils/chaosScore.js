@@ -1,6 +1,17 @@
 import { scaleLinear } from "d3-scale";
+import DynamicTimeWarping from "dynamic-time-warping";
 
+// DTW
 const chaosScore = (singerLine, standardLine) => {
+	const series1 = singerLine.map((d) => d.frequency);
+	const series2 = standardLine.map((d) => d.frequency);
+	const distFunction = (a, b) => Math.abs(a - b);
+	const dtw = new DynamicTimeWarping(series1, series2, distFunction);
+	return dtw.getDistance() / 100;
+};
+
+// Simple
+const chaosScoreSimple = (singerLine, standardLine) => {
 	const interpolateFrequencies = (lineData) => {
 		const scale = scaleLinear()
 			.domain(lineData.map((d) => d.timestamp))

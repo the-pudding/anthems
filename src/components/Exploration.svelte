@@ -1,4 +1,5 @@
 <script>
+	import Clustering from "$components/Exploration.Clustering.svelte";
 	import Chart from "$components/Exploration.Chart.svelte";
 	import Controls from "$components/Exploration.Controls.svelte";
 	import Words from "$components/Exploration.Words.svelte";
@@ -190,6 +191,7 @@
 	};
 </script>
 
+<Clustering />
+<!-- <Words />
 <Controls />
-<Chart />
-<Words />
+<Chart /> -->
