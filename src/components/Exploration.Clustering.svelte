@@ -1,7 +1,11 @@
 <script>
+	import Range from "$components/helpers/Range.svelte";
+	import Line from "$components/Exploration.Line.svelte";
+	import Audio from "$components/Exploration.Audio.svelte";
 	import { getContext, onMount } from "svelte";
 	import _ from "lodash";
 	import chaosScore from "$utils/chaosScore.js";
+	import clustering from "density-clustering";
 	// cluster for a word - o-2
 	// cluster for a singer's whole performance - jazmine
 
@@ -23,7 +27,8 @@
 
 		const pitchData = performance.pitchData.filter(filterPitches).map((p) => ({
 			...p,
-			timestamp: p.timestamp - wordNotes[0].timestamp
+			timestamp: p.timestamp - wordNotes[0].timestamp,
+			realTimestamp: p.timestamp
 		}));
 		return {
 			word: word,
@@ -35,9 +40,7 @@
 	const uniqueWords = _.uniq($lineData[0].noteData.map((d) => d.word));
 
 	const chunks = uniqueWords.map((word) => getWordData("jazmine", word));
-	const shapes = chunks.map((d) =>
-		d.pitchData.map((p) => ({ frequency: p.frequency }))
-	);
+	const shapes = chunks.map((d) => d.pitchData);
 
 	const distanceMatrix = shapes.map((shape, i) => {
 		return shapes.map((otherShape, j) => {
@@ -46,36 +49,36 @@
 		});
 	});
 
-	console.log({ distanceMatrix });
+	let k = 3;
+	const kmeans = new clustering.KMEANS();
+	let flattenedMatrix = distanceMatrix.map((row) => [...row]);
+	$: clusters = kmeans.run(flattenedMatrix, k);
 </script>
 
-<div class="grid-container" style="--num-shapes: {shapes.length}">
-	<div class="grid-item label" />
-	{#each shapes as shape, i}
-		<div class="grid-item label">{uniqueWords[i]}</div>
-	{/each}
-	{#each distanceMatrix as row, j}
-		<div class="grid-item label">{uniqueWords[j]}</div>
-		{#each row as distance}
-			<div class="grid-item">{distance.toFixed(2)}</div>
+<h3>k</h3>
+<Range min={1} max={15} step={1} showTicks={true} bind:value={k} />
+
+{#each clusters as cluster, i}
+	<h3>cluster {i}</h3>
+	<div class="shapes">
+		{#each cluster as shapeIndex}
+			{@const start = shapes[shapeIndex][0].realTimestamp}
+			{@const end =
+				shapes[shapeIndex][shapes[shapeIndex].length - 1].realTimestamp}
+			<div class="shape">
+				<div class="word">{uniqueWords[shapeIndex]}</div>
+
+				<Audio singer="jazmine" {start} {end} />
+				<Line data={shapes[shapeIndex]} />
+			</div>
 		{/each}
-	{/each}
-</div>
+	</div>
+{/each}
 
 <style>
-	.grid-container {
-		display: grid;
-		grid-template-columns: auto repeat(var(--num-shapes), auto);
-		grid-gap: 10px;
-		font-size: 12px;
-	}
-	.grid-item {
+	.shapes {
 		display: flex;
-		justify-content: center;
-		align-items: center;
-		border: 1px solid black;
-	}
-	.label {
-		font-weight: bold;
+		flex-wrap: wrap;
+		margin: 3rem 0;
 	}
 </style>
