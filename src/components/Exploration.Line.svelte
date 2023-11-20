@@ -7,6 +7,7 @@
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 
 	export let data;
+	export let stroke;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -28,7 +29,7 @@
 		<Svg>
 			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d}s`} />
 			<AxisY gridlines={false} ticks={4} formatTick={(d) => `${d}Hz`} />
-			<Line stroke="lightblue" />
+			<Line {stroke} />
 			<!-- <Area fill="lightblue" /> -->
 		</Svg>
 	</LayerCake>

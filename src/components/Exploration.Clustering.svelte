@@ -9,7 +9,7 @@
 	// cluster for a word - o-2
 	// cluster for a singer's whole performance - jazmine
 
-	const { lineData } = getContext("exploration");
+	const { lineData, singers } = getContext("exploration");
 
 	const getWordData = (singer, word) => {
 		const performance = $lineData.find((l) => l.singer === singer);
@@ -38,18 +38,19 @@
 	};
 
 	const uniqueWords = _.uniq($lineData[0].noteData.map((d) => d.word));
+	const chunks = ["jazmine", "carrie"]
+		.map((singer) => uniqueWords.map((word) => getWordData(singer, word)))
+		.flat();
+	const shapes = chunks.map((d) => ({ word: d.word, pitchData: d.pitchData }));
 
-	const chunks = uniqueWords.map((word) => getWordData("jazmine", word));
-	const shapes = chunks.map((d) => d.pitchData);
-
-	const distanceMatrix = shapes.map((shape, i) => {
-		return shapes.map((otherShape, j) => {
-			const dtwDistance = chaosScore(shape, otherShape);
+	const distanceMatrix = shapes.map(({ pitchData }, i) => {
+		return shapes.map(({ pitchData: otherPitchData }, j) => {
+			const dtwDistance = chaosScore(pitchData, otherPitchData);
 			return dtwDistance;
 		});
 	});
 
-	let k = 3;
+	let k = 10;
 	const kmeans = new clustering.KMEANS();
 	let flattenedMatrix = distanceMatrix.map((row) => [...row]);
 	$: clusters = kmeans.run(flattenedMatrix, k);
@@ -62,14 +63,17 @@
 	<h3>cluster {i}</h3>
 	<div class="shapes">
 		{#each cluster as shapeIndex}
-			{@const start = shapes[shapeIndex][0].realTimestamp}
-			{@const end =
-				shapes[shapeIndex][shapes[shapeIndex].length - 1].realTimestamp}
+			{@const pitches = shapes[shapeIndex].pitchData}
+			{@const singer = pitches[0].singer}
+			{@const word = shapes[shapeIndex].word}
+			{@const color = singers.find((s) => s.singer === singer).color}
+			{@const start = pitches[0].realTimestamp}
+			{@const end = pitches[pitches.length - 1].realTimestamp}
 			<div class="shape">
-				<div class="word">{uniqueWords[shapeIndex]}</div>
+				<div class="word">{word}</div>
 
-				<Audio singer="jazmine" {start} {end} />
-				<Line data={shapes[shapeIndex]} />
+				<Audio {singer} {start} {end} />
+				<Line data={pitches} stroke={color} />
 			</div>
 		{/each}
 	</div>
