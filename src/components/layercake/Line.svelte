@@ -5,11 +5,11 @@
 	const { data, xGet, yGet } = getContext("LayerCake");
 
 	export let stroke = "#ccc";
-
 	export let curve = curveLinear;
+	export let dataOverride;
 
 	$: path = line().x($xGet).y($yGet).curve(curve);
-	$: pathD = path($data);
+	$: pathD = path(dataOverride || $data);
 </script>
 
 <path d={pathD} {stroke} />

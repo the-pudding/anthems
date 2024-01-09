@@ -1,5 +1,5 @@
 <script>
-	import Exploration from "$components/Exploration.svelte";
+	import SpotCheck from "$components/SpotCheck/SpotCheck.svelte";
 </script>
 
-<Exploration />
+<SpotCheck />
