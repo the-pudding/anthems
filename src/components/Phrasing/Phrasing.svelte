@@ -5,7 +5,7 @@
 	import ids from "$data/ids.csv";
 	import phraseApproximations from "$data/phrase_approximations.json";
 
-	let i = 0;
+	let i = 68;
 	let audioEl;
 	let duration;
 	let svgWidth;
