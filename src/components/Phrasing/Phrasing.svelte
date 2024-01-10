@@ -61,9 +61,9 @@
 		];
 	};
 	const output = () => {
-		const output = JSON.stringify(allPhrasesFixed, null, 2);
+		const output = JSON.stringify(currentPhrases, null, 2);
 		const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
-		saveAs(blob, "phrase_approximations.json");
+		saveAs(blob, `${currentId}_fixed_phrases.json`);
 	};
 
 	$: xScale =
@@ -145,7 +145,9 @@
 		</svg>
 	{/if}
 
-	<button on:click={output}>download new phrasings</button>
+	<button style:margin-top={"2rem"} on:click={output}
+		>download new phrasings for {currentId}</button
+	>
 </div>
 
 <style>
