@@ -49,6 +49,17 @@
 			selectedPhrase = undefined;
 		} else {
 			selectedPhrase = +e.target.id.replace("phrase-", "");
+			currentTime = currentPhrases[selectedPhrase].start;
+
+			audioEl.play();
+
+			const endWithPhrase = () => {
+				if (audioEl.currentTime >= currentPhrases[selectedPhrase].end) {
+					audioEl.pause();
+					audioEl.removeEventListener("timeupdate", endWithPhrase);
+				}
+			};
+			audioEl.addEventListener("timeupdate", endWithPhrase);
 		}
 	};
 	const adjust = (amount, type) => {
@@ -119,15 +130,6 @@
 				stroke="black"
 			/>
 
-			<line
-				x1={xScale(currentTime || 0)}
-				x2={xScale(currentTime || 0)}
-				y1={svgHeight}
-				y2={0}
-				stroke="black"
-				stroke-width={2}
-			/>
-
 			{#each currentPhrases as phrase, i}
 				{@const rectHeight = 20}
 				<rect
@@ -142,6 +144,15 @@
 					on:click={onClick}
 				/>
 			{/each}
+
+			<line
+				x1={xScale(currentTime || 0)}
+				x2={xScale(currentTime || 0)}
+				y1={svgHeight}
+				y2={0}
+				stroke="black"
+				stroke-width={2}
+			/>
 		</svg>
 	{/if}
 
