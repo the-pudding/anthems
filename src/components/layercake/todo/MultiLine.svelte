@@ -5,7 +5,9 @@
 <script>
 	import { getContext } from "svelte";
 
-	const { data, xGet, yGet, zGet, xScale, yScale } = getContext("LayerCake");
+	const { data, xGet, yGet, zGet, xScale, zScale } = getContext("LayerCake");
+
+	export let hide;
 
 	const segmentPath = (values) => {
 		let pathData = "";
@@ -32,6 +34,7 @@
 		{#each $data as group}
 			<path
 				id={group.id}
+				class:hide={hide.includes(group.id)}
 				d={segmentPath(group.pitch)}
 				stroke={$zGet(group) || "black"}
 			/>
@@ -45,6 +48,9 @@
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		stroke-width: 3px;
-		opacity: 0.5;
+		opacity: 1;
+	}
+	path.hide {
+		opacity: 0.05;
 	}
 </style>

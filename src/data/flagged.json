@@ -1,0 +1,67 @@
+[
+	{
+		"id": "anthony-hamilton_nba-allstar-game_2019",
+		"phrase": "o-say-can-you-see",
+		"reason": "extra words at the start"
+	},
+	{
+		"id": "chloe-bailey_world-series_2022",
+		"phrase": "o-say-can-you-see",
+		"reason": "cuts of a tiny bit too early"
+	},
+	{
+		"id": "cheryl-ladd_super-bowl_1980",
+		"phrase": "o-say-can-you-see",
+		"reason": "goes on a bit too long"
+	},
+	{
+		"id": "fantasia_ncaa-football-championship_2023",
+		"phrase": "o-say-can-you-see",
+		"reason": "missing o say"
+	},
+	{
+		"id": "john-legend_nba-allstar-game_2013",
+		"phrase": "o-say-can-you-see",
+		"reason": "start is cut off"
+	},
+	{
+		"id": "jon-batiste_nba-allstar-game_2017",
+		"phrase": "o-say-can-you-see",
+		"reason": "start is cut off"
+	},
+	{
+		"id": "kelsey-grammer_mlb-regular-season-game_1996",
+		"phrase": "o-say-can-you-see",
+		"reason": "cuts of a tad fast plus maybe remove that high thing at the end?"
+	},
+	{
+		"id": "mariah-carey_super-bowl_2002",
+		"phrase": "o-say-can-you-see",
+		"reason": "cuts of too early"
+	},
+	{
+		"id": "marvin-gaye_nba-allstar-game_1983",
+		"phrase": "o-say-can-you-see",
+		"reason": "cuts of a little on either end"
+	},
+	{
+		"id": "mary-j-blige_nba-allstar-game_2012",
+		"phrase": "o-say-can-you-see",
+		"reason": "goes a tad too long"
+	},
+	{
+		"id": "matthew-morrison_world-series_2012",
+		"phrase": "o-say-can-you-see",
+		"reason": "goes a tad too long"
+	},
+	{
+		"id": "neyo_nba-allstar-game_2016",
+		"phrase": "o-say-can-you-see",
+		"reason": "cut the stuff at the beginning"
+	},
+	{
+		"id": "sheryl-crow_stanley-cup-playoffs_2018",
+		"phrase": "o-say-can-you-see",
+		"reason": "end cut off maybe?"
+	}
+]
