@@ -5,7 +5,7 @@
 	import ids from "$data/ids.csv";
 	import phraseApproximations from "$data/phrase_approximations.json";
 
-	let i = 0;
+	let i = 126;
 	let audioEl;
 	let duration;
 	let svgWidth;
@@ -109,7 +109,7 @@
 		src={`assets/vocals/${currentId}.mp3`}
 		controls={true}
 	/>
-	<p>{currentTime || 0}s</p>
+	<!-- <p>{currentTime || 0}s</p> -->
 
 	<div class="buttons" class:visible={selectedPhrase !== undefined}>
 		<button on:click={() => adjust(-0.1, "start")}>-</button>

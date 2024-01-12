@@ -8,19 +8,19 @@
 	// import phrase5 from "$data/phrases/through-the-perilous-fight.json";
 	// import phrase6 from "$data/phrases/oer-the-ramparts-we-watched.json";
 	// import phrase7 from "$data/phrases/were-so-gallantly-streaming.json";
-	// import phrase8 from "$data/phrases/and-the-rockets-red-glare.json";
+	import phrase8 from "$data/phrases/and-the-rockets-red-glare.json";
 	// import phrase9 from "$data/phrases/the-bombs-bursting-in-air.json";
 	// import phrase10 from "$data/phrases/gave-proof-through-the-night.json";
 	// import phrase11 from "$data/phrases/that-our-flag-was-still-there.json";
 	// import phrase12 from "$data/phrases/o-say-does-that-star-spangled.json";
-	import phrase13 from "$data/phrases/banner-yet-wave.json";
+	// import phrase13 from "$data/phrases/banner-yet-wave.json";
 	// import phrase14 from "$data/phrases/oer-the-land-of-the-free.json";
 	// import phrase15 from "$data/phrases/and-the-home-of-the-brave.json";
 	import alreadyFlagged from "$data/flagged.json";
 
 	// *** update these to change the phrase
-	const phrase = phrase13;
-	const phraseI = 13;
+	const phrase = phrase8;
+	const phraseI = 8;
 	// ***
 
 	const phrases = [

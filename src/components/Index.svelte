@@ -1,5 +1,5 @@
 <script>
-	import Phrasing from "$components/Phrasing/Phrasing.svelte";
+	import SpotCheck from "$components/SpotCheck/SpotCheck.svelte";
 </script>
 
-<Phrasing />
+<SpotCheck />
