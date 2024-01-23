@@ -38,7 +38,7 @@
 				id={group.id}
 				class:fade={highlight && group.id !== highlight}
 				d={segmentPath(group.pitch)}
-				stroke={$zGet(group) || "black"}
+				stroke={$zGet(group) || "var(--color-fg)"}
 			/>
 		{/each}
 	</g>

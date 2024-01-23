@@ -74,10 +74,12 @@
 	<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
 		{#each phrases as phrase}
 			<Slide index={phrase.i}>
-				<h2>{phrase.lyrics}</h2>
-				<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
-				<p>{text}</p>
-				<Lines {data} {highlight} />
+				<div class="slide">
+					<h2>{phrase.lyrics}</h2>
+					<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
+					<p>{text}</p>
+					<Lines {data} {highlight} />
+				</div>
 			</Slide>
 		{/each}
 	</Slider>
@@ -88,5 +90,12 @@
 <style>
 	article {
 		height: 100vh;
+		background: #032e47;
+	}
+	.slide {
+		background: #02273d;
+		border: 3px solid #7ca4ae;
+		height: 100%;
+		padding: 2rem;
 	}
 </style>

@@ -137,6 +137,8 @@ Usage:
 		height: 100%;
 		transition-property: transform;
 		z-index: 1;
+
+		/* justify-content: center; */
 	}
 
 	.horizontal > .slides {
