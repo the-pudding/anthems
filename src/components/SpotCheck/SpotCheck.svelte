@@ -1,7 +1,7 @@
 <script>
 	import Chart from "$components/SpotCheck/Chart.svelte";
 	// import phrase0 from "$data/phrases/o-say-can-you-see.json";
-	import phrase1 from "$data/phrases/by-the-dawns-early-light.json";
+	// import phrase1 from "$data/phrases/by-the-dawns-early-light.json";
 	// import phrase2 from "$data/phrases/what-so-proudly-we-hailed.json";
 	// import phrase3 from "$data/phrases/at-the-twilights-last-gleaming.json";
 	// import phrase4 from "$data/phrases/whose-broad-stripes-and-bright-stars.json";
@@ -12,15 +12,15 @@
 	// import phrase9 from "$data/phrases/the-bombs-bursting-in-air.json";
 	// import phrase10 from "$data/phrases/gave-proof-through-the-night.json";
 	// import phrase11 from "$data/phrases/that-our-flag-was-still-there.json";
-	// import phrase12 from "$data/phrases/o-say-does-that-star-spangled.json";
-	// import phrase13 from "$data/phrases/banner-yet-wave.json";
+	import phrase12 from "$data/phrases/o-say-does-that-star-spangled.json";
+	import phrase13 from "$data/phrases/banner-yet-wave.json";
 	// import phrase14 from "$data/phrases/oer-the-land-of-the-free.json";
 	// import phrase15 from "$data/phrases/and-the-home-of-the-brave.json";
 	import alreadyFlagged from "$data/flagged.json";
 
 	// *** update these to change the phrase
-	const phrase = phrase1;
-	const phraseI = 1;
+	const phrase = phrase12;
+	const phraseI = 12;
 	// ***
 
 	const phrases = [
