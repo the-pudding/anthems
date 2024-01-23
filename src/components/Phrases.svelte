@@ -3,36 +3,31 @@
 	import Slider from "$components/helpers/Slider.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
 	import Tap from "$components/helpers/Tap.svelte";
-	import { currentPhrase, currentPhraseStep } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
 	import pitch from "$data/pitch_normalized.csv";
-	import example from "$data/pitch-transposed/aaliyah_nba-regular-season-game_1995_pitch.csv";
 
 	let sliderEl;
-	const phrases = copy.phrases
-		.filter((d) => d.steps)
-		.map((d) => ({ ...d, i: +d.i }));
 
 	const onTap = ({ detail }) => {
 		if (detail === "right") {
-			if ($currentPhraseStep + 1 < stepsInPhrase) {
-				$currentPhraseStep += 1;
-			} else if ($currentPhrase + 1 < phrases.length) {
-				$currentPhraseStep = 0;
+			if ($currentStepI + 1 < stepsInPhrase) {
+				$currentStepI += 1;
+			} else if ($currentPhraseI + 1 < phrases.length) {
+				$currentStepI = 0;
 				sliderEl.next();
 			}
 		} else {
-			if ($currentPhraseStep - 1 >= 0) {
-				$currentPhraseStep -= 1;
-			} else if ($currentPhrase > 0) {
-				const prevPhrase = phrases[$currentPhrase - 1];
-				$currentPhraseStep = prevPhrase.steps.length - 1;
+			if ($currentStepI - 1 >= 0) {
+				$currentStepI -= 1;
+			} else if ($currentPhraseI > 0) {
+				const prevPhrase = phrases[$currentPhraseI - 1];
+				$currentStepI = prevPhrase.steps.length - 1;
 				sliderEl.prev();
 			}
 		}
 	};
-
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
 			Object.fromEntries(
@@ -46,9 +41,9 @@
 	const prepareLineData = () => {
 		return allIds.map((id) => {
 			const start = ids.find((d) => d.id === id)[
-				`phrase${$currentPhrase}_start`
+				`phrase${$currentPhraseI}_start`
 			];
-			const end = ids.find((d) => d.id === id)[`phrase${$currentPhrase}_end`];
+			const end = ids.find((d) => d.id === id)[`phrase${$currentPhraseI}_end`];
 			return {
 				id: id,
 				pitch: allPitch
@@ -61,22 +56,28 @@
 		});
 	};
 
+	const phrases = copy.phrases
+		.filter((d) => d.steps)
+		.map((d) => ({ ...d, i: +d.i }));
 	const allIds = ids.map((d) => d.id);
 	const allPitch = castFloat(pitch);
 
-	$: stepsInPhrase = phrases[$currentPhrase].steps.length;
-	$: text = phrases[$currentPhrase].steps[$currentPhraseStep].text;
-	$: data = prepareLineData($currentPhrase);
+	$: currentPhrase = phrases[$currentPhraseI];
+	$: currentStep = currentPhrase.steps[$currentStepI];
+	$: stepsInPhrase = currentPhrase.steps.length;
+	$: data = prepareLineData($currentPhraseI);
+	$: text = currentStep.text;
+	$: highlight = currentStep.highlight;
 </script>
 
 <article>
-	<Slider bind:this={sliderEl} bind:current={$currentPhrase}>
+	<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
 		{#each phrases as phrase}
 			<Slide index={phrase.i}>
 				<h2>{phrase.lyrics}</h2>
-				<p>step {$currentPhraseStep + 1} / {stepsInPhrase}</p>
+				<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
 				<p>{text}</p>
-				<Lines {data} hide={[]} />
+				<Lines {data} {highlight} />
 			</Slide>
 		{/each}
 	</Slider>

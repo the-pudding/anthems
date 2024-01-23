@@ -7,7 +7,9 @@
 
 	const { data, xGet, yGet, zGet, xScale, zScale } = getContext("LayerCake");
 
-	export let hide;
+	export let highlight;
+
+	$: console.log({ highlight });
 
 	const segmentPath = (values) => {
 		let pathData = "";
@@ -34,7 +36,7 @@
 		{#each $data as group}
 			<path
 				id={group.id}
-				class:hide={hide.includes(group.id)}
+				class:fade={highlight && group.id !== highlight}
 				d={segmentPath(group.pitch)}
 				stroke={$zGet(group) || "black"}
 			/>
@@ -48,8 +50,9 @@
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		stroke-width: 3px;
+		transition: opacity 0.5s ease-in-out;
 	}
-	path.hide {
+	path.fade {
 		opacity: 0.05;
 	}
 </style>
