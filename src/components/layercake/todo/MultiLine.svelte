@@ -48,7 +48,6 @@
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		stroke-width: 3px;
-		/* opacity: 0.2; */
 	}
 	path.hide {
 		opacity: 0.05;

@@ -6,8 +6,7 @@
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 
 	export let data;
-
-	let hide = [];
+	export let hide = [];
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
