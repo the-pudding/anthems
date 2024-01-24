@@ -3,12 +3,17 @@
 	import _ from "lodash";
 
 	export let lyrics;
+	export let sliderEl;
+
+	const onClick = (i) => {
+		sliderEl.jump(i);
+	};
 </script>
 
 <div class="progress">
 	{#each _.range(16) as phrase}
 		{@const active = phrase === $currentPhraseI}
-		<div class="circle" class:active>
+		<div class="circle" class:active on:click={() => onClick(phrase)}>
 			{active ? lyrics : ""}
 		</div>
 	{/each}
@@ -21,6 +26,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 2;
+		position: relative;
+		pointer-events: auto;
 	}
 	.circle {
 		width: 1rem;
@@ -28,6 +36,10 @@
 		border-radius: 50%;
 		background: #7ca4ae;
 		margin: 0.75rem;
+	}
+	.circle:hover {
+		cursor: pointer;
+		opacity: 0.5;
 	}
 	.active {
 		width: auto;

@@ -125,8 +125,9 @@ Usage:
 		height: calc(100% - 6rem);
 		margin: 0;
 		padding: 0;
-		z-index: 1;
+		z-index: 2;
 		overflow: hidden;
+		pointer-events: none;
 	}
 
 	.slides {

@@ -11,6 +11,7 @@
 	import pitch from "$data/pitch_normalized.csv";
 
 	let sliderEl;
+	let highlight;
 
 	const onTap = ({ detail }) => {
 		if (detail === "right") {
@@ -58,6 +59,11 @@
 		});
 	};
 
+	// just happens once when the step changes
+	const onStep = () => {
+		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
+	};
+
 	const phrases = copy.phrases
 		.filter((d) => d.steps)
 		.map((d) => ({ ...d, i: +d.i }));
@@ -69,9 +75,9 @@
 	$: stepsInPhrase = currentPhrase.steps.length;
 	$: data = prepareLineData($currentPhraseI);
 	$: text = currentStep.text;
-	$: highlight = currentStep.highlight;
 	$: topDivas = currentPhrase.topDivas;
 	$: ourPicks = currentPhrase.ourPicks;
+	$: $currentStepI, onStep();
 </script>
 
 <article>
@@ -79,7 +85,7 @@
 		{#each phrases as phrase}
 			<Slide index={phrase.i}>
 				<div class="slide">
-					<Featured {topDivas} {ourPicks} />
+					<Featured {topDivas} {ourPicks} bind:highlight />
 
 					<div class="main">
 						<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
@@ -96,7 +102,7 @@
 		{/each}
 	</Slider>
 
-	<Progress lyrics={currentPhrase.lyrics} />
+	<Progress lyrics={currentPhrase.lyrics} {sliderEl} />
 </article>
 
 <Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />

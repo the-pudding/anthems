@@ -9,8 +9,6 @@
 
 	export let highlight;
 
-	$: console.log({ highlight });
-
 	const segmentPath = (values) => {
 		let pathData = "";
 		let moveToNext = true;
