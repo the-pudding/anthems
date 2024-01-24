@@ -1,4 +1,5 @@
 <script>
+	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slider from "$components/helpers/Slider.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
@@ -68,6 +69,8 @@
 	$: data = prepareLineData($currentPhraseI);
 	$: text = currentStep.text;
 	$: highlight = currentStep.highlight;
+	$: topDivas = currentPhrase.topDivas;
+	$: ourPicks = currentPhrase.ourPicks;
 </script>
 
 <article>
@@ -75,10 +78,18 @@
 		{#each phrases as phrase}
 			<Slide index={phrase.i}>
 				<div class="slide">
-					<h2>{phrase.lyrics}</h2>
-					<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
-					<p>{text}</p>
-					<Lines {data} {highlight} />
+					<Featured {topDivas} {ourPicks} />
+
+					<div class="main">
+						<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
+						<p>{text}</p>
+						<Lines {data} {highlight} />
+						<h2>
+							{#each phrase.lyrics.split(" ") as word}
+								<span>{word}</span>
+							{/each}
+						</h2>
+					</div>
 				</div>
 			</Slide>
 		{/each}
@@ -97,5 +108,17 @@
 		border: 3px solid #7ca4ae;
 		height: 100%;
 		padding: 2rem;
+		display: flex;
+	}
+	.main {
+		flex-grow: 1;
+	}
+	h2 {
+		font-family: Newsagent;
+		font-size: 5rem;
+		display: flex;
+		justify-content: space-evenly;
+	}
+	h2.span {
 	}
 </style>
