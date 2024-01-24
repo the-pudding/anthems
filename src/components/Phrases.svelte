@@ -43,18 +43,21 @@
 	};
 	const prepareLineData = () => {
 		return allIds.map((id) => {
-			const start = ids.find((d) => d.id === id)[
+			const start = +ids.find((d) => d.id === id)[
 				`phrase${$currentPhraseI}_start`
 			];
-			const end = ids.find((d) => d.id === id)[`phrase${$currentPhraseI}_end`];
+			const end = +ids.find((d) => d.id === id)[`phrase${$currentPhraseI}_end`];
+
+			const shiftedPitch = allPitch
+				.filter((d) => d.timestamp >= start && d.timestamp <= end)
+				.map((d) => ({
+					timestamp: d.timestamp - start,
+					frequency: d[id]
+				}));
+
 			return {
 				id: id,
-				pitch: allPitch
-					.filter((item) => item.timestamp >= start && item.timestamp <= end)
-					.map((item) => ({
-						timestamp: item.timestamp,
-						frequency: item[id]
-					}))
+				pitch: shiftedPitch
 			};
 		});
 	};

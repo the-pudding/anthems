@@ -43,7 +43,7 @@
 				<line class="tick-mark" y1={0} y2={6} x1={0} x2={0} />
 			{/if}
 			<text x={0} y={yTick} dx="" dy="" text-anchor={textAnchor(i)}
-				>{formatTick(tick)}</text
+				>{i === tickVals.length - 1 ? formatTick(tick) : tick}</text
 			>
 		</g>
 	{/each}
@@ -62,6 +62,7 @@
 	.tick {
 		font-size: 0.725em;
 		font-weight: 200;
+		font-family: var(--sans);
 	}
 
 	line,

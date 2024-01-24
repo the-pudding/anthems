@@ -22,7 +22,7 @@
 </script>
 
 <g class="axis y-axis" transform="translate({-$padding.left}, 0)">
-	{#each tickVals as tick}
+	{#each tickVals as tick, i}
 		<g
 			class="tick tick-{tick}"
 			transform="translate({$xRange[0]}, {$yScale(tick)})"
@@ -38,7 +38,8 @@
 				y={yTick}
 				dx={dxTick}
 				dy={dyTick}
-				style="text-anchor:{textAnchor};">{formatTick(tick)}</text
+				style="text-anchor:{textAnchor};"
+				>{i === tickVals.length - 1 ? formatTick(tick) : tick}</text
 			>
 		</g>
 	{/each}
@@ -48,6 +49,7 @@
 	.tick {
 		font-size: 0.725em;
 		font-weight: 200;
+		font-family: var(--sans);
 	}
 
 	.tick line {

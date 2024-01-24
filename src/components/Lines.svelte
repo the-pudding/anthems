@@ -1,4 +1,5 @@
 <script>
+	import Standard from "$components/Lines.Standard.svelte";
 	import MultiLine from "$components/layercake/todo/MultiLine.svelte";
 	import { LayerCake, Svg, flatten } from "layercake";
 	import { scaleOrdinal } from "d3-scale";
@@ -38,9 +39,10 @@
 			{data}
 		>
 			<Svg>
-				<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d}s`} />
-				<AxisY gridlines={false} ticks={4} formatTick={(d) => `${d}Hz`} />
+				<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
+				<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
 				<MultiLine {highlight} />
+				<Standard />
 			</Svg>
 		</LayerCake>
 	</div>
