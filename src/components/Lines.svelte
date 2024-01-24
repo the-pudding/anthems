@@ -47,11 +47,11 @@
 </div>
 
 <style>
-	.chart-container {
-		width: 100%;
-		height: 600px;
-	}
 	.wrapper {
 		display: flex;
+		flex: 1;
+	}
+	.chart-container {
+		width: 100%;
 	}
 </style>

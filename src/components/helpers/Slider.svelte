@@ -122,7 +122,7 @@ Usage:
 	section {
 		position: relative;
 		width: 100%;
-		height: 100%;
+		height: calc(100% - 6rem);
 		margin: 0;
 		padding: 0;
 		z-index: 1;

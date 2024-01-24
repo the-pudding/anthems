@@ -4,18 +4,22 @@
 </script>
 
 <div class="wrapper">
-	<h3>Top Divas</h3>
-	{#each topDivas.split(",") as id}
-		<img src={`assets/cutouts/${id.split("_")[0].trim()}.png`} />
-	{/each}
-
-	<h3>Our Picks</h3>
-	{#each ourPicks as { id, note }}
-		<div class="pick">
+	{#if topDivas}
+		<h3>Top Divas</h3>
+		{#each topDivas.split(",") as id}
 			<img src={`assets/cutouts/${id.split("_")[0].trim()}.png`} />
-			<div class="note">{note}</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
+
+	{#if ourPicks}
+		<h3>Our Picks</h3>
+		{#each ourPicks as { id, note }}
+			<div class="pick">
+				<img src={`assets/cutouts/${id.split("_")[0].trim()}.png`} />
+				<!-- <div class="note">{note}</div> -->
+			</div>
+		{/each}
+	{/if}
 </div>
 
 <style>

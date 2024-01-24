@@ -1,4 +1,5 @@
 <script>
+	import Progress from "$components/Phrases.Progress.svelte";
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slider from "$components/helpers/Slider.svelte";
@@ -94,6 +95,8 @@
 			</Slide>
 		{/each}
 	</Slider>
+
+	<Progress lyrics={currentPhrase.lyrics} />
 </article>
 
 <Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
@@ -111,6 +114,8 @@
 		display: flex;
 	}
 	.main {
+		display: flex;
+		flex-direction: column;
 		flex-grow: 1;
 	}
 	h2 {
@@ -118,7 +123,5 @@
 		font-size: 5rem;
 		display: flex;
 		justify-content: space-evenly;
-	}
-	h2.span {
 	}
 </style>
