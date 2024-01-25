@@ -1,6 +1,6 @@
 <script>
 	import Audio from "$components/Phrases.Audio.svelte";
-	import Progress from "$components/Phrases.Progress.svelte";
+	import Nav from "$components/Phrases.Nav.svelte";
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slider from "$components/helpers/Slider.svelte";
@@ -167,7 +167,7 @@
 			{/each}
 		</Slider>
 
-		<Progress lyrics={currentPhrase.lyrics} {sliderEl} />
+		<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
 		<Audio />
 	</article>
 {/if}

@@ -2,6 +2,7 @@
 	import data from "$data/processed_standard_words.csv";
 	import { currentPhraseI } from "$stores/misc.js";
 	import { getContext } from "svelte";
+	import { fade } from "svelte/transition";
 
 	const { yScale, xScale } = getContext("LayerCake");
 	const blockH = 15;
@@ -17,7 +18,7 @@
 	}));
 </script>
 
-<g class="standard">
+<g class="standard" transition:fade>
 	{#each blockData as { timestamp, duration, frequency }}
 		<rect
 			x={$xScale(timestamp)}

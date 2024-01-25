@@ -26,7 +26,7 @@
 			.curve(curveCardinal);
 		return lineGenerator(values);
 	};
-	const segments = (values) => {
+	const segments = (values, id) => {
 		let segments = [];
 		let currentSegment = [];
 		values.forEach((d) => {
@@ -79,7 +79,7 @@
 
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
-						{#each segments(group.pitch) as { data, duration, delay }, segmentI}
+						{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI}
 							<path
 								class="animated"
 								class:visible={highlighted}

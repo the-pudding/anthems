@@ -36,6 +36,7 @@
 		height: 1rem;
 		border-radius: 50%;
 		background: #7ca4ae;
+		line-height: calc(2rem - 8px);
 	}
 	.circle:hover {
 		cursor: pointer;
