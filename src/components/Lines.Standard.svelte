@@ -30,10 +30,9 @@
 
 <style>
 	rect {
-		fill: none;
-		stroke: darkgoldenrod;
-		stroke-width: 4px;
-		stroke-dasharray: 8px;
+		stroke-width: 2px;
+		stroke: #e3b97f;
+		fill: transparent;
 		opacity: 0.8;
 	}
 </style>
