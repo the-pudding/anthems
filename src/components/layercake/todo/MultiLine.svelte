@@ -3,25 +3,42 @@
   Generates an SVG multi-series line chart. It expects your data to be an array of objects, each with a `values` key that is an array of data objects.
  -->
 <script>
-	import { getContext } from "svelte";
+	import { getContext, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
-	import { draw } from "svelte/transition";
+	import { tweened } from "svelte/motion";
+	import { cubicOut } from "svelte/easing";
 
-	const { data, xGet, yGet, xScale } = getContext("LayerCake");
+	const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
 
 	export let highlight;
 
-	const segmentPath = (values) => {
+	let animatedEl;
+
+	const generatePath = (values) => {
 		const lineGenerator = line()
 			.defined((d) => d.frequency > 0)
 			.x((d) => $xGet(d))
 			.y((d) => $yGet(d))
 			.curve(curveCardinal);
 
-		console.log(lineGenerator(values));
-
 		return lineGenerator(values);
 	};
+
+	const maskWidth = tweened(0, {
+		easing: cubicOut
+	});
+	// $: console.log($maskWidth);
+	const startAnimation = async () => {
+		await tick();
+		if (!animatedEl) return;
+		console.log("starting");
+		maskWidth.set(0, { duration: 0 });
+		const pathLength = animatedEl.getTotalLength();
+		console.log(pathLength);
+		maskWidth.set(pathLength, { duration: 8000 });
+	};
+
+	$: if (highlight) startAnimation();
 </script>
 
 {#key $xScale.range()}
@@ -33,11 +50,19 @@
 				id={group.id}
 				class:fade
 				class:highlighted={highlight}
-				d={segmentPath(group.pitch)}
+				d={generatePath(group.pitch)}
 			/>
 
 			{#if highlighted}
-				<path class="animated" d={segmentPath(group.pitch)} />
+				<mask id={`mask-${group.id}`}>
+					<rect x="0" y="0" width={$maskWidth} height="100%" fill="white" />
+				</mask>
+				<path
+					class="animated"
+					bind:this={animatedEl}
+					d={generatePath(group.pitch)}
+					mask={`url(#mask-${group.id})`}
+				/>
 			{/if}
 		{/each}
 	</g>
