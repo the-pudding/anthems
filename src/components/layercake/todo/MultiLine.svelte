@@ -108,7 +108,7 @@
 		opacity: 0.1;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		stroke-width: 3px;
+		stroke-width: 2px;
 		transition: opacity 0.5s ease-in-out;
 	}
 	path.fade {
@@ -116,7 +116,7 @@
 	}
 	path.animated {
 		stroke: red;
-		stroke-width: 6px;
+		stroke-width: 3px;
 		opacity: 0;
 		transition: stroke-dashoffset var(--duration) linear var(--delay);
 	}
