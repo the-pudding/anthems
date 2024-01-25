@@ -8,29 +8,15 @@
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
-	import pitch from "$data/pitch_normalized.csv";
+	import { onMount } from "svelte";
+	import viewport from "$stores/viewport.js";
 
+	let pitch;
+	let allPitch;
+	let data;
 	let sliderEl;
 	let highlight;
 
-	const onTap = ({ detail }) => {
-		if (detail === "right") {
-			if ($currentStepI + 1 < stepsInPhrase) {
-				$currentStepI += 1;
-			} else if ($currentPhraseI + 1 < phrases.length) {
-				$currentStepI = 0;
-				sliderEl.next();
-			}
-		} else {
-			if ($currentStepI - 1 >= 0) {
-				$currentStepI -= 1;
-			} else if ($currentPhraseI > 0) {
-				const prevPhrase = phrases[$currentPhraseI - 1];
-				$currentStepI = prevPhrase.steps.length - 1;
-				sliderEl.prev();
-			}
-		}
-	};
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
 			Object.fromEntries(
@@ -61,9 +47,30 @@
 			};
 		});
 	};
-
-	// just happens once when the step changes
-	const onStep = () => {
+	const onTap = ({ detail }) => {
+		if (detail === "right") {
+			if ($currentStepI + 1 < stepsInPhrase) {
+				$currentStepI += 1;
+			} else if ($currentPhraseI + 1 < phrases.length) {
+				$currentStepI = 0;
+				sliderEl.next();
+			}
+		} else {
+			if ($currentStepI - 1 >= 0) {
+				$currentStepI -= 1;
+			} else if ($currentPhraseI > 0) {
+				const prevPhrase = phrases[$currentPhraseI - 1];
+				$currentStepI = prevPhrase.steps.length - 1;
+				sliderEl.prev();
+			}
+		}
+	};
+	const onNewPhrase = () => {
+		if (!pitch) return;
+		data = prepareLineData();
+	};
+	const onNewStep = () => {
+		if (!pitch) return;
 		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
 	};
 
@@ -71,42 +78,53 @@
 		.filter((d) => d.steps)
 		.map((d) => ({ ...d, i: +d.i }));
 	const allIds = ids.map((d) => d.id);
-	const allPitch = castFloat(pitch);
 
 	$: currentPhrase = phrases[$currentPhraseI];
 	$: currentStep = currentPhrase.steps[$currentStepI];
 	$: stepsInPhrase = currentPhrase.steps.length;
-	$: data = prepareLineData($currentPhraseI);
 	$: text = currentStep.text;
 	$: topDivas = currentPhrase.topDivas;
 	$: ourPicks = currentPhrase.ourPicks;
-	$: $currentStepI, onStep();
+	$: $currentPhraseI, onNewPhrase();
+	$: $currentStepI, onNewStep();
+
+	onMount(async () => {
+		const isMobile = $viewport.width <= 600;
+		const module = await import(
+			`$data/pitch_${isMobile ? "mobile" : "desktop"}.csv`
+		);
+		pitch = module.default;
+		allPitch = castFloat(pitch);
+		data = prepareLineData($currentPhraseI);
+	});
 </script>
 
-<article>
-	<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
-		{#each phrases as phrase}
-			<Slide index={phrase.i}>
-				<div class="slide">
-					<Featured {topDivas} {ourPicks} bind:highlight />
+{#if pitch}
+	<article>
+		<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
+			{#each phrases as phrase}
+				<Slide index={phrase.i}>
+					<div class="slide">
+						<Featured {topDivas} {ourPicks} bind:highlight />
 
-					<div class="main">
-						<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
-						<p>{text}</p>
-						<Lines {data} {highlight} />
-						<h2>
-							{#each phrase.lyrics.split(" ") as word}
-								<span>{word}</span>
-							{/each}
-						</h2>
+						<div class="main">
+							<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
+							<p>{text}</p>
+							<Lines {data} {highlight} />
+							<h2>
+								{#each phrase.lyrics.split(" ") as word}
+									<span>{word}</span>
+								{/each}
+							</h2>
+						</div>
 					</div>
-				</div>
-			</Slide>
-		{/each}
-	</Slider>
+				</Slide>
+			{/each}
+		</Slider>
 
-	<Progress lyrics={currentPhrase.lyrics} {sliderEl} />
-</article>
+		<Progress lyrics={currentPhrase.lyrics} {sliderEl} />
+	</article>
+{/if}
 
 <Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 

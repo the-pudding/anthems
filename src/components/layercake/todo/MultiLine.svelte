@@ -4,28 +4,20 @@
  -->
 <script>
 	import { getContext } from "svelte";
+	import { line, curveCardinal } from "d3-shape";
 
-	const { data, xGet, yGet, zGet, xScale, zScale } = getContext("LayerCake");
+	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
 	export let highlight;
 
 	const segmentPath = (values) => {
-		let pathData = "";
-		let moveToNext = true;
+		const lineGenerator = line()
+			.defined((d) => d.frequency > 0)
+			.x((d) => $xGet(d))
+			.y((d) => $yGet(d))
+			.curve(curveCardinal);
 
-		for (const d of values) {
-			if (d.frequency > 0) {
-				if (moveToNext) {
-					pathData += `M${$xGet(d)},${$yGet(d)} `;
-					moveToNext = false;
-				} else {
-					pathData += `L${$xGet(d)},${$yGet(d)} `;
-				}
-			} else {
-				moveToNext = true;
-			}
-		}
-		return pathData;
+		return lineGenerator(values);
 	};
 </script>
 
