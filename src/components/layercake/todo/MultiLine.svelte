@@ -5,7 +5,6 @@
 <script>
 	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
-	import { draw, fade } from "svelte/transition";
 	import viewport from "$stores/viewport.js";
 
 	const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
@@ -76,7 +75,7 @@
 			{@const fade = highlight && group.id !== highlight}
 			{@const highlighted = highlight && group.id === highlight}
 			<g id={`${group.id}_line_phrase${phraseI}`}>
-				<path class:fade d={generatePath(group.pitch)} />
+				<path class:highlighted class:fade d={generatePath(group.pitch)} />
 
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
@@ -113,6 +112,9 @@
 	}
 	path.fade {
 		opacity: 0.025;
+	}
+	path.highlighted {
+		opacity: 1;
 	}
 	path.animated {
 		stroke: red;

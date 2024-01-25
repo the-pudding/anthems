@@ -1,5 +1,5 @@
 <script>
-	import { currentStepI } from "$stores/misc.js";
+	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import _ from "lodash";
 
 	export let topDivas;
@@ -24,10 +24,11 @@
 	};
 
 	$: $currentStepI, onStep();
+	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 </script>
 
 {#if topDivas && ourPicks}
-	<div class="wrapper">
+	<div class="wrapper" class:visible>
 		{#each [topDivas, ourPicks] as data, i}
 			{@const title = i === 0 ? "Top Divas" : "Our Picks"}
 			{@const list =
@@ -55,6 +56,11 @@
 	.wrapper {
 		margin-right: 3rem;
 		max-width: 100px;
+		opacity: 0;
+		transition: opacity 0.5s ease-in-out;
+	}
+	.visible {
+		opacity: 1;
 	}
 	h3 {
 		font-size: 1rem;
@@ -69,6 +75,8 @@
 	img {
 		width: 60%;
 		margin: 1rem 0;
+	}
+	.visible img {
 		pointer-events: auto;
 	}
 	img:hover {
