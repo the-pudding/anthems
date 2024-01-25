@@ -1,7 +1,9 @@
 <script>
+	import Face from "$components/Phrases.Featured.Face.svelte";
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import _ from "lodash";
 
+	export let phraseI;
 	export let topDivas;
 	export let ourPicks;
 	export let highlight;
@@ -37,14 +39,7 @@
 				<h3>{title}</h3>
 				<div class="pics">
 					{#each list as id}
-						<div class="pic">
-							<img
-								class:selected={id === selected}
-								src={`assets/cutouts/${id.split("_")[0]}.png`}
-								on:click={() => onClick(id)}
-							/>
-							<span class="crown" class:visible={id === selected}>👑</span>
-						</div>
+						<Face {id} {onClick} {selected} {phraseI} />
 					{/each}
 				</div>
 			</div>
@@ -57,9 +52,11 @@
 		margin-right: 3rem;
 		max-width: 100px;
 		opacity: 0;
+		visibility: hidden;
 		transition: opacity 0.5s ease-in-out;
 	}
-	.visible {
+	.wrapper.visible {
+		visibility: visible;
 		opacity: 1;
 	}
 	h3 {
@@ -68,37 +65,6 @@
 		color: #7ca4ae;
 		font-weight: bold;
 		text-transform: uppercase;
-	}
-	.pick {
-		position: relative;
-	}
-	img {
-		width: 60%;
-		margin: 1rem 0;
-	}
-	.visible img {
-		pointer-events: auto;
-	}
-	img:hover {
-		opacity: 0.5;
-		cursor: pointer;
-	}
-	img.selected {
-		border: 3px solid red;
-	}
-	.pic {
-		position: relative;
-	}
-	.crown {
-		position: absolute;
-		top: -30%;
-		left: 6%;
-		transform: rotate(-20deg);
-		font-size: 2rem;
-		visibility: hidden;
-	}
-	.crown.visible {
-		visibility: visible;
 	}
 
 	@media (max-width: 1000px) {
@@ -113,11 +79,6 @@
 		.pics {
 			display: flex;
 			height: 80px;
-		}
-		img {
-			height: 100%;
-			width: auto;
-			margin: 0;
 		}
 		.our-picks {
 			display: flex;

@@ -146,11 +146,16 @@
 			{#each phrases as phrase}
 				<Slide index={phrase.i}>
 					<div class="slide">
-						<Featured {topDivas} {ourPicks} bind:highlight {playAudio} />
-
+						<Featured
+							phraseI={phrase.i}
+							{topDivas}
+							{ourPicks}
+							bind:highlight
+							{playAudio}
+						/>
 						<div class="main">
 							<p class="text">{@html text}</p>
-							<Lines {data} {highlight} phraseI={phrase.i} {featuredIds} />
+							<Lines phraseI={phrase.i} {data} {highlight} {featuredIds} />
 							<h2>
 								{#each phrase.lyrics.split(" ") as word}
 									<span>{word}</span>
