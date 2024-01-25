@@ -5,9 +5,13 @@
 	export let topDivas;
 	export let ourPicks;
 	export let highlight;
+	export let playAudio;
 
 	let selected;
 
+	const onStep = () => {
+		selected = undefined;
+	};
 	const onClick = (id) => {
 		if (selected === id) {
 			selected = undefined;
@@ -15,36 +19,34 @@
 		} else {
 			selected = id;
 			highlight = id;
-			// play id's audio for this phrase - should we cut all the examples down and store?
+			playAudio(id);
 		}
-	};
-	const onStep = () => {
-		selected = undefined;
 	};
 
 	$: $currentStepI, onStep();
 </script>
 
-<div class="wrapper">
-	{#each [topDivas, ourPicks] as data, i}
-		{@const title = i === 0 ? "Top Divas" : "Our Picks"}
-		{@const list =
-			i === 0 ? data.split(",").map((d) => d.trim()) : data.map((d) => d.id)}
-		<div class={`section ${_.kebabCase(title)}`}>
-			<h3>{title}</h3>
-			<div class="pics">
-				{#each list as id}
-					<img
-						class:selected={id === selected}
-						src={`assets/cutouts/${id.split("_")[0]}.png`}
-						on:click={() => onClick(id)}
-					/>
-					<audio src={`assets/vocals/${id}.mp3`} />
-				{/each}
+{#if topDivas && ourPicks}
+	<div class="wrapper">
+		{#each [topDivas, ourPicks] as data, i}
+			{@const title = i === 0 ? "Top Divas" : "Our Picks"}
+			{@const list =
+				i === 0 ? data.split(",").map((d) => d.trim()) : data.map((d) => d.id)}
+			<div class={`section ${_.kebabCase(title)}`}>
+				<h3>{title}</h3>
+				<div class="pics">
+					{#each list as id}
+						<img
+							class:selected={id === selected}
+							src={`assets/cutouts/${id.split("_")[0]}.png`}
+							on:click={() => onClick(id)}
+						/>
+					{/each}
+				</div>
 			</div>
-		</div>
-	{/each}
-</div>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.wrapper {

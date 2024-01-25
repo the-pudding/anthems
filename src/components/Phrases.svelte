@@ -1,4 +1,5 @@
 <script>
+	import Audio from "$components/Phrases.Audio.svelte";
 	import Progress from "$components/Phrases.Progress.svelte";
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
@@ -8,7 +9,7 @@
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
-	import { onMount } from "svelte";
+	import { onMount, tick } from "svelte";
 	import viewport from "$stores/viewport.js";
 
 	let pitch;
@@ -16,6 +17,9 @@
 	let data;
 	let sliderEl;
 	let highlight;
+	let f;
+	let currentTime;
+	let idPlaying;
 
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
@@ -72,6 +76,39 @@
 	const onNewStep = () => {
 		if (!pitch) return;
 		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
+		if (idPlaying) pauseAudio(idPlaying);
+	};
+	const playAudio = (id) => {
+		if (idPlaying) pauseAudio(idPlaying);
+
+		const audioEl = document.getElementById(`${id}-audio`);
+		const myId = ids.find((d) => d.id === id);
+		const start = +myId[`phrase${$currentPhraseI}_start`];
+		const end = +myId[`phrase${$currentPhraseI}_end`];
+
+		idPlaying = id;
+		audioEl.currentTime = start;
+		audioEl.play();
+
+		const checkTime = () => {
+			currentTime = audioEl.currentTime;
+			if (currentTime >= end) {
+				idPlaying = undefined;
+				audioEl.pause();
+				audioEl.currentTime = start;
+				cancelAnimationFrame(f);
+			} else {
+				f = requestAnimationFrame(checkTime);
+			}
+		};
+
+		f = requestAnimationFrame(checkTime);
+	};
+	const pauseAudio = (id) => {
+		const audioEl = document.getElementById(`${id}-audio`);
+		audioEl.pause();
+		cancelAnimationFrame(f);
+		idPlaying = undefined;
 	};
 
 	const phrases = copy.phrases
@@ -82,7 +119,7 @@
 	$: currentPhrase = phrases[$currentPhraseI];
 	$: currentStep = currentPhrase.steps[$currentStepI];
 	$: stepsInPhrase = currentPhrase.steps.length;
-	$: text = currentStep.text;
+	$: text = currentStep?.text;
 	$: topDivas = currentPhrase.topDivas;
 	$: ourPicks = currentPhrase.ourPicks;
 	$: $currentPhraseI, onNewPhrase();
@@ -105,7 +142,7 @@
 			{#each phrases as phrase}
 				<Slide index={phrase.i}>
 					<div class="slide">
-						<Featured {topDivas} {ourPicks} bind:highlight />
+						<Featured {topDivas} {ourPicks} bind:highlight {playAudio} />
 
 						<div class="main">
 							<p class="text">{text}</p>
@@ -122,6 +159,7 @@
 		</Slider>
 
 		<Progress lyrics={currentPhrase.lyrics} {sliderEl} />
+		<Audio />
 	</article>
 {/if}
 

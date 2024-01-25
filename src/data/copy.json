@@ -42,7 +42,14 @@
 		{
 			"i": "2",
 			"lyrics": "what so proudly we hailed",
-			"steps": [{ "text": "Tk" }, { "text": "Tk" }]
+			"steps": [{ "text": "Tk" }, { "text": "Tk2" }],
+			"topDivas": "anthony-hamilton_nba-allstar-game_2019, tpain_mlb-regular-season-game_2015, fergie_nba-allstar-game_2018",
+			"ourPicks": [
+				{
+					"id": "jazmine-sullivan_world-series_2022",
+					"note": "I just love this one"
+				}
+			]
 		},
 		{ "i": "3", "lyrics": "at the twilights last gleaming" },
 		{ "i": "4", "lyrics": "whose broad stripes and bright stars" },

@@ -5,6 +5,7 @@
 <script>
 	import { getContext } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
+	import { draw } from "svelte/transition";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
@@ -17,6 +18,8 @@
 			.y((d) => $yGet(d))
 			.curve(curveCardinal);
 
+		console.log(lineGenerator(values));
+
 		return lineGenerator(values);
 	};
 </script>
@@ -24,12 +27,18 @@
 {#key $xScale.range()}
 	<g class="line-group">
 		{#each $data as group}
+			{@const fade = highlight && group.id !== highlight}
+			{@const highlighted = highlight && group.id === highlight}
 			<path
 				id={group.id}
-				class:fade={highlight && group.id !== highlight}
-				class:highlight={highlight && group.id === highlight}
+				class:fade
+				class:highlighted={highlight}
 				d={segmentPath(group.pitch)}
 			/>
+
+			{#if highlighted}
+				<path class="animated" d={segmentPath(group.pitch)} />
+			{/if}
 		{/each}
 	</g>
 {/key}
@@ -44,10 +53,15 @@
 		stroke-width: 3px;
 		transition: opacity 0.5s ease-in-out;
 	}
-	path.highlight {
+	path.highlighted {
 		opacity: 1;
 	}
 	path.fade {
 		opacity: 0.025;
+	}
+	path.animated {
+		opacity: 1;
+		stroke: red;
+		stroke-width: 6px;
 	}
 </style>
