@@ -8,6 +8,8 @@
 
 	export let data;
 	export let highlight;
+	export let phraseI;
+	export let featuredIds;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -41,7 +43,7 @@
 			<Svg>
 				<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
 				<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
-				<MultiLine {highlight} />
+				<MultiLine {highlight} {phraseI} {featuredIds} />
 				<Standard />
 			</Svg>
 		</LayerCake>

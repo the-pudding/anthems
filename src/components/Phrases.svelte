@@ -122,6 +122,10 @@
 	$: text = currentStep?.text;
 	$: topDivas = currentPhrase.topDivas;
 	$: ourPicks = currentPhrase.ourPicks;
+	$: featuredIds = [
+		...topDivas?.split(",").map((id) => id.trim()),
+		...ourPicks?.map((id) => id.id)
+	];
 	$: $currentPhraseI, onNewPhrase();
 	$: $currentStepI, onNewStep();
 
@@ -146,7 +150,7 @@
 
 						<div class="main">
 							<p class="text">{text}</p>
-							<Lines {data} {highlight} />
+							<Lines {data} {highlight} phraseI={phrase.i} {featuredIds} />
 							<h2>
 								{#each phrase.lyrics.split(" ") as word}
 									<span>{word}</span>

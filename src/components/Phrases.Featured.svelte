@@ -36,11 +36,14 @@
 				<h3>{title}</h3>
 				<div class="pics">
 					{#each list as id}
-						<img
-							class:selected={id === selected}
-							src={`assets/cutouts/${id.split("_")[0]}.png`}
-							on:click={() => onClick(id)}
-						/>
+						<div class="pic">
+							<img
+								class:selected={id === selected}
+								src={`assets/cutouts/${id.split("_")[0]}.png`}
+								on:click={() => onClick(id)}
+							/>
+							<span class="crown" class:visible={id === selected}>👑</span>
+						</div>
 					{/each}
 				</div>
 			</div>
@@ -74,6 +77,20 @@
 	}
 	img.selected {
 		border: 3px solid red;
+	}
+	.pic {
+		position: relative;
+	}
+	.crown {
+		position: absolute;
+		top: -30%;
+		left: 6%;
+		transform: rotate(-20deg);
+		font-size: 2rem;
+		visibility: hidden;
+	}
+	.crown.visible {
+		visibility: visible;
 	}
 
 	@media (max-width: 1000px) {
