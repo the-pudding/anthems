@@ -24,7 +24,7 @@
 	--color-bg: var(--color-white);
 	--color-fg: #fffaef;
 	--color-primary: var(--color-black);
-	--color-link: var(--color-black);
+	--color-link: var(--color-fg);
 	--color-focus: var(--color-red);
 	--color-mark: var(--color-yellow);
 	--color-selection: var(--color-gray-300);
@@ -38,6 +38,10 @@
 
 	/* "1" second duration */
 	--1s: 1ms;
+}
+
+strong {
+	font-family: var(--sans);
 }
 
 /* dark theme */

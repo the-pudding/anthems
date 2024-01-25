@@ -149,7 +149,7 @@
 						<Featured {topDivas} {ourPicks} bind:highlight {playAudio} />
 
 						<div class="main">
-							<p class="text">{text}</p>
+							<p class="text">{@html text}</p>
 							<Lines {data} {highlight} phraseI={phrase.i} {featuredIds} />
 							<h2>
 								{#each phrase.lyrics.split(" ") as word}
@@ -197,6 +197,7 @@
 		margin-bottom: 3rem;
 		margin-left: 3rem;
 		flex-basis: 120px;
+		max-width: 600px;
 	}
 
 	@media (max-width: 1200px) {
