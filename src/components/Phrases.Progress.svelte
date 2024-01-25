@@ -22,9 +22,10 @@
 <style>
 	.progress {
 		height: 6rem;
-		width: 100%;
+		max-width: 700px;
+		margin: auto;
 		display: flex;
-		justify-content: center;
+		justify-content: space-evenly;
 		align-items: center;
 		z-index: 2;
 		position: relative;
@@ -35,7 +36,6 @@
 		height: 1rem;
 		border-radius: 50%;
 		background: #7ca4ae;
-		margin: 0.75rem;
 	}
 	.circle:hover {
 		cursor: pointer;
@@ -54,5 +54,22 @@
 		width: 5rem;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+
+	@media (max-width: 600px) {
+		.progress {
+			height: 3rem;
+		}
+		.circle {
+			width: 0.5rem;
+			height: 0.5rem;
+			line-height: calc(1rem - 4px);
+		}
+		.active {
+			height: 1rem;
+			padding: 2px 4px;
+			font-size: 10px;
+			width: 4rem;
+		}
 	}
 </style>

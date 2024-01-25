@@ -1,5 +1,6 @@
 <script>
 	import { currentStepI } from "$stores/misc.js";
+	import _ from "lodash";
 
 	export let topDivas;
 	export let ourPicks;
@@ -17,12 +18,6 @@
 			// play id's audio for this phrase - should we cut all the examples down and store?
 		}
 	};
-
-	// an audio component that takes: id, phraseI
-	// it exports a function that lets you play it
-	// it finds that id's start and end for that phrase
-	// plays the audio starting at start and stops at end
-
 	const onStep = () => {
 		selected = undefined;
 	};
@@ -31,36 +26,29 @@
 </script>
 
 <div class="wrapper">
-	{#if topDivas}
-		<h3>Top Divas</h3>
-		{#each topDivas.split(",").map((d) => d.trim()) as id}
-			<img
-				class:selected={id === selected}
-				src={`assets/cutouts/${id.split("_")[0]}.png`}
-				on:click={() => onClick(id)}
-			/>
-			<audio src={`assets/vocals/${id}.mp3`} />
-		{/each}
-	{/if}
-
-	{#if ourPicks}
-		<h3>Our Picks</h3>
-		{#each ourPicks as { id, note }}
-			<div class="pick">
-				<img
-					class:selected={id === selected}
-					src={`assets/cutouts/${id.split("_")[0]}.png`}
-					on:click={() => onClick(id)}
-				/>
-				<audio src={`assets/vocals/${id}.mp3`} />
+	{#each [topDivas, ourPicks] as data, i}
+		{@const title = i === 0 ? "Top Divas" : "Our Picks"}
+		{@const list =
+			i === 0 ? data.split(",").map((d) => d.trim()) : data.map((d) => d.id)}
+		<div class={`section ${_.kebabCase(title)}`}>
+			<h3>{title}</h3>
+			<div class="pics">
+				{#each list as id}
+					<img
+						class:selected={id === selected}
+						src={`assets/cutouts/${id.split("_")[0]}.png`}
+						on:click={() => onClick(id)}
+					/>
+					<audio src={`assets/vocals/${id}.mp3`} />
+				{/each}
 			</div>
-		{/each}
-	{/if}
+		</div>
+	{/each}
 </div>
 
 <style>
 	.wrapper {
-		margin-right: 1rem;
+		margin-right: 3rem;
 		max-width: 100px;
 	}
 	h3 {
@@ -73,14 +61,6 @@
 	.pick {
 		position: relative;
 	}
-	.note {
-		position: absolute;
-		font-family: var(--sans);
-		top: 50%;
-		left: 100%;
-		transform: translate(0, -50%);
-		width: 100%;
-	}
 	img {
 		width: 60%;
 		margin: 1rem 0;
@@ -92,5 +72,40 @@
 	}
 	img.selected {
 		border: 3px solid red;
+	}
+
+	@media (max-width: 1000px) {
+		.wrapper {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			max-width: none;
+			margin-right: 0;
+			margin-bottom: 3rem;
+		}
+		.pics {
+			display: flex;
+			height: 80px;
+		}
+		img {
+			height: 100%;
+			width: auto;
+			margin: 0;
+		}
+		.our-picks {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.pics {
+			height: 50px;
+		}
+		h3 {
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+		}
 	}
 </style>

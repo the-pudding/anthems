@@ -147,4 +147,10 @@ Usage:
 	.vertical > .slides {
 		flex-direction: column;
 	}
+
+	@media (max-width: 600px) {
+		section {
+			height: calc(100% - 3rem);
+		}
+	}
 </style>

@@ -108,8 +108,7 @@
 						<Featured {topDivas} {ourPicks} bind:highlight />
 
 						<div class="main">
-							<p>step {$currentStepI + 1} / {stepsInPhrase}</p>
-							<p>{text}</p>
+							<p class="text">{text}</p>
 							<Lines {data} {highlight} />
 							<h2>
 								{#each phrase.lyrics.split(" ") as word}
@@ -137,7 +136,7 @@
 		background: #02273d;
 		border: 3px solid #7ca4ae;
 		height: 100%;
-		padding: 2rem;
+		padding: 1rem 2rem;
 		display: flex;
 	}
 	.main {
@@ -150,5 +149,46 @@
 		font-size: 5rem;
 		display: flex;
 		justify-content: space-evenly;
+		margin-bottom: 0;
+	}
+	.text {
+		margin-bottom: 3rem;
+		margin-left: 3rem;
+		flex-basis: 120px;
+	}
+
+	@media (max-width: 1200px) {
+		h2 {
+			font-size: 3.75rem;
+		}
+	}
+
+	@media (max-width: 1000px) {
+		.slide {
+			flex-direction: column;
+		}
+		h2 {
+			font-size: 2.5rem;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.slide {
+			padding: 0.5rem 1rem;
+		}
+		h2 {
+			font-size: 1.75rem;
+		}
+		.text {
+			font-size: 0.9rem;
+			margin-left: 0;
+			flex-basis: 80px;
+		}
+	}
+
+	@media (max-width: 400px) {
+		h2 {
+			font-size: 1.25rem;
+		}
 	}
 </style>
