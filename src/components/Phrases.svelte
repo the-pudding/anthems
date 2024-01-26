@@ -9,6 +9,7 @@
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
+	import play from "$svg/play.svg";
 	import { onMount, tick } from "svelte";
 	import viewport from "$stores/viewport.js";
 
@@ -30,6 +31,12 @@
 				])
 			)
 		);
+	};
+	const clean = (list) => {
+		return list
+			.split(",")
+			.map((id) => id.trim())
+			.filter((d) => d !== "");
 	};
 	const prepareLineData = () => {
 		return allIds.map((id) => {
@@ -117,15 +124,7 @@
 	const allIds = ids.map((d) => d.id);
 
 	$: currentPhrase = phrases[$currentPhraseI];
-	$: currentStep = currentPhrase.steps[$currentStepI];
 	$: stepsInPhrase = currentPhrase.steps.length;
-	$: text = currentStep?.text;
-	$: topDivas = currentPhrase.topDivas;
-	$: ourPicks = currentPhrase.ourPicks;
-	$: featuredIds = [
-		...topDivas?.split(",").map((id) => id.trim()),
-		...ourPicks?.map((id) => id.id)
-	];
 	$: $currentPhraseI, onNewPhrase();
 	$: $currentStepI, onNewStep();
 
@@ -137,6 +136,18 @@
 		pitch = module.default;
 		allPitch = castFloat(pitch);
 		data = prepareLineData($currentPhraseI);
+
+		await tick();
+
+		const playableText = document.querySelectorAll("span.playable");
+		playableText.forEach((el) => {
+			el.addEventListener("click", () => {
+				const id = el.dataset.id;
+				highlight = id;
+				playAudio(id);
+			});
+			el.insertAdjacentHTML("beforeend", play);
+		});
 	});
 </script>
 
@@ -144,18 +155,28 @@
 	<article>
 		<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
 			{#each phrases as phrase}
-				<Slide index={phrase.i}>
+				{@const phraseI = phrase.i}
+				{@const topDivas = clean(phrase.topDivas)}
+				{@const noteworthy = clean(phrase.noteworthy)}
+				{@const featuredIds = [...topDivas, ...noteworthy]}
+
+				<Slide index={phraseI}>
 					<div class="slide">
 						<Featured
-							phraseI={phrase.i}
+							{phraseI}
 							{topDivas}
-							{ourPicks}
+							{noteworthy}
 							bind:highlight
 							{playAudio}
 						/>
 						<div class="main">
-							<p class="text">{@html text}</p>
-							<Lines phraseI={phrase.i} {data} {highlight} {featuredIds} />
+							<div class="text">
+								{#each phrase.steps as { text }, i}
+									<p class:visible={i === $currentStepI}>{@html text}</p>
+								{/each}
+							</div>
+
+							<Lines {phraseI} {data} {highlight} {featuredIds} />
 							<h2>
 								{#each phrase.lyrics.split(" ") as word}
 									<span>{word}</span>
@@ -203,6 +224,29 @@
 		margin-left: 3rem;
 		flex-basis: 120px;
 		max-width: 600px;
+		pointer-events: auto;
+	}
+	.text p {
+		display: none;
+		line-height: 1.75;
+	}
+	.text p.visible {
+		display: block;
+	}
+	:global(span.playable) {
+		background: var(--color-fg);
+		color: #032e47;
+		font-family: var(--sans);
+		text-transform: uppercase;
+		font-weight: bold;
+		margin: 0 0.4rem;
+		padding: 0.25rem 2rem 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+		position: relative;
+	}
+	:global(span.playable):hover {
+		cursor: pointer;
+		background: var(--color-gray-100);
 	}
 
 	@media (max-width: 1200px) {

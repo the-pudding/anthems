@@ -8,7 +8,7 @@
 
 	export let id;
 	export let onClick;
-	export let selected;
+	export let highlight;
 	export let phraseI;
 
 	const faceSvgs = {
@@ -25,12 +25,12 @@
 		const path = svg.querySelector("path");
 		if (!path) return;
 
-		path.style.stroke = selected === id ? "red" : "white";
-		path.style.strokeWidth = selected === id ? "30px" : "15px";
+		path.style.stroke = highlight === id ? "red" : "white";
+		path.style.strokeWidth = highlight === id ? "30px" : "15px";
 	};
 
 	$: name = id.split("_")[0];
-	$: selected, updateStroke();
+	$: highlight, updateStroke();
 
 	onMount(() => {
 		updateStroke();
@@ -44,10 +44,10 @@
 
 	<img
 		alt={`headshot of ${_.startCase(name)}`}
-		class:selected={id === selected}
+		class:highlight={id === highlight}
 		src={`assets/cutouts/${name}.png`}
 	/>
-	<!-- <span class="crown" class:visible={id === selected}>👑</span> -->
+	<!-- <span class="crown" class:visible={id === highlight}>👑</span> -->
 </button>
 
 <style>
@@ -55,7 +55,7 @@
 		position: relative;
 		z-index: 2;
 	}
-	img:not(.selected):hover {
+	img:not(.highlight):hover {
 		opacity: 0.5;
 		cursor: pointer;
 	}

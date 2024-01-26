@@ -3,11 +3,11 @@
   Generates an SVG multi-series line chart. It expects your data to be an array of objects, each with a `values` key that is an array of data objects.
  -->
 <script>
-	import { getContext, onMount, tick } from "svelte";
+	import { getContext, onMount } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
 
-	const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
 	export let highlight;
 	export let phraseI;

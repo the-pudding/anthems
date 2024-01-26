@@ -5,47 +5,35 @@
 
 	export let phraseI;
 	export let topDivas;
-	export let ourPicks;
+	export let noteworthy;
 	export let highlight;
 	export let playAudio;
 
-	let selected;
-
-	const onStep = () => {
-		selected = undefined;
-	};
 	const onClick = (id) => {
-		if (selected === id) {
-			selected = undefined;
+		if (highlight === id) {
 			highlight = undefined;
 		} else {
-			selected = id;
 			highlight = id;
 			playAudio(id);
 		}
 	};
 
-	$: $currentStepI, onStep();
 	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 </script>
 
-{#if topDivas && ourPicks}
-	<div class="wrapper" class:visible>
-		{#each [topDivas, ourPicks] as data, i}
-			{@const title = i === 0 ? "Top Divas" : "Our Picks"}
-			{@const list =
-				i === 0 ? data.split(",").map((d) => d.trim()) : data.map((d) => d.id)}
-			<div class={`section ${_.kebabCase(title)}`}>
-				<h3>{title}</h3>
-				<div class="pics">
-					{#each list as id}
-						<Face {id} {onClick} {selected} {phraseI} />
-					{/each}
-				</div>
+<div class="wrapper" class:visible>
+	{#each [topDivas, noteworthy].filter((d) => d.length) as data, i}
+		{@const title = i === 0 ? "Top Divas" : "Our Picks"}
+		<div class={`section ${_.kebabCase(title)}`}>
+			<h3>{title}</h3>
+			<div class="pics">
+				{#each data as id}
+					<Face {id} {onClick} {highlight} {phraseI} />
+				{/each}
 			</div>
-		{/each}
-	</div>
-{/if}
+		</div>
+	{/each}
+</div>
 
 <style>
 	.wrapper {
