@@ -16,12 +16,12 @@
 	let currentTime;
 	let idPlaying;
 
-	const clean = (list) => {
-		return list
-			.split(",")
-			.map((id) => id.trim())
-			.filter((d) => d !== "");
-	};
+	// const clean = (list) => {
+	// 	return list
+	// 		.split(",")
+	// 		.map((id) => id.trim())
+	// 		.filter((d) => d !== "");
+	// };
 	const onTap = ({ detail }) => {
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
@@ -101,17 +101,7 @@
 <article>
 	<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
 		{#each phrases as phrase}
-			{@const topDivas = clean(phrase.topDivas)}
-			{@const noteworthy = clean(phrase.noteworthy)}
-			{@const featuredIds = [...topDivas, ...noteworthy]}
-			<Slide
-				{phrase}
-				{topDivas}
-				{noteworthy}
-				{featuredIds}
-				{playAudio}
-				bind:highlight
-			/>
+			<Slide {phrase} {playAudio} bind:highlight />
 		{/each}
 	</Slider>
 

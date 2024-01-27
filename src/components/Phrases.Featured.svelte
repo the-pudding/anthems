@@ -4,8 +4,7 @@
 	import _ from "lodash";
 
 	export let phraseI;
-	export let topDivas;
-	export let noteworthy;
+	export let featured;
 	export let highlight;
 	export let playAudio;
 
@@ -19,20 +18,32 @@
 	};
 
 	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
+	$: top = featured.filter((d) => d.type === "top");
+	$: noteworthy = featured.filter((d) => d.type === "our-pick");
 </script>
 
 <div class="wrapper" class:visible>
-	{#each [topDivas, noteworthy].filter((d) => d.length) as data, i}
-		{@const title = i === 0 ? "Top Divas" : "Our Picks"}
-		<div class={`section ${_.kebabCase(title)}`}>
-			<h3>{title}</h3>
-			<div class="pics">
-				{#each data as id}
+	{#if top.length}
+		<h3>Top divas</h3>
+		{#each top as { id }, i}
+			<div class={`section top`}>
+				<div class="pics">
 					<Face {id} {onClick} {highlight} {phraseI} />
-				{/each}
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
+
+	{#if noteworthy.length}
+		<h3>Noteworthy</h3>
+		{#each noteworthy as { id }, i}
+			<div class={`section our-picks`}>
+				<div class="pics">
+					<Face {id} {onClick} {highlight} {phraseI} />
+				</div>
+			</div>
+		{/each}
+	{/if}
 </div>
 
 <style>

@@ -3,14 +3,10 @@
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
-	import { onMount } from "svelte";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 
 	export let phrase;
-	export let topDivas;
-	export let noteworthy; // TODO: should combine these and just have a 'type' field
-	export let featuredIds;
 	export let highlight;
 	export let playAudio;
 
@@ -51,7 +47,6 @@
 		);
 		loaded = true;
 		console.log("done");
-
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 	};
@@ -63,8 +58,7 @@
 	<div class="slide">
 		<Featured
 			phraseI={phrase.i}
-			{topDivas}
-			{noteworthy}
+			featured={phrase.featured}
 			bind:highlight
 			{playAudio}
 		/>
@@ -76,7 +70,12 @@
 			</div>
 
 			{#if data}
-				<Lines phraseI={phrase.i} {data} {highlight} {featuredIds} />
+				<Lines
+					phraseI={phrase.i}
+					{data}
+					{highlight}
+					featuredIds={phrase.featured.map((d) => d.id)}
+				/>
 			{:else}
 				<p>Loading...</p>
 			{/if}
