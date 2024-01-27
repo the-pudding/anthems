@@ -11,7 +11,7 @@
 
 	export let highlight;
 	export let phraseI;
-	export let featuredIds;
+	export let featuredIds = [];
 
 	let segmentLengths = featuredIds.reduce((obj, key) => {
 		obj[key] = [];

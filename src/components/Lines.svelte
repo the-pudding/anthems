@@ -58,6 +58,7 @@
 	.wrapper {
 		display: flex;
 		flex: 1;
+		height: 100%;
 	}
 	.chart-container {
 		width: 100%;

@@ -11,6 +11,8 @@
 	export let highlight;
 	export let phraseI;
 
+	let mounted = false;
+
 	const faceSvgs = {
 		"anthony-hamilton": anthonySvg,
 		tpain: tpainSvg,
@@ -19,6 +21,8 @@
 	};
 
 	const updateStroke = () => {
+		if (!mounted) return;
+
 		const svg = document.getElementById(`${name}_face_phrase${phraseI}`);
 		if (!svg) return;
 
@@ -33,6 +37,7 @@
 	$: highlight, updateStroke();
 
 	onMount(() => {
+		mounted = true;
 		updateStroke();
 	});
 </script>
