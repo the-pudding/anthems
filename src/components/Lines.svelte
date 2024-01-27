@@ -28,38 +28,31 @@
 	$: showStandard = $currentPhraseI !== 0 || $currentStepI >= 1;
 </script>
 
-<div class="wrapper">
-	<div class="chart-container">
-		<LayerCake
-			padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
-			x={xKey}
-			y={yKey}
-			z={zKey}
-			{zScale}
-			zDomain={data.map((d) => d.id)}
-			yNice={4}
-			yDomain={[0, null]}
-			{flatData}
-			{data}
-		>
-			<Svg>
-				<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
-				<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
-				<MultiLine {highlight} {phraseI} {featuredIds} />
-				{#if showStandard}
-					<Standard />
-				{/if}
-			</Svg>
-		</LayerCake>
-	</div>
+<div class="chart-container">
+	<LayerCake
+		padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
+		x={xKey}
+		y={yKey}
+		z={zKey}
+		{zScale}
+		zDomain={data.map((d) => d.id)}
+		yNice={4}
+		yDomain={[0, null]}
+		{flatData}
+		{data}
+	>
+		<Svg>
+			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
+			<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
+			<MultiLine {highlight} {phraseI} {featuredIds} />
+			{#if showStandard}
+				<Standard />
+			{/if}
+		</Svg>
+	</LayerCake>
 </div>
 
 <style>
-	.wrapper {
-		display: flex;
-		flex: 1;
-		height: 100%;
-	}
 	.chart-container {
 		width: 100%;
 	}

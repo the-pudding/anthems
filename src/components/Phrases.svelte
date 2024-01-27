@@ -16,12 +16,6 @@
 	let currentTime;
 	let idPlaying;
 
-	// const clean = (list) => {
-	// 	return list
-	// 		.split(",")
-	// 		.map((id) => id.trim())
-	// 		.filter((d) => d !== "");
-	// };
 	const onTap = ({ detail }) => {
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
@@ -114,5 +108,6 @@
 <style>
 	article {
 		height: 100vh;
+		overflow: hidden;
 	}
 </style>

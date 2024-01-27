@@ -2,19 +2,15 @@
 	import copy from "$data/copy.json";
 	import _ from "lodash";
 
-	const featuredIds = _.uniq(
+	const allFeaturedIds = _.uniq(
 		_.flatten(
-			copy.phrases.map((d) => {
-				const top = d.topDivas
-					? d.topDivas.split(",").map((id) => id.trim())
-					: [];
-				const picks = d.ourPicks ? d.ourPicks.map((id) => id.id) : [];
-				return [...top, ...picks];
-			})
+			copy.phrases
+				.filter((d) => d.featured)
+				.map((d) => d.featured.map((f) => f.id))
 		)
 	);
 </script>
 
-{#each featuredIds as id}
+{#each allFeaturedIds as id}
 	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} />
 {/each}

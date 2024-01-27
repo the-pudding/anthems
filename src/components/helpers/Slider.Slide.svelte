@@ -29,7 +29,6 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		padding: 2rem;
-		background: #02273d;
+		padding: 2rem 2rem 0 2rem;
 	}
 </style>

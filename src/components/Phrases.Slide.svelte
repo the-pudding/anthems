@@ -10,6 +10,8 @@
 	export let highlight;
 	export let playAudio;
 
+	const preLoad = 2; // start loading data n phrases before
+
 	let phrasePitch;
 	let data;
 	let loaded = false;
@@ -51,11 +53,11 @@
 		data = prepareLineData();
 	};
 
-	$: if (!loaded && $currentPhraseI >= phrase.i - 2) load();
+	$: if (!loaded && $currentPhraseI >= phrase.i - preLoad) load();
 </script>
 
 <Slide index={phrase.i}>
-	<div class="slide">
+	<div class="slide" class:active={phrase.i === $currentPhraseI}>
 		<Featured
 			phraseI={phrase.i}
 			featured={phrase.featured}
@@ -69,16 +71,18 @@
 				{/each}
 			</div>
 
-			{#if data}
-				<Lines
-					phraseI={phrase.i}
-					{data}
-					{highlight}
-					featuredIds={phrase.featured.map((d) => d.id)}
-				/>
-			{:else}
-				<p>Loading...</p>
-			{/if}
+			<div class="line-wrapper">
+				{#if data}
+					<Lines
+						phraseI={phrase.i}
+						{data}
+						{highlight}
+						featuredIds={phrase.featured.map((d) => d.id)}
+					/>
+				{:else}
+					<p>loading...</p>
+				{/if}
+			</div>
 			<h2>
 				{#each phrase.lyrics.split(" ") as word}
 					<span>{word}</span>
@@ -95,6 +99,15 @@
 		height: 100%;
 		padding: 1rem 2rem;
 		display: flex;
+		opacity: 0.5;
+	}
+	.slide.active {
+		opacity: 1;
+	}
+	.line-wrapper {
+		display: flex;
+		flex: 1;
+		height: 100%;
 	}
 	.main {
 		display: flex;

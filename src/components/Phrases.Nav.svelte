@@ -1,5 +1,5 @@
 <script>
-	import { currentPhraseI } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import _ from "lodash";
 
 	export let lyrics;
@@ -7,6 +7,7 @@
 
 	const onClick = (i) => {
 		sliderEl.jump(i);
+		$currentStepI = 0;
 	};
 </script>
 
