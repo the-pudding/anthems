@@ -1,4 +1,5 @@
 <script>
+	import Chart from "$components/Phrases.Chart.svelte";
 	import Audio from "$components/Phrases.Audio.svelte";
 	import Nav from "$components/Phrases.Nav.svelte";
 	import Slide from "$components/Phrases.Slide.svelte";
@@ -10,6 +11,7 @@
 	import play from "$svg/play.svg";
 	import { onMount } from "svelte";
 
+	let currentSlideI = 0;
 	let sliderEl;
 	let highlight;
 	let f;
@@ -20,16 +22,17 @@
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
 				$currentStepI += 1;
-			} else if ($currentPhraseI + 1 < phrases.length) {
+			} else if (currentSlideI + 1 < slides.length) {
 				$currentStepI = 0;
 				sliderEl.next();
 			}
 		} else {
 			if ($currentStepI - 1 >= 0) {
 				$currentStepI -= 1;
-			} else if ($currentPhraseI > 0) {
-				const prevPhrase = phrases[$currentPhraseI - 1];
-				$currentStepI = prevPhrase.steps.length - 1;
+			} else if (currentSlideI > 0) {
+				const prevSlide = slides[currentSlideI - 1];
+				$currentStepI =
+					prevSlide.type === "chart" ? 0 : prevSlide.steps.length - 1;
 				sliderEl.prev();
 			}
 		}
@@ -71,12 +74,14 @@
 		idPlaying = undefined;
 	};
 
-	const phrases = copy.phrases
-		.filter((d) => d.steps)
-		.map((d) => ({ ...d, i: +d.i }));
+	const slides = copy.slides.map((d) => ({ ...d, i: +d.i }));
+	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
+	$: currentSlide = slides[currentSlideI];
 	$: currentPhrase = phrases[$currentPhraseI];
-	$: stepsInPhrase = currentPhrase.steps.length;
+	$: $currentPhraseI = +currentSlide.phraseI;
+	$: stepsInPhrase =
+		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
 	$: $currentStepI, onNewStep();
 
 	onMount(() => {
@@ -93,9 +98,13 @@
 </script>
 
 <article>
-	<Slider bind:this={sliderEl} bind:current={$currentPhraseI}>
-		{#each phrases as phrase}
-			<Slide {phrase} {playAudio} bind:highlight />
+	<Slider bind:this={sliderEl} bind:current={currentSlideI}>
+		{#each slides as slide}
+			{#if slide.type === "phrase"}
+				<Slide phrase={slide} {playAudio} bind:highlight />
+			{:else}
+				<Chart />
+			{/if}
 		{/each}
 	</Slider>
 

@@ -40,12 +40,11 @@
 			};
 		});
 	};
-
 	const load = async () => {
-		console.log(`loading data for phrase ${phrase.i}...`);
+		console.log(`loading data for phrase ${phraseI}...`);
 		const isMobile = $viewport.width <= 600;
 		const module = await import(
-			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phrase.i}.csv`
+			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phraseI}.csv`
 		);
 		loaded = true;
 		console.log("done");
@@ -53,17 +52,13 @@
 		data = prepareLineData();
 	};
 
-	$: if (!loaded && $currentPhraseI >= phrase.i - preLoad) load();
+	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
+	$: phraseI = +phrase.phraseI;
 </script>
 
-<Slide index={phrase.i}>
-	<div class="slide" class:active={phrase.i === $currentPhraseI}>
-		<Featured
-			phraseI={phrase.i}
-			featured={phrase.featured}
-			bind:highlight
-			{playAudio}
-		/>
+<Slide index={phraseI}>
+	<div class="slide" class:active={phraseI === $currentPhraseI}>
+		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
 			<div class="text">
 				{#each phrase.steps as { text }, i}
@@ -74,7 +69,7 @@
 			<div class="line-wrapper">
 				{#if data}
 					<Lines
-						phraseI={phrase.i}
+						{phraseI}
 						{data}
 						{highlight}
 						featuredIds={phrase.featured.map((d) => d.id)}

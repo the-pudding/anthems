@@ -4,7 +4,7 @@
 
 	const allFeaturedIds = _.uniq(
 		_.flatten(
-			copy.phrases
+			copy.slides
 				.filter((d) => d.featured)
 				.map((d) => d.featured.map((f) => f.id))
 		)
