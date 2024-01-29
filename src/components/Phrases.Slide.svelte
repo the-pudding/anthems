@@ -57,7 +57,7 @@
 </script>
 
 <Slide index={phraseI}>
-	<div class="slide" class:active={phraseI === $currentPhraseI}>
+	<div class="slide">
 		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
 			<div class="text">
@@ -94,10 +94,6 @@
 		height: 100%;
 		padding: 1rem 2rem;
 		display: flex;
-		opacity: 0.5;
-	}
-	.slide.active {
-		opacity: 1;
 	}
 	.line-wrapper {
 		display: flex;

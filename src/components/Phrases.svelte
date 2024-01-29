@@ -19,6 +19,9 @@
 	let idPlaying;
 
 	const onTap = ({ detail }) => {
+		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
+		if (idPlaying) pauseAudio(idPlaying);
+
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
 				$currentStepI += 1;
@@ -36,10 +39,6 @@
 				sliderEl.prev();
 			}
 		}
-	};
-	const onNewStep = () => {
-		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
-		if (idPlaying) pauseAudio(idPlaying);
 	};
 	const playAudio = (id) => {
 		if (idPlaying) pauseAudio(idPlaying);
@@ -82,7 +81,6 @@
 	$: $currentPhraseI = +currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
-	$: $currentStepI, onNewStep();
 
 	onMount(() => {
 		const playableText = document.querySelectorAll("span.playable");
@@ -100,11 +98,18 @@
 <article>
 	<Slider bind:this={sliderEl} bind:current={currentSlideI}>
 		{#each slides as slide}
-			{#if slide.type === "phrase"}
-				<Slide phrase={slide} {playAudio} bind:highlight />
-			{:else}
-				<Chart />
-			{/if}
+			{@const active = +slide.i === currentSlideI}
+			<div class="slide-wrapper" class:active>
+				{#if slide.type === "phrase"}
+					<Slide phrase={slide} {playAudio} bind:highlight />
+				{:else}
+					<Chart
+						id={slide.chart}
+						text={slide.text}
+						active={+slide.i === currentSlideI}
+					/>
+				{/if}
+			</div>
 		{/each}
 	</Slider>
 
@@ -118,5 +123,11 @@
 	article {
 		height: 100vh;
 		overflow: hidden;
+	}
+	.slide-wrapper {
+		opacity: 0.5;
+	}
+	.slide-wrapper.active {
+		opacity: 1;
 	}
 </style>
