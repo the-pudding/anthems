@@ -8,18 +8,14 @@
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
-	import play from "$svg/play.svg";
-	import { onMount } from "svelte";
 
 	let currentSlideI = 0;
 	let sliderEl;
-	let highlight;
 	let f;
 	let currentTime;
 	let idPlaying;
 
 	const onTap = ({ detail }) => {
-		highlight = phrases[$currentPhraseI].steps[$currentStepI].highlight;
 		if (idPlaying) pauseAudio(idPlaying);
 
 		if (detail === "right") {
@@ -73,26 +69,18 @@
 		idPlaying = undefined;
 	};
 
-	const slides = copy.slides.map((d) => ({ ...d, i: +d.i }));
+	const slides = copy.slides.map((d) => ({
+		...d,
+		i: +d.i,
+		phraseI: +d.phraseI
+	}));
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	$: currentSlide = slides[currentSlideI];
 	$: currentPhrase = phrases[$currentPhraseI];
-	$: $currentPhraseI = +currentSlide.phraseI;
+	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
-
-	onMount(() => {
-		const playableText = document.querySelectorAll("span.playable");
-		playableText.forEach((el) => {
-			el.addEventListener("click", () => {
-				const id = el.dataset.id;
-				highlight = id;
-				playAudio(id);
-			});
-			el.insertAdjacentHTML("beforeend", play);
-		});
-	});
 </script>
 
 <article>
@@ -101,7 +89,7 @@
 			{@const active = +slide.i === currentSlideI}
 			<div class="slide-wrapper" class:active>
 				{#if slide.type === "phrase"}
-					<Slide phrase={slide} {playAudio} bind:highlight />
+					<Slide phrase={slide} {playAudio} />
 				{:else}
 					<Chart
 						id={slide.chart}

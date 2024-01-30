@@ -5,18 +5,19 @@
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
+	import play from "$svg/play.svg";
+	import { onMount } from "svelte";
 
 	export let phrase;
-	export let highlight;
 	export let playAudio;
 
-	const preLoad = 2; // start loading data n phrases before
-
+	let loaded = false;
 	let phrasePitch;
 	let data;
-	let loaded = false;
+	let highlight;
 
 	const allIds = ids.map((d) => d.id);
+	const preLoad = 2; // start loading data n phrases before
 
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
@@ -40,6 +41,9 @@
 			};
 		});
 	};
+	const onNewStep = () => {
+		highlight = phrase.steps[$currentStepI].highlight;
+	};
 	const load = async () => {
 		console.log(`loading data for phrase ${phraseI}...`);
 		const isMobile = $viewport.width <= 600;
@@ -47,13 +51,25 @@
 			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phraseI}.csv`
 		);
 		loaded = true;
-		console.log("done");
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 	};
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
-	$: phraseI = +phrase.phraseI;
+	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
+	$: phraseI = phrase.phraseI;
+
+	onMount(() => {
+		const playableText = document.querySelectorAll("span.playable");
+		playableText.forEach((el) => {
+			el.addEventListener("click", () => {
+				const id = el.dataset.id;
+				highlight = id;
+				playAudio(id);
+			});
+			el.insertAdjacentHTML("beforeend", play);
+		});
+	});
 </script>
 
 <Slide index={phraseI}>
