@@ -1,4 +1,5 @@
 <script>
+	import ErrorFinder from "$components/ErrorFinder.svelte";
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
@@ -77,6 +78,8 @@
 
 <Slide index={slideI}>
 	<div class="slide">
+		<ErrorFinder {phraseI} {data} bind:highlight {playAudio} />
+
 		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
 			<div class="text">
