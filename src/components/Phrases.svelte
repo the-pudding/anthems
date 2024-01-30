@@ -89,9 +89,10 @@
 			{@const active = +slide.i === currentSlideI}
 			<div class="slide-wrapper" class:active>
 				{#if slide.type === "phrase"}
-					<Slide phrase={slide} {playAudio} />
+					<Slide slideI={+slide.i} phrase={slide} {playAudio} />
 				{:else}
 					<Chart
+						slideI={+slide.i}
 						id={slide.chart}
 						text={slide.text}
 						active={+slide.i === currentSlideI}

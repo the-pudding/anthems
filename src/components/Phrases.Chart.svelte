@@ -6,9 +6,10 @@
 
 	export let id;
 	export let text;
+	export let slideI;
 </script>
 
-<Slide>
+<Slide index={slideI}>
 	<p class="text">{@html text}</p>
 	{#if id === "event"}
 		<BarChart data={divaByEvent} title={"Event Type"} key={"eventType"} />

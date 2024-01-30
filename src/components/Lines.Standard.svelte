@@ -36,7 +36,7 @@
 <style>
 	rect {
 		stroke-width: 2px;
-		stroke: #e3b97f;
+		stroke: var(--color-gold);
 		fill: transparent;
 		opacity: 0.8;
 	}

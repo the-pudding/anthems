@@ -2,6 +2,7 @@
 	import Face from "$components/Phrases.Featured.Face.svelte";
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import _ from "lodash";
+	import ids from "$data/ids.csv";
 
 	export let phraseI;
 	export let featured;

@@ -1,8 +1,23 @@
 <script>
 	import anthonySvg from "$svg/silhouettes/anthony-hamilton.svg";
-	import tpainSvg from "$svg/silhouettes/tpain.svg";
+	import arethaSvg from "$svg/silhouettes/aretha-franklin.svg";
+	import beyonceSvg from "$svg/silhouettes/beyonce.svg";
+	import carrieSvg from "$svg/silhouettes/carrie-underwood.svg";
+	import chakaSvg from "$svg/silhouettes/chaka-khan.svg";
+	import xtinaSvg from "$svg/silhouettes/christina-agu.svg";
+	import demiSvg from "$svg/silhouettes/demi-lovato.svg";
 	import fergieSvg from "$svg/silhouettes/fergie.svg";
 	import jazmineSvg from "$svg/silhouettes/jazmine-sullivan.svg";
+	import jordinSvg from "$svg/silhouettes/jordin-sparks.svg";
+	import kellySvg from "$svg/silhouettes/kelly-clarkson.svg";
+	import gagaSvg from "$svg/silhouettes/lady-gaga.svg";
+	import mariahSvg from "$svg/silhouettes/mariah-carey.svg";
+	import marvinSvg from "$svg/silhouettes/marvin-gaye.svg";
+	import scottySvg from "$svg/silhouettes/scotty-mccreery.svg";
+	import stevenSvg from "$svg/silhouettes/steven-tyler.svg";
+	import taylorSvg from "$svg/silhouettes/taylor-swift.svg";
+	import tpainSvg from "$svg/silhouettes/tpain.svg";
+	import whitneySvg from "$svg/silhouettes/whitney-houston.svg";
 	import { onMount } from "svelte";
 	import _ from "lodash";
 
@@ -15,9 +30,24 @@
 
 	const faceSvgs = {
 		"anthony-hamilton": anthonySvg,
-		tpain: tpainSvg,
+		"aretha-franklin": arethaSvg,
+		beyonce: beyonceSvg,
+		"carrie-underwood": carrieSvg,
+		"chaka-khan": chakaSvg,
+		"christina-aguilera": xtinaSvg,
+		"demi-lovato": demiSvg,
 		fergie: fergieSvg,
-		"jazmine-sullivan": jazmineSvg
+		"jazmine-sullivan": jazmineSvg,
+		"jordin-sparks": jordinSvg,
+		"kelly-clarkson": kellySvg,
+		"lady-gaga": gagaSvg,
+		"mariah-carey": mariahSvg,
+		"marvin-gaye": marvinSvg,
+		"scotty-mccreery": scottySvg,
+		"steven-tyler": stevenSvg,
+		"taylor-swift": taylorSvg,
+		tpain: tpainSvg,
+		"whitney-houston": whitneySvg
 	};
 
 	const updateStroke = () => {

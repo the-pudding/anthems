@@ -10,6 +10,7 @@
 
 	export let phrase;
 	export let playAudio;
+	export let slideI;
 
 	let loaded = false;
 	let phrasePitch;
@@ -60,7 +61,9 @@
 	$: phraseI = phrase.phraseI;
 
 	onMount(() => {
-		const playableText = document.querySelectorAll("span.playable");
+		const playableText = document.querySelectorAll(
+			`#slide-${slideI} span.playable`
+		);
 		playableText.forEach((el) => {
 			el.addEventListener("click", () => {
 				const id = el.dataset.id;
@@ -72,7 +75,7 @@
 	});
 </script>
 
-<Slide index={phraseI}>
+<Slide index={slideI}>
 	<div class="slide">
 		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
