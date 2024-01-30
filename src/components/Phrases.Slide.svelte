@@ -5,18 +5,19 @@
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
+	import play from "$svg/play.svg";
+	import { onMount } from "svelte";
 
 	export let phrase;
-	export let highlight;
 	export let playAudio;
 
-	const preLoad = 2; // start loading data n phrases before
-
+	let loaded = false;
 	let phrasePitch;
 	let data;
-	let loaded = false;
+	let highlight;
 
 	const allIds = ids.map((d) => d.id);
+	const preLoad = 2; // start loading data n phrases before
 
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
@@ -40,30 +41,40 @@
 			};
 		});
 	};
-
+	const onNewStep = () => {
+		highlight = phrase.steps[$currentStepI].highlight;
+	};
 	const load = async () => {
-		console.log(`loading data for phrase ${phrase.i}...`);
+		console.log(`loading data for phrase ${phraseI}...`);
 		const isMobile = $viewport.width <= 600;
 		const module = await import(
-			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phrase.i}.csv`
+			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phraseI}.csv`
 		);
 		loaded = true;
-		console.log("done");
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 	};
 
-	$: if (!loaded && $currentPhraseI >= phrase.i - preLoad) load();
+	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
+	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
+	$: phraseI = phrase.phraseI;
+
+	onMount(() => {
+		const playableText = document.querySelectorAll("span.playable");
+		playableText.forEach((el) => {
+			el.addEventListener("click", () => {
+				const id = el.dataset.id;
+				highlight = id;
+				playAudio(id);
+			});
+			el.insertAdjacentHTML("beforeend", play);
+		});
+	});
 </script>
 
-<Slide index={phrase.i}>
-	<div class="slide" class:active={phrase.i === $currentPhraseI}>
-		<Featured
-			phraseI={phrase.i}
-			featured={phrase.featured}
-			bind:highlight
-			{playAudio}
-		/>
+<Slide index={phraseI}>
+	<div class="slide">
+		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
 			<div class="text">
 				{#each phrase.steps as { text }, i}
@@ -74,7 +85,7 @@
 			<div class="line-wrapper">
 				{#if data}
 					<Lines
-						phraseI={phrase.i}
+						{phraseI}
 						{data}
 						{highlight}
 						featuredIds={phrase.featured.map((d) => d.id)}
@@ -99,10 +110,6 @@
 		height: 100%;
 		padding: 1rem 2rem;
 		display: flex;
-		opacity: 0.5;
-	}
-	.slide.active {
-		opacity: 1;
 	}
 	.line-wrapper {
 		display: flex;

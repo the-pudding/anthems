@@ -1,13 +1,17 @@
 <script>
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import _ from "lodash";
+	import copy from "$data/copy.json";
 
 	export let lyrics;
 	export let sliderEl;
 
 	const onClick = (i) => {
-		sliderEl.jump(i);
-		$currentStepI = 0;
+		const phraseI = _.findIndex(copy.slides, (d) => +d.phraseI === i);
+		if (phraseI !== -1) {
+			sliderEl.jump(phraseI);
+			$currentStepI = 0;
+		}
 	};
 </script>
 

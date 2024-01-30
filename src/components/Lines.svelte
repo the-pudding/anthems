@@ -6,6 +6,7 @@
 	import AxisX from "$components/layercake/AxisX.svg.svelte";
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import { currentPhraseI, currentStepI } from "$stores/misc.js";
+	import _ from "lodash";
 
 	export let data;
 	export let highlight;
@@ -26,6 +27,12 @@
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));
 	$: showStandard = $currentPhraseI !== 0 || $currentStepI >= 1;
+	$: highlightData = highlight
+		? data.find((d) => d.id === highlight).pitch
+		: undefined;
+	$: highlightEnd = highlightData
+		? _.last(highlightData.filter((d) => d.frequency)).timestamp
+		: undefined;
 </script>
 
 <div class="chart-container">
@@ -42,11 +49,11 @@
 		{data}
 	>
 		<Svg>
-			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
+			<AxisX gridlines={true} ticks={4} formatTick={(d) => `${d} sec`} />
 			<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
 			<MultiLine {highlight} {phraseI} {featuredIds} />
 			{#if showStandard}
-				<Standard />
+				<Standard {highlightEnd} />
 			{/if}
 		</Svg>
 	</LayerCake>
