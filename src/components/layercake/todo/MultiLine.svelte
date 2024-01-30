@@ -117,7 +117,7 @@
 		opacity: 1;
 	}
 	path.animated {
-		stroke: red;
+		stroke: var(--color-red);
 		stroke-width: 3px;
 		opacity: 0;
 		transition: stroke-dashoffset var(--duration) linear var(--delay);

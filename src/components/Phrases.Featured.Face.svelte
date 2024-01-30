@@ -29,7 +29,8 @@
 		const path = svg.querySelector("path");
 		if (!path) return;
 
-		path.style.stroke = highlight === id ? "red" : "white";
+		path.style.stroke =
+			highlight === id ? "var(--color-red)" : "var(--color-fg)";
 		path.style.strokeWidth = highlight === id ? "30px" : "15px";
 	};
 

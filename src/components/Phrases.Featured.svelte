@@ -61,7 +61,7 @@
 	h3 {
 		font-size: 1rem;
 		font-family: var(--sans);
-		color: #7ca4ae;
+		color: var(--color-grey-blue);
 		font-weight: bold;
 		text-transform: uppercase;
 	}

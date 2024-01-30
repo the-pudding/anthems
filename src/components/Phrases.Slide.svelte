@@ -105,8 +105,8 @@
 
 <style>
 	.slide {
-		background: #02273d;
-		border: 3px solid #7ca4ae;
+		background: var(--color-dark-blue);
+		border: 3px solid var(--color-grey-blue);
 		height: 100%;
 		padding: 1rem 2rem;
 		display: flex;
@@ -144,7 +144,7 @@
 	}
 	:global(span.playable) {
 		background: var(--color-fg);
-		color: #032e47;
+		color: var(--color-bg);
 		font-family: var(--sans);
 		text-transform: uppercase;
 		font-weight: bold;

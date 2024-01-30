@@ -40,7 +40,7 @@
 		width: 1rem;
 		height: 1rem;
 		border-radius: 50%;
-		background: #7ca4ae;
+		background: var(--color-grey-blue);
 		line-height: calc(2rem - 8px);
 	}
 	.circle:hover {
@@ -55,7 +55,7 @@
 		background: var(--color-fg);
 		font-size: 14px;
 		font-family: var(--sans);
-		color: #032e47;
+		color: var(--color-bg);
 		white-space: nowrap;
 		width: 5rem;
 		overflow: hidden;

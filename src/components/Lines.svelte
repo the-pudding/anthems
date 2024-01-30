@@ -49,7 +49,7 @@
 		{data}
 	>
 		<Svg>
-			<AxisX gridlines={true} ticks={4} formatTick={(d) => `${d} sec`} />
+			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
 			<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
 			<MultiLine {highlight} {phraseI} {featuredIds} />
 			{#if showStandard}
