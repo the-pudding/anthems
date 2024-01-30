@@ -78,7 +78,7 @@
 
 <Slide index={slideI}>
 	<div class="slide">
-		<ErrorFinder {phraseI} {data} bind:highlight {playAudio} />
+		<!-- <ErrorFinder {phraseI} {data} bind:highlight {playAudio} /> -->
 
 		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
 		<div class="main">
@@ -95,6 +95,7 @@
 						{data}
 						{highlight}
 						featuredIds={phrase.featured.map((d) => d.id)}
+						showStandard={phraseI !== 0 || $currentStepI >= 1}
 					/>
 				{:else}
 					<p>loading...</p>

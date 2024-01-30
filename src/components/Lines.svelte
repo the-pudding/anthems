@@ -5,13 +5,14 @@
 	import { scaleOrdinal } from "d3-scale";
 	import AxisX from "$components/layercake/AxisX.svg.svelte";
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
-	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 	import _ from "lodash";
 
 	export let data;
 	export let highlight;
 	export let phraseI;
 	export let featuredIds;
+	export let showStandard;
+	export let full;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -26,7 +27,6 @@
 
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));
-	$: showStandard = $currentPhraseI !== 0 || $currentStepI >= 1;
 	$: highlightData = highlight
 		? data.find((d) => d.id === highlight).pitch
 		: undefined;
@@ -51,9 +51,9 @@
 		<Svg>
 			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
 			<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
-			<MultiLine {highlight} {phraseI} {featuredIds} />
+			<MultiLine {highlight} {phraseI} {featuredIds} {full} />
 			{#if showStandard}
-				<Standard {highlightEnd} />
+				<Standard {highlightEnd} {full} />
 			{/if}
 		</Svg>
 	</LayerCake>
@@ -62,5 +62,6 @@
 <style>
 	.chart-container {
 		width: 100%;
+		height: 100%;
 	}
 </style>

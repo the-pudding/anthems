@@ -83,7 +83,7 @@
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
 </script>
 
-<article>
+<section id="phrase-by-phrase">
 	<Slider bind:this={sliderEl} bind:current={currentSlideI}>
 		{#each slides as slide}
 			{@const active = +slide.i === currentSlideI}
@@ -104,12 +104,12 @@
 
 	<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
 	<Audio />
-</article>
+</section>
 
 <Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 
 <style>
-	article {
+	section {
 		height: 100vh;
 		overflow: hidden;
 	}

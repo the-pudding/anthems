@@ -13,7 +13,8 @@
 <style>
 	.wordmark {
 		max-width: 10em;
-		margin: 0 auto;
+		margin-top: 2rem;
+		margin-left: 3rem;
 		padding: 1em 0;
 	}
 
@@ -28,6 +29,6 @@
 	}
 
 	:global(.wordmark svg path) {
-		fill: currentColor;
+		fill: var(--color-grey-blue);
 	}
 </style>

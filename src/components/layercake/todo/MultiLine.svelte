@@ -12,6 +12,7 @@
 	export let highlight;
 	export let phraseI;
 	export let featuredIds = [];
+	export let full;
 
 	let segmentLengths = featuredIds.reduce((obj, key) => {
 		obj[key] = [];
@@ -53,6 +54,7 @@
 		return segments;
 	};
 	const calculateSegmentLengths = () => {
+		if (full) return;
 		featuredIds.forEach((id) => {
 			const segments = Array.from(
 				document.querySelectorAll(`#${id}_line_phrase${phraseI} .animated`)
@@ -74,7 +76,7 @@
 		{#each $data as group}
 			{@const fade = highlight && group.id !== highlight}
 			{@const highlighted = highlight && group.id === highlight}
-			<g id={`${group.id}_line_phrase${phraseI}`}>
+			<g id={`${group.id}_line_phrase${full ? "_full" : phraseI}`}>
 				<path class:highlighted class:fade d={generatePath(group.pitch)} />
 
 				{#if featuredIds.includes(group.id)}

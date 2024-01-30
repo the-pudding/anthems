@@ -1,4 +1,5 @@
 <script>
+	import Scrolly from "$components/helpers/Scrolly.svelte";
 	import Lines from "$components/Lines.svelte";
 	import { onMount } from "svelte";
 	import viewport from "$stores/viewport.js";
@@ -6,6 +7,7 @@
 
 	let allPitch;
 	let data;
+	let step;
 
 	const allIds = ids.map((d) => d.id);
 
@@ -42,8 +44,41 @@
 	});
 </script>
 
-{#if data}
-	<div style:height={"500px"}>
-		<Lines {data} />
+<section id="intro">
+	<div class="sticky">
+		{#if data}
+			<Lines {data} showStandard={true} full={true} />
+		{:else}
+			<p>Loading...</p>
+		{/if}
 	</div>
-{/if}
+
+	<Scrolly bind:value={step}>
+		{#each [0, 1, 2] as text, i}
+			{@const active = step === i}
+			<div class="step" class:active>
+				<p>Tk this will be some text.</p>
+			</div>
+		{/each}
+	</Scrolly>
+</section>
+
+<style>
+	.sticky {
+		height: 500px;
+		position: sticky;
+		top: 50%;
+		transform: translate(0, -50%);
+		z-index: 1;
+	}
+	.step {
+		background: var(--color-dark-blue);
+		border: 3px solid var(--color-grey-blue);
+		margin: 75vh 0;
+		text-align: center;
+	}
+	.step p {
+		padding: 1rem;
+		pointer-events: auto;
+	}
+</style>

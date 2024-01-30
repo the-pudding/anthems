@@ -26,14 +26,4 @@
 	.spacer {
 		height: 75vh;
 	}
-
-	.step {
-		height: 80vh;
-		background: var(--color-gray-100);
-		text-align: center;
-	}
-
-	.step p {
-		padding: 1rem;
-	}
 </style>
