@@ -1,13 +1,12 @@
 <script>
 	import Icon from "$components/helpers/Icon.svelte";
 	import { range } from "d3-array";
-	import { select, selectAll } from "d3-selection";
 	import _ from "lodash";
 	import { playing } from "$stores/misc.js";
 
 	export let data;
 
-	let current = 0;
+	let activeI = 0;
 	let phraseCount = range(1, 17);
 	let performerName = _.startCase(data.id.split("_")[0].replace(/-/g, " "));
 	let event = _.startCase(data.id.split("_")[1].replace(/-/g, " "))
@@ -21,18 +20,8 @@
 		.replace("Nfl", "NFL");
 	let year = data.id.split("_")[2];
 
-	const phraseClick = () => {
-		current = +this.classList[1].split("-")[2];
-
-		let allPhrases = selectAll(".phrase-box");
-		let samePhrases = selectAll(`.phrase-box-${current}`);
-		let allPhrasesHeader = selectAll(".top-row-phrase");
-		let samePhrasesHeader = selectAll(`.top-row-phrase-${current}`);
-
-		allPhrases.classed("active", false);
-		samePhrases.classed("active", true);
-		allPhrasesHeader.classed("active", false);
-		samePhrasesHeader.classed("active", true);
+	const phraseClick = (i) => {
+		activeI = i;
 	};
 	const playClick = () => {
 		const id = data.id;
@@ -44,7 +33,6 @@
 	};
 
 	$: paused = $playing?.id !== data.id;
-	$: console.log({ paused });
 </script>
 
 <div class="heatmap-row">
@@ -75,9 +63,9 @@
 			{@const phraseIndex = `phrase${[i]}_diva`}
 			<button
 				class="phrase-box phrase-box-{i}"
-				class:active={current === i}
+				class:active={activeI === i}
 				style="background: rgba(124, 164, 174, {data[phraseIndex] / 1000})"
-				on:click={phraseClick}
+				on:click={() => phraseClick(i)}
 			>
 				<p>{data[phraseIndex]}</p>
 			</button>
@@ -97,7 +85,7 @@
 		border-top: none;
 	}
 	.details-wrapper {
-		width: 20rem;
+		width: 18rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

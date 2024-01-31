@@ -36,8 +36,8 @@
 		flex-direction: row;
 		position: sticky;
 		top: 0;
-		background: var(--color-navy-dark);
-		border-bottom: 2px solid var(--color-fg);
+		background: var(--color-bg);
+		border-bottom: 1px solid var(--color-fg);
 		z-index: 1000;
 	}
 	.top-row-phrase {

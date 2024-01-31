@@ -74,8 +74,6 @@
 		});
 	};
 
-	$: console.log({ phraseI, highlight });
-
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
 	$: phraseI = phrase.phraseI;

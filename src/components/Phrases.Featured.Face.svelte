@@ -83,7 +83,7 @@
 	});
 </script>
 
-<button class="pic" on:click={onClick}>
+<!-- <button class="pic" on:click={onClick}>
 	<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
 		{@html faceSvgs[name]}
 	</div>
@@ -93,8 +93,10 @@
 		class:highlight={id === highlight}
 		src={`assets/cutouts/${name}.png`}
 	/>
-	<!-- <span class="crown" class:visible={id === highlight}>👑</span> -->
-</button>
+</button> -->
+<button on:click={onClick} style="margin: .5rem 0; pointer-events: auto"
+	>{name}</button
+>
 
 <style>
 	img {
