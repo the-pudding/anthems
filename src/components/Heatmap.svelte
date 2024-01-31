@@ -2,24 +2,39 @@
 	import ids from "$data/ids.csv";
 	import Row from "$components/Heatmap.Row.svelte";
 	import copy from "$data/copy.json";
+	import { playing } from "$stores/misc.js";
 
-	let current = 0;
+	let activeColumn;
+	let activeCell;
 
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
+
+	const onColumnClick = (i) => {
+		if (activeColumn === i) activeColumn = undefined;
+		else activeColumn = i;
+
+		if (activeCell) activeCell = undefined;
+
+		$playing = undefined;
+	};
 </script>
 
 <section id="heatmap">
 	<div class="top-row">
 		{#each phrases as phrase, i}
-			<p class="top-row-phrase top-row-phrase-{i}" class:active={current === i}>
+			<button
+				class="top-row-phrase top-row-phrase-{i}"
+				class:active={activeColumn === i}
+				on:click={() => onColumnClick(i)}
+			>
 				{phrase.lyrics}
-			</p>
+			</button>
 		{/each}
 	</div>
 	<div class="performer-rows">
 		{#each ids as performance}
 			{#if performance.id !== "standard"}
-				<Row data={performance} />
+				<Row data={performance} bind:activeColumn bind:activeCell />
 			{/if}
 		{/each}
 	</div>
@@ -49,7 +64,13 @@
 		font-family: var(--sans);
 		overflow: hidden;
 		white-space: nowrap;
-		transition: width 1s;
+		transition: width var(--1s);
+		background: none;
+		color: var(--color-fg);
+		padding: 0;
+	}
+	.top-row-phrase:hover {
+		background: var(--color-gray-800);
 	}
 	.active {
 		width: 30%;

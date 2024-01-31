@@ -1,12 +1,14 @@
 <script>
+	import Box from "$components/Heatmap.Box.svelte";
 	import Icon from "$components/helpers/Icon.svelte";
 	import { range } from "d3-array";
 	import _ from "lodash";
 	import { playing } from "$stores/misc.js";
 
 	export let data;
+	export let activeColumn;
+	export let activeCell;
 
-	let activeI = 0;
 	let phraseCount = range(1, 17);
 	let performerName = _.startCase(data.id.split("_")[0].replace(/-/g, " "));
 	let event = _.startCase(data.id.split("_")[1].replace(/-/g, " "))
@@ -20,10 +22,7 @@
 		.replace("Nfl", "NFL");
 	let year = data.id.split("_")[2];
 
-	const phraseClick = (i) => {
-		activeI = i;
-	};
-	const playClick = () => {
+	const playAll = () => {
 		const id = data.id;
 		if (id === $playing?.id) {
 			$playing = undefined;
@@ -41,7 +40,7 @@
 			id={`${data.id}-heatmap-btn`}
 			class="play-btn"
 			class:playing={!paused}
-			on:click={playClick}
+			on:click={playAll}
 		>
 			{#key paused}
 				<Icon
@@ -61,14 +60,8 @@
 	<div class="box-wrapper">
 		{#each phraseCount as phrase, i}
 			{@const phraseIndex = `phrase${[i]}_diva`}
-			<button
-				class="phrase-box phrase-box-{i}"
-				class:active={activeI === i}
-				style="background: rgba(124, 164, 174, {data[phraseIndex] / 1000})"
-				on:click={() => phraseClick(i)}
-			>
-				<p>{data[phraseIndex]}</p>
-			</button>
+			{@const background = `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
+			<Box {i} id={data.id} bind:activeCell bind:activeColumn {background} />
 		{/each}
 	</div>
 </div>
@@ -121,26 +114,5 @@
 		width: calc(100% - 20rem);
 		display: flex;
 		flex-direction: row;
-	}
-	.phrase-box {
-		background: var(--color-light-blue);
-		width: 6.25%;
-		margin: 0.125rem;
-		height: 4rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: width 1s;
-	}
-	.active {
-		width: 30%;
-		outline: 2px solid var(--color-bright-red);
-	}
-	.phrase-box p {
-		font-family: var(--sans);
-		overflow: hidden;
-		white-space: nowrap;
-		font-size: var(--14px);
-		display: none;
 	}
 </style>
