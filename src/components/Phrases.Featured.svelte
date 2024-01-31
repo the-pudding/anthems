@@ -2,21 +2,10 @@
 	import Face from "$components/Phrases.Featured.Face.svelte";
 	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import _ from "lodash";
-	import ids from "$data/ids.csv";
 
 	export let phraseI;
 	export let featured;
 	export let highlight;
-	export let playAudio;
-
-	const onClick = (id) => {
-		if (highlight === id) {
-			highlight = undefined;
-		} else {
-			highlight = id;
-			playAudio(id);
-		}
-	};
 
 	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 	$: top = featured.filter((d) => d.type === "top");
@@ -29,7 +18,7 @@
 		{#each top as { id }, i}
 			<div class={`section top`}>
 				<div class="pics">
-					<Face {id} {onClick} {highlight} {phraseI} />
+					<Face {id} bind:highlight {phraseI} />
 				</div>
 			</div>
 		{/each}
@@ -40,7 +29,7 @@
 		{#each noteworthy as { id }, i}
 			<div class={`section our-picks`}>
 				<div class="pics">
-					<Face {id} {onClick} {highlight} {phraseI} />
+					<Face {id} bind:highlight {phraseI} />
 				</div>
 			</div>
 		{/each}

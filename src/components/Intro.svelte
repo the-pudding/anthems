@@ -81,4 +81,7 @@
 		padding: 1rem;
 		pointer-events: auto;
 	}
+	.step:last-child {
+		margin-bottom: 25vh;
+	}
 </style>

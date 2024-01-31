@@ -4,11 +4,13 @@
 	import copy from "$data/copy.json";
 
 	let current = 0;
+
+	const phrases = copy.slides.filter((d) => d.type === "phrase");
 </script>
 
-<section class="heatmap">
+<section id="heatmap">
 	<div class="top-row">
-		{#each copy.phrases as phrase, i}
+		{#each phrases as phrase, i}
 			<p class="top-row-phrase top-row-phrase-{i}" class:active={current === i}>
 				{phrase.lyrics}
 			</p>
@@ -24,7 +26,7 @@
 </section>
 
 <style>
-	.heatmap {
+	section {
 		width: 100%;
 	}
 	.top-row {
@@ -35,7 +37,7 @@
 		position: sticky;
 		top: 0;
 		background: var(--color-navy-dark);
-		border-bottom: 2px solid var(--color-paper);
+		border-bottom: 2px solid var(--color-fg);
 		z-index: 1000;
 	}
 	.top-row-phrase {
@@ -52,5 +54,8 @@
 	.active {
 		width: 30%;
 		font-weight: 700;
+	}
+	:global(#heatmap span.icon) {
+		pointer-events: none;
 	}
 </style>

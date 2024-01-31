@@ -2,17 +2,26 @@
 	import Icon from "$components/helpers/Icon.svelte";
 	import { range } from "d3-array";
 	import { select, selectAll } from "d3-selection";
+	import _ from "lodash";
+	import { playing } from "$stores/misc.js";
+
 	export let data;
 
 	let current = 0;
+	let phraseCount = range(1, 17);
+	let performerName = _.startCase(data.id.split("_")[0].replace(/-/g, " "));
+	let event = _.startCase(data.id.split("_")[1].replace(/-/g, " "))
+		.replace("Nba", "NBA")
+		.replace("Wnba", "WNBA")
+		.replace("Allstar", "All-Star")
+		.replace("Mlb", "MLB")
+		.replace("Ncaa", "NCAA")
+		.replace("Dnc", "DNC")
+		.replace("Rnc", "RNC")
+		.replace("Nfl", "NFL");
+	let year = data.id.split("_")[2];
 
-	function capitalizeEachWord(str) {
-		return str.replace(/\w\S*/g, function (txt) {
-			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-		});
-	}
-
-	function phraseClick() {
+	const phraseClick = () => {
 		current = +this.classList[1].split("-")[2];
 
 		let allPhrases = selectAll(".phrase-box");
@@ -24,42 +33,54 @@
 		samePhrases.classed("active", true);
 		allPhrasesHeader.classed("active", false);
 		samePhrasesHeader.classed("active", true);
-	}
+	};
+	const playClick = () => {
+		const id = data.id;
+		if (id === $playing?.id) {
+			$playing = undefined;
+		} else {
+			$playing = { id, phraseI: undefined };
+		}
+	};
 
-	let phraseCount = range(1, 17);
-	let performerName = capitalizeEachWord(
-		data.id.split("_")[0].replace(/-/g, " ")
-	);
-	let event = capitalizeEachWord(data.id.split("_")[1].replace(/-/g, " "));
-	let year = data.id.split("_")[2];
+	$: paused = $playing?.id !== data.id;
+	$: console.log({ paused });
 </script>
 
 <div class="heatmap-row">
 	<div class="details-wrapper">
-		<button class="play-btn">
-			<Icon
-				name={"play"}
-				fill={"var(--color-dark-blue)"}
-				stroke={"transparent"}
-				strokeWidth={0}
-			/>
+		<button
+			id={`${data.id}-heatmap-btn`}
+			class="play-btn"
+			class:playing={!paused}
+			on:click={playClick}
+		>
+			{#key paused}
+				<Icon
+					name={paused ? "play" : "pause"}
+					fill={"var(--color-dark-blue)"}
+					stroke={"transparent"}
+					strokeWidth={0}
+				/>
+			{/key}
 		</button>
 		<div class="details">
 			<p class="name">{performerName}</p>
 			<p class="event"><strong>{year}</strong> {event}</p>
+			<p class="event">key: {data.key}</p>
 		</div>
 	</div>
 	<div class="box-wrapper">
 		{#each phraseCount as phrase, i}
 			{@const phraseIndex = `phrase${[i]}_diva`}
-			<div
+			<button
 				class="phrase-box phrase-box-{i}"
 				class:active={current === i}
 				style="background: rgba(124, 164, 174, {data[phraseIndex] / 1000})"
 				on:click={phraseClick}
 			>
 				<p>{data[phraseIndex]}</p>
-			</div>
+			</button>
 		{/each}
 	</div>
 </div>
@@ -67,7 +88,7 @@
 <style>
 	.heatmap-row {
 		width: 100%;
-		border-top: 1px solid var(--color-paper);
+		border-top: 1px solid var(--color-fg);
 		display: flex;
 		align-items: center;
 		padding: 0.5rem 1rem;
@@ -82,7 +103,7 @@
 		align-items: center;
 	}
 	.play-btn {
-		background: var(--color-paper);
+		background: var(--color-fg);
 		height: 2rem;
 		width: 2rem;
 		border-radius: 50%;
@@ -91,9 +112,12 @@
 		align-items: center;
 		margin: 0 0.5rem 0 0;
 	}
+	.play-btn.playing {
+		background: var(--color-red);
+	}
 	.name,
 	.event {
-		color: var(--color-paper);
+		color: var(--color-fg);
 		margin: 0;
 		padding: 0;
 		font-size: var(--14px);

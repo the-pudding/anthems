@@ -3,14 +3,13 @@
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
-	import { currentStepI, currentPhraseI } from "$stores/misc.js";
+	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import play from "$svg/play.svg";
 	import { onMount } from "svelte";
 
 	export let phrase;
-	export let playAudio;
 	export let slideI;
 
 	let loaded = false;
@@ -56,31 +55,41 @@
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 	};
-
-	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
-	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
-	$: phraseI = phrase.phraseI;
-
-	onMount(() => {
+	const playableText = () => {
 		const playableText = document.querySelectorAll(
 			`#slide-${slideI} span.playable`
 		);
 		playableText.forEach((el) => {
 			el.addEventListener("click", () => {
 				const id = el.dataset.id;
-				highlight = id;
-				playAudio(id);
+				if (highlight === id) {
+					highlight = undefined;
+					$playing = undefined;
+				} else {
+					highlight = id;
+					$playing = { id, phraseI };
+				}
 			});
 			el.insertAdjacentHTML("beforeend", play);
 		});
+	};
+
+	$: console.log({ phraseI, highlight });
+
+	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
+	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
+	$: phraseI = phrase.phraseI;
+
+	onMount(() => {
+		playableText();
 	});
 </script>
 
 <Slide index={slideI}>
 	<div class="slide">
-		<!-- <ErrorFinder {phraseI} {data} bind:highlight {playAudio} /> -->
+		<!-- <ErrorFinder {phraseI} {data} bind:highlight /> -->
 
-		<Featured {phraseI} featured={phrase.featured} bind:highlight {playAudio} />
+		<Featured {phraseI} featured={phrase.featured} bind:highlight />
 		<div class="main">
 			<div class="text">
 				{#each phrase.steps as { text }, i}
@@ -159,6 +168,7 @@
 		padding: 0.25rem 2rem 0.25rem 0.5rem;
 		border-radius: 0.25rem;
 		position: relative;
+		white-space: nowrap;
 	}
 	:global(span.playable):hover {
 		cursor: pointer;

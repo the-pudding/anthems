@@ -19,10 +19,10 @@
 	import tpainSvg from "$svg/silhouettes/tpain.svg";
 	import whitneySvg from "$svg/silhouettes/whitney-houston.svg";
 	import { onMount } from "svelte";
+	import { playing } from "$stores/misc.js";
 	import _ from "lodash";
 
 	export let id;
-	export let onClick;
 	export let highlight;
 	export let phraseI;
 
@@ -50,18 +50,28 @@
 		"whitney-houston": whitneySvg
 	};
 
+	const onClick = () => {
+		if (highlight === id) {
+			highlight = undefined;
+			$playing = undefined;
+		} else {
+			highlight = id;
+			$playing = { id, phraseI };
+		}
+	};
 	const updateStroke = () => {
 		if (!mounted) return;
 
-		const svg = document.getElementById(`${name}_face_phrase${phraseI}`);
-		if (!svg) return;
-
-		const path = svg.querySelector("path");
-		if (!path) return;
-
-		path.style.stroke =
-			highlight === id ? "var(--color-red)" : "var(--color-fg)";
-		path.style.strokeWidth = highlight === id ? "30px" : "15px";
+		const svgs = Array.from(
+			document.querySelectorAll(`.svg-wrapper.phrase${phraseI}`)
+		);
+		svgs.forEach((svg) => {
+			const id = svg.id.replace("_face", "");
+			const path = svg.querySelector("path");
+			path.style.stroke =
+				highlight === id ? "var(--color-red)" : "var(--color-fg)";
+			path.style.strokeWidth = highlight === id ? "30px" : "15px";
+		});
 	};
 
 	$: name = id.split("_")[0];
@@ -73,8 +83,8 @@
 	});
 </script>
 
-<button class="pic" on:click={() => onClick(id)}>
-	<div class="svg-wrapper" id={`${name}_face_phrase${phraseI}`}>
+<button class="pic" on:click={onClick}>
+	<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
 		{@html faceSvgs[name]}
 	</div>
 

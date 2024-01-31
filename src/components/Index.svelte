@@ -3,15 +3,17 @@
 	import Intro from "$components/Intro.svelte";
 	import Phrases from "$components/Phrases.svelte";
 	import Heatmap from "$components/Heatmap.svelte";
+	import Audio from "$components/Audio.svelte";
 
 	// TODO: methods, footer
 </script>
 
 <article>
-	<Title />
-	<Intro />
+	<!-- <Title />
+	<Intro /> -->
 	<!-- <Phrases /> -->
-	<!-- <Heatmap /> -->
+	<Heatmap />
+	<Audio />
 </article>
 
 <style>

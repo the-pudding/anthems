@@ -1,22 +1,18 @@
 <script>
 	import Chart from "$components/Phrases.Chart.svelte";
-	import Audio from "$components/Phrases.Audio.svelte";
 	import Nav from "$components/Phrases.Nav.svelte";
 	import Slide from "$components/Phrases.Slide.svelte";
 	import Slider from "$components/helpers/Slider.svelte";
 	import Tap from "$components/helpers/Tap.svelte";
-	import { currentPhraseI, currentStepI } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI, playing } from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
 
 	let currentSlideI = 0;
 	let sliderEl;
-	let f;
-	let currentTime;
-	let idPlaying;
 
 	const onTap = ({ detail }) => {
-		if (idPlaying) pauseAudio(idPlaying);
+		if ($playing) $playing = undefined;
 
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
@@ -35,38 +31,6 @@
 				sliderEl.prev();
 			}
 		}
-	};
-	const playAudio = (id) => {
-		if (idPlaying) pauseAudio(idPlaying);
-
-		const audioEl = document.getElementById(`${id}-audio`);
-		const myId = ids.find((d) => d.id === id);
-		const start = +myId[`phrase${$currentPhraseI}_start`];
-		const end = +myId[`phrase${$currentPhraseI}_end`];
-
-		idPlaying = id;
-		audioEl.currentTime = start;
-		audioEl.play();
-
-		const checkTime = () => {
-			currentTime = audioEl.currentTime;
-			if (currentTime >= end) {
-				idPlaying = undefined;
-				audioEl.pause();
-				audioEl.currentTime = start;
-				cancelAnimationFrame(f);
-			} else {
-				f = requestAnimationFrame(checkTime);
-			}
-		};
-
-		f = requestAnimationFrame(checkTime);
-	};
-	const pauseAudio = (id) => {
-		const audioEl = document.getElementById(`${id}-audio`);
-		audioEl.pause();
-		cancelAnimationFrame(f);
-		idPlaying = undefined;
 	};
 
 	const slides = copy.slides.map((d) => ({
@@ -89,7 +53,7 @@
 			{@const active = +slide.i === currentSlideI}
 			<div class="slide-wrapper" class:active>
 				{#if slide.type === "phrase"}
-					<Slide slideI={+slide.i} phrase={slide} {playAudio} />
+					<Slide slideI={+slide.i} phrase={slide} />
 				{:else}
 					<Chart
 						slideI={+slide.i}
@@ -103,7 +67,6 @@
 	</Slider>
 
 	<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
-	<Audio />
 </section>
 
 <Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
