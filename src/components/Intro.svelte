@@ -81,10 +81,9 @@
 		top: 4rem;
 	}
 	.step {
-		background: var(--color-dark-blue);
-		border: 3px solid var(--color-grey-blue);
+		background: var(--color-bg);
 		margin: 75vh 0;
-		text-align: center;
+		max-width: 600px;
 	}
 	.step p {
 		padding: 1rem;

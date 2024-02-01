@@ -82,9 +82,8 @@
 	</Slider>
 
 	<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
+	<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 </section>
-
-<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 
 <style>
 	section {
