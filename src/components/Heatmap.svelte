@@ -66,7 +66,6 @@
 		flex-direction: row;
 		background: var(--color-bg);
 		border-bottom: 1px solid var(--color-fg);
-		z-index: 1000;
 	}
 	.top-row-phrase {
 		width: 6.25%;

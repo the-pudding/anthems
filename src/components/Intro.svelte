@@ -6,10 +6,13 @@
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
 	import { ready } from "$stores/misc.js";
+	import { fade } from "svelte/transition";
+	import scrollY from "$stores/scrollY.js";
 
 	let allPitch;
 	let data;
 	let step;
+	let direction = "up";
 
 	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
@@ -36,6 +39,14 @@
 			};
 		});
 	};
+	const stepChange = () => {
+		console.log("step change", step);
+		if (step === undefined) {
+			console.log($scrollY);
+			if ($scrollY > 3000) direction = "down";
+			else direction = "up";
+		}
+	};
 
 	onMount(async () => {
 		const isMobile = $viewport.width <= 600;
@@ -50,6 +61,15 @@
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
 	$: hideAll = step === 2;
 	$: showStandard = step >= 4;
+	$: imgSrc = imgVisible
+		? `assets/three-color/${
+				step === 1 ? "fergie" : "whitney-houston"
+		  }_cutout.png`
+		: "";
+	$: imgAlt = step === 1 ? "Fergie" : "Whitney Houston";
+	$: imgVisible =
+		(step === undefined && direction === "up") || step === 0 || step === 1;
+	$: step, stepChange();
 </script>
 
 <section id="intro" class:visible={$ready}>
@@ -70,6 +90,10 @@
 			</div>
 		{/each}
 	</Scrolly>
+
+	{#key imgSrc}
+		<img src={imgSrc} class:visible={imgVisible} alt={imgAlt} transition:fade />
+	{/key}
 </section>
 
 <style>
@@ -102,5 +126,16 @@
 	}
 	.step:last-child {
 		margin-bottom: 50vh;
+	}
+	img {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		width: 65%;
+		z-index: -1;
+		visibility: hidden;
+	}
+	img.visible {
+		visibility: visible;
 	}
 </style>

@@ -117,6 +117,7 @@
 		height: calc(100vh - 3rem);
 		overflow: hidden;
 		display: none;
+		margin-bottom: 10rem;
 	}
 	section.visible {
 		display: block;
