@@ -46,7 +46,6 @@
 		highlight = phrase.steps[$currentStepI].highlight;
 	};
 	const load = async () => {
-		console.log(`loading data for phrase ${phraseI}...`);
 		const isMobile = $viewport.width <= 600;
 		const module = await import(
 			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phraseI}.csv`

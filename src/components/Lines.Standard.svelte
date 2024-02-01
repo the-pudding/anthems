@@ -38,7 +38,7 @@
 			class:intro
 			x={$xScale(timestamp)}
 			y={$yScale(frequency) - blockH / 2}
-			width={$xScale(duration)}
+			width={$xScale.range().some((d) => d < 0) ? 0 : $xScale(duration)}
 			height={blockH}
 		/>
 	{/each}

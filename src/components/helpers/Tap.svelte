@@ -13,6 +13,7 @@
 	export let arrowStroke = "#000";
 	export let arrowStrokeWidth = "2";
 	export let arrowPosition = "center"; // start, center, end
+	export let visible;
 
 	const dispatch = createEventDispatcher();
 	let innerHeight;
@@ -46,6 +47,7 @@
 			aria-label={dir}
 			class="{dir} {arrowPosition}"
 			class:full
+			class:visible
 			disabled={disable.includes(dir)}
 		>
 			{#if visibleArrows.includes(dir)}
@@ -80,8 +82,10 @@
 		outline: none;
 		border: none;
 		box-shadow: none;
+		pointer-events: none;
+	}
+	button.visible {
 		pointer-events: auto;
-		display: flex;
 	}
 
 	button:disabled {

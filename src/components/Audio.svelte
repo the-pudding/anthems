@@ -2,8 +2,7 @@
 	import copy from "$data/copy.json";
 	import _ from "lodash";
 	import ids from "$data/ids.csv";
-	import { playing, currentTime } from "$stores/misc.js";
-	import { filter } from "d3";
+	import { playing, currentTime, soundOn } from "$stores/misc.js";
 	import { onMount } from "svelte";
 
 	let mounted = false;
@@ -73,8 +72,8 @@
 </script>
 
 {#each allFeaturedIds as id}
-	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} />
+	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} muted={!$soundOn} />
 {/each}
 {#each remainingIds as id}
-	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} />
+	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} muted={!$soundOn} />
 {/each}

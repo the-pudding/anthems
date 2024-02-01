@@ -5,6 +5,7 @@
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
+	import { ready } from "$stores/misc.js";
 
 	let allPitch;
 	let data;
@@ -43,6 +44,7 @@
 		);
 		allPitch = castFloat(module.default);
 		data = prepareLineData();
+		$ready = true;
 	});
 
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
@@ -50,8 +52,8 @@
 	$: showStandard = step >= 4;
 </script>
 
-<div class="spacer" />
-<section id="intro">
+<section id="intro" class:visible={$ready}>
+	<div class="spacer" />
 	<div class="sticky">
 		{#if data}
 			<Lines {data} intro={true} {showStandard} {isolate} {hideAll} />
@@ -71,6 +73,12 @@
 </section>
 
 <style>
+	section {
+		display: none;
+	}
+	section.visible {
+		display: block;
+	}
 	.spacer {
 		height: 50vh;
 	}

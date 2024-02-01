@@ -2,7 +2,7 @@
 	import ids from "$data/ids.csv";
 	import Row from "$components/Heatmap.Row.svelte";
 	import copy from "$data/copy.json";
-	import { playing } from "$stores/misc.js";
+	import { playing, ready } from "$stores/misc.js";
 
 	let activeColumn;
 	let activeCell;
@@ -19,7 +19,7 @@
 	};
 </script>
 
-<section id="heatmap">
+<section id="heatmap" class:visible={$ready}>
 	<div class="top-row">
 		{#each phrases as phrase, i}
 			<button
@@ -43,6 +43,10 @@
 <style>
 	section {
 		width: 100%;
+		display: none;
+	}
+	section.visible {
+		display: block;
 	}
 	.top-row {
 		padding: 0.5rem 1rem 0.5rem 21rem;

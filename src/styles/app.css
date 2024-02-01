@@ -43,6 +43,13 @@
 strong {
 	font-family: var(--sans);
 }
+a {
+	font-weight: bold;
+	border-bottom: 2px solid var(--color-red);
+}
+a:hover {
+	border-bottom: 2px solid var(--color-grey-blue);
+}
 
 /* dark theme */
 /* this is a starting place for dark mode - test before deploying */
