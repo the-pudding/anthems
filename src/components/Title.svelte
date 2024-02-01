@@ -46,14 +46,8 @@
 		font-size: 1.3rem;
 		max-width: 500px;
 	}
-	:global(span#enable-audio) {
-		background: var(--color-red);
-		color: var(--color-dark-blue);
-		padding: 0.25rem;
-		margin: 0 0.25rem;
-		border-radius: 0.25rem;
-		font-family: var(--sans);
-		font-weight: bold;
+	:global(.enable-audio) {
+		border-bottom: 3px solid var(--color-grey-blue);
 	}
 	.byline {
 		font-family: var(--sans);

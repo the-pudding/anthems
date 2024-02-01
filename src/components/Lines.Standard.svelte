@@ -25,12 +25,11 @@
 		frequency: +d.frequency,
 		phrase: +d.phrase
 	}));
-	// $: blockData = highlightEnd
-	// 	? stretch(original, highlightEnd)
-	// 	: intro
-	// 	? stretch(original, fullEndTs)
-	// 	: original;
-	$: blockData = original;
+	$: blockData = highlightEnd
+		? stretch(original, highlightEnd)
+		: intro
+		? stretch(original, fullEndTs)
+		: original;
 </script>
 
 <g class="standard" transition:fade>
@@ -49,7 +48,6 @@
 	rect {
 		stroke-width: 2px;
 		fill: var(--color-grey-blue);
-		/* fill: transparent; */
 		opacity: 0.8;
 	}
 	rect.intro {

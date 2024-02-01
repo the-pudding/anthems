@@ -76,7 +76,7 @@
 {#key $xScale.range()}
 	<g class="line-group">
 		{#each $data as group}
-			{@const fade = highlight && group.id !== highlight}
+			{@const fade = intro || (highlight && group.id !== highlight)}
 			{@const highlighted = highlight && group.id === highlight}
 			{@const isolated = isolate && group.id === isolate}
 			{@const hide = hideAll ? true : isolate && group.id !== isolate}

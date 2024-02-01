@@ -61,11 +61,13 @@
 		tapVisible = false;
 	};
 
-	const slides = copy.slides.map((d) => ({
-		...d,
-		i: +d.i,
-		phraseI: +d.phraseI
-	}));
+	const slides = copy.slides
+		.map((d) => ({
+			...d,
+			i: +d.i,
+			phraseI: +d.phraseI
+		}))
+		.slice(0, 5);
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	$: currentSlide = slides[currentSlideI];
