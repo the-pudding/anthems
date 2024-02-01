@@ -9,10 +9,10 @@
 </script>
 
 <article>
-	<!-- <Title />
-	<Intro /> -->
-	<!-- <Phrases /> -->
-	<Heatmap />
+	<Title />
+	<Intro />
+	<Phrases />
+	<!-- <Heatmap /> -->
 	<Audio />
 </article>
 

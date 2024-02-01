@@ -4,11 +4,13 @@
 	import { onMount } from "svelte";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
+	import copy from "$data/copy.json";
 
 	let allPitch;
 	let data;
 	let step;
 
+	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
 
 	const castFloat = (arr) => {
@@ -42,34 +44,41 @@
 		allPitch = castFloat(module.default);
 		data = prepareLineData();
 	});
+
+	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
+	$: hideAll = step === 2;
+	$: showStandard = step >= 4;
 </script>
 
+<div class="spacer" />
 <section id="intro">
 	<div class="sticky">
 		{#if data}
-			<Lines {data} showStandard={true} full={true} />
+			<Lines {data} intro={true} {showStandard} {isolate} {hideAll} />
 		{:else}
 			<p>Loading...</p>
 		{/if}
 	</div>
 
 	<Scrolly bind:value={step}>
-		{#each [0, 1, 2] as text, i}
+		{#each steps as { text }, i}
 			{@const active = step === i}
 			<div class="step" class:active>
-				<p>Tk this will be some text.</p>
+				<p>{@html text}</p>
 			</div>
 		{/each}
 	</Scrolly>
 </section>
 
 <style>
+	.spacer {
+		height: 50vh;
+	}
 	.sticky {
-		height: 500px;
 		position: sticky;
-		top: 50%;
-		transform: translate(0, -50%);
 		z-index: 1;
+		height: 500px;
+		top: 4rem;
 	}
 	.step {
 		background: var(--color-dark-blue);
@@ -81,7 +90,10 @@
 		padding: 1rem;
 		pointer-events: auto;
 	}
+	.step:first-child {
+		margin-top: 0;
+	}
 	.step:last-child {
-		margin-bottom: 25vh;
+		margin-bottom: 50vh;
 	}
 </style>

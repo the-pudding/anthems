@@ -6,8 +6,8 @@
 	export let direction = "n";
 	export let size = "1.25em"; // can be a number of a css value
 	export let stroke = undefined;
-    export let strokeWidth = undefined;
-    export let fill = undefined;
+	export let strokeWidth = undefined;
+	export let fill = undefined;
 
 	let Component;
 
@@ -35,6 +35,6 @@
 <style>
 	span {
 		display: inline-block;
-        margin: 0.125rem 0 0 0.125rem;
+		/* margin: 0.125rem 0 0 0.125rem; */
 	}
 </style>

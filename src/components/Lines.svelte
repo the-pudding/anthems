@@ -9,10 +9,12 @@
 
 	export let data;
 	export let highlight;
+	export let isolate;
 	export let phraseI;
 	export let featuredIds;
 	export let showStandard;
-	export let full;
+	export let intro;
+	export let hideAll;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -24,8 +26,6 @@
 			id: d.id
 		}));
 	});
-
-	$: console.log({ data });
 
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));
@@ -52,10 +52,17 @@
 	>
 		<Svg>
 			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
-			<AxisY gridlines={false} ticks={2} formatTick={(d) => `${d} Hz`} />
-			<MultiLine {highlight} {phraseI} {featuredIds} {full} />
+			<AxisY gridlines={false} ticks={0} formatTick={(d) => `${d} Hz`} />
+			<MultiLine
+				{highlight}
+				{isolate}
+				{phraseI}
+				{featuredIds}
+				{intro}
+				{hideAll}
+			/>
 			{#if showStandard}
-				<Standard {highlightEnd} {full} />
+				<Standard {highlightEnd} {intro} />
 			{/if}
 		</Svg>
 	</LayerCake>

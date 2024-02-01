@@ -7,14 +7,14 @@
 	import viewport from "$stores/viewport.js";
 
 	export let highlightEnd;
-	export let full;
+	export let intro;
 
 	const { yScale, xScale } = getContext("LayerCake");
 	const blockH = 15;
 
 	$: mobile = $viewport.width < 600;
 	$: fullEndTs = mobile ? 154 : 154.6;
-	$: phraseData = full
+	$: phraseData = intro
 		? data
 		: data.filter((d) => +d.phrase === $currentPhraseI);
 	$: firstTs = +phraseData[0].timestamp;
@@ -27,7 +27,7 @@
 	}));
 	$: blockData = highlightEnd
 		? stretch(original, highlightEnd)
-		: full
+		: intro
 		? stretch(original, fullEndTs)
 		: original;
 </script>
@@ -35,7 +35,7 @@
 <g class="standard" transition:fade>
 	{#each blockData as { timestamp, duration, frequency }}
 		<rect
-			class:full
+			class:intro
 			x={$xScale(timestamp)}
 			y={$yScale(frequency) - blockH / 2}
 			width={$xScale(duration)}
@@ -51,8 +51,9 @@
 		fill: transparent;
 		opacity: 0.8;
 	}
-	rect.full {
-		fill: var(--color-grey-blue);
-		stroke: none;
+	rect.intro {
+		stroke: var(--color-gold);
+		stroke-width: 2px;
+		fill: var(--color-red);
 	}
 </style>

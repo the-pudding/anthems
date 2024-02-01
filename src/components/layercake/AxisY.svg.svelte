@@ -33,6 +33,7 @@
 			{#if tickMarks === true}
 				<line class="tick-mark" x1="0" x2={6} y1={yTick} y2={yTick} />
 			{/if}
+
 			<text
 				x={xTick}
 				y={yTick}

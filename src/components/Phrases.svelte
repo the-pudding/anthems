@@ -88,7 +88,7 @@
 
 <style>
 	section {
-		height: 100vh;
+		height: calc(100vh - 3rem);
 		overflow: hidden;
 	}
 	.slide-wrapper {

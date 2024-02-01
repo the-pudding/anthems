@@ -10,9 +10,11 @@
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
 	export let highlight;
+	export let isolate;
 	export let phraseI;
 	export let featuredIds = [];
-	export let full;
+	export let intro;
+	export let hideAll;
 
 	let segmentLengths = featuredIds.reduce((obj, key) => {
 		obj[key] = [];
@@ -54,7 +56,7 @@
 		return segments;
 	};
 	const calculateSegmentLengths = () => {
-		if (full) return;
+		if (intro) return;
 		featuredIds.forEach((id) => {
 			const segments = Array.from(
 				document.querySelectorAll(`#${id}_line_phrase${phraseI} .animated`)
@@ -76,8 +78,16 @@
 		{#each $data as group}
 			{@const fade = highlight && group.id !== highlight}
 			{@const highlighted = highlight && group.id === highlight}
-			<g id={`${group.id}_line_phrase${full ? "_full" : phraseI}`}>
-				<path class:highlighted class:fade d={generatePath(group.pitch)} />
+			{@const isolated = isolate && group.id === isolate}
+			{@const hide = hideAll ? true : isolate && group.id !== isolate}
+			<g id={`${group.id}_line_phrase${intro ? "_intro" : phraseI}`}>
+				<path
+					class:highlighted
+					class:fade
+					class:isolated
+					class:hide
+					d={generatePath(group.pitch)}
+				/>
 
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
@@ -114,6 +124,13 @@
 	}
 	path.fade {
 		opacity: 0.025;
+	}
+	path.hide {
+		opacity: 0;
+	}
+	path.isolated {
+		opacity: 1;
+		stroke: var(--color-red);
 	}
 	path.highlighted {
 		opacity: 1;
