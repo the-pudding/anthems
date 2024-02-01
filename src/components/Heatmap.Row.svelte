@@ -1,26 +1,15 @@
 <script>
 	import Box from "$components/Heatmap.Box.svelte";
 	import Icon from "$components/helpers/Icon.svelte";
-	import { range } from "d3-array";
 	import _ from "lodash";
 	import { playing } from "$stores/misc.js";
+	import getPerformerData from "$utils/getPerformerData.js";
 
 	export let data;
 	export let activeColumn;
 	export let activeCell;
 
-	let phraseCount = range(1, 17);
-	let performerName = _.startCase(data.id.split("_")[0].replace(/-/g, " "));
-	let event = _.startCase(data.id.split("_")[1].replace(/-/g, " "))
-		.replace("Nba", "NBA")
-		.replace("Wnba", "WNBA")
-		.replace("Allstar", "All-Star")
-		.replace("Mlb", "MLB")
-		.replace("Ncaa", "NCAA")
-		.replace("Dnc", "DNC")
-		.replace("Rnc", "RNC")
-		.replace("Nfl", "NFL");
-	let year = data.id.split("_")[2];
+	const { performer, event, year } = getPerformerData(data.id);
 
 	const playAll = () => {
 		const id = data.id;
@@ -52,13 +41,13 @@
 			{/key}
 		</button>
 		<div class="details">
-			<p class="name">{performerName}</p>
+			<p class="name">{performer}</p>
 			<p class="event"><strong>{year}</strong> {event}</p>
 			<p class="event">key: {data.key}</p>
 		</div>
 	</div>
 	<div class="box-wrapper">
-		{#each phraseCount as phrase, i}
+		{#each _.range(1, 17) as phrase, i}
 			{@const phraseIndex = `phrase${[i]}_diva`}
 			{@const background = `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
 			<Box {i} id={data.id} bind:activeCell bind:activeColumn {background} />

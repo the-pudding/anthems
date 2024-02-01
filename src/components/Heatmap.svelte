@@ -1,9 +1,11 @@
 <script>
+	import Filters from "$components/Heatmap.Filters.svelte";
 	import ids from "$data/ids.csv";
 	import Row from "$components/Heatmap.Row.svelte";
 	import copy from "$data/copy.json";
 	import { playing, ready } from "$stores/misc.js";
 
+	let sortedFilteredIds = ids;
 	let activeColumn;
 	let activeCell;
 
@@ -20,19 +22,23 @@
 </script>
 
 <section id="heatmap" class:visible={$ready}>
-	<div class="top-row">
-		{#each phrases as phrase, i}
-			<button
-				class="top-row-phrase top-row-phrase-{i}"
-				class:active={activeColumn === i}
-				on:click={() => onColumnClick(i)}
-			>
-				{phrase.lyrics}
-			</button>
-		{/each}
+	<div class="sticky">
+		<Filters bind:sortedFilteredIds />
+		<div class="top-row">
+			{#each phrases as phrase, i}
+				<button
+					class="top-row-phrase top-row-phrase-{i}"
+					class:active={activeColumn === i}
+					on:click={() => onColumnClick(i)}
+				>
+					{phrase.lyrics}
+				</button>
+			{/each}
+		</div>
 	</div>
+
 	<div class="performer-rows">
-		{#each ids as performance}
+		{#each sortedFilteredIds as performance}
 			{#if performance.id !== "standard"}
 				<Row data={performance} bind:activeColumn bind:activeCell />
 			{/if}
@@ -48,13 +54,16 @@
 	section.visible {
 		display: block;
 	}
+	.sticky {
+		position: sticky;
+		top: 0;
+		z-index: 2;
+	}
 	.top-row {
 		padding: 0.5rem 1rem 0.5rem 21rem;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		position: sticky;
-		top: 0;
 		background: var(--color-bg);
 		border-bottom: 1px solid var(--color-fg);
 		z-index: 1000;
