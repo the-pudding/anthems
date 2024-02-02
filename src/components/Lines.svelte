@@ -52,7 +52,7 @@
 	>
 		<Svg>
 			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
-			<AxisY gridlines={false} ticks={0} formatTick={(d) => `${d} Hz`} />
+			<AxisY gridlines={false} ticks={4} formatTick={(d) => `${d} Hz`} />
 			<MultiLine
 				{highlight}
 				{isolate}

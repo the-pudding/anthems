@@ -5,7 +5,7 @@
 	import copy from "$data/copy.json";
 	import { playing, ready } from "$stores/misc.js";
 
-	let sortedFilteredIds = ids;
+	let sortedFilteredIds = ids.filter((d) => d.id !== "standard");
 	let activeColumn;
 	let activeCell;
 
@@ -38,10 +38,8 @@
 	</div>
 
 	<div class="performer-rows">
-		{#each sortedFilteredIds as performance}
-			{#if performance.id !== "standard"}
-				<Row data={performance} bind:activeColumn bind:activeCell />
-			{/if}
+		{#each sortedFilteredIds as performance (performance.id)}
+			<Row data={performance} bind:activeColumn bind:activeCell />
 		{/each}
 	</div>
 </section>

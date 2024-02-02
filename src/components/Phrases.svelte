@@ -15,19 +15,18 @@
 	import inView from "$actions/inView.js";
 	import _ from "lodash";
 
-	// const findTopDivas = () => {
-	// 	const topDivas = [];
-	// 	_.range(16).forEach((i) => {
-	// 		const sorted = _.orderBy(ids, (d) => +d[`phrase${i}_diva`], "desc");
-	// 		const topIds = sorted.slice(0, 3).map((d) => {
-	// 			console.log(d[`phrase${i}_diva`]);
-	// 			return d.id;
-	// 		});
-	// 		topDivas.push({ i: i, ids: topIds });
-	// 	});
-	// 	console.log(topDivas);
-	// };
-	// findTopDivas();
+	const findTopDivas = () => {
+		const topDivas = [];
+		_.range(16).forEach((i) => {
+			const sorted = _.orderBy(ids, (d) => +d[`phrase${i}_diva`], "desc");
+			const topIds = sorted.slice(0, 3).map((d) => {
+				return d.id;
+			});
+			topDivas.push({ i: i, ids: topIds });
+		});
+		console.log(topDivas);
+	};
+	findTopDivas();
 
 	let currentSlideI = 0;
 	let sliderEl;
@@ -61,13 +60,12 @@
 		tapVisible = false;
 	};
 
-	const slides = copy.slides
-		.map((d) => ({
-			...d,
-			i: +d.i,
-			phraseI: +d.phraseI
-		}))
-		.slice(0, 5);
+	const slides = copy.slides.map((d) => ({
+		...d,
+		i: +d.i,
+		phraseI: +d.phraseI
+	}));
+
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	$: currentSlide = slides[currentSlideI];

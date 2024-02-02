@@ -1,11 +1,11 @@
 <script>
 	import _ from "lodash";
 	import ids from "$data/ids.csv";
+	import { playing } from "$stores/misc.js";
 
 	export let phraseI;
 	export let data;
 	export let highlight;
-	export let playAudio;
 
 	let selected;
 
@@ -21,7 +21,7 @@
 
 	const onUpdate = () => {
 		highlight = selected;
-		if (selected) playAudio(selected);
+		if (selected) $playing = { id: selected, phraseI };
 	};
 	const unselect = () => {
 		selected = undefined;

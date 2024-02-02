@@ -1,4 +1,5 @@
 import _ from "lodash";
+import ids from "$data/ids.csv";
 
 const getPerformerData = (id) => {
 	const performer = _.startCase(id.split("_")[0].replace(/-/g, " "));
@@ -12,7 +13,8 @@ const getPerformerData = (id) => {
 		.replace("Rnc", "RNC")
 		.replace("Nfl", "NFL");
 	const year = id.split("_")[2];
-	return { performer, event, year };
+	const genre = _.startCase(ids.find((d) => d.id === id).artistGenre);
+	return { performer, event, year, genre };
 };
 
 export default getPerformerData;

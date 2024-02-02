@@ -84,7 +84,7 @@
 
 <Slide index={slideI}>
 	<div class="slide">
-		<!-- <ErrorFinder {phraseI} {data} bind:highlight /> -->
+		<ErrorFinder {phraseI} {data} bind:highlight />
 
 		<Featured {phraseI} featured={phrase.featured} bind:highlight />
 		<div class="main">
