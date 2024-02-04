@@ -1,5 +1,7 @@
 <script>
+	import Line from "$components/Heatmap.Line.svelte";
 	import { playing } from "$stores/misc.js";
+	import full from "$data/pitch/desktop/full.csv";
 
 	export let i;
 	export let id;
@@ -7,6 +9,8 @@
 	export let activeCell;
 	export let background;
 	export let phraseMissing;
+	export let start;
+	export let end;
 
 	const playPhrase = (i) => {
 		if (activeCell && activeCell.row === id && activeCell.col === i) {
@@ -23,6 +27,9 @@
 		activeColumn === i ||
 		(activeCell && activeCell.row === id && activeCell.col === i);
 	$: isPlaying = activeCell && activeCell.row === id && activeCell.col === i;
+	$: lineData = full
+		.map((d) => ({ timestamp: +d.timestamp, frequency: +d[id] }))
+		.filter((d) => d.timestamp >= start && d.timestamp <= end);
 </script>
 
 <button
@@ -33,6 +40,9 @@
 	style:background
 	on:click={() => playPhrase(i)}
 >
+	{#if expanded}
+		<Line data={lineData} />
+	{/if}
 </button>
 
 <style>

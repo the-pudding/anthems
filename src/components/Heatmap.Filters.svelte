@@ -8,23 +8,30 @@
 	export let sortedFilteredIds;
 
 	let sort = "alpha";
-	let sortDirection = "asc";
+	let sortDir = "asc";
 	let event = "all";
 	let performer = "all";
 	let genre = "all";
 
 	const sortOptions = [
-		{ label: "Name", value: "alpha", fn: (d) => d.id },
-		{ label: "Year", value: "year", fn: (d) => getPerformerData(d.id).year },
+		{ label: "Name", value: "alpha", fn: (d) => d.id, dir: "asc" },
+		{
+			label: "Year",
+			value: "year",
+			fn: (d) => getPerformerData(d.id).year,
+			dir: "asc"
+		},
 		{
 			label: "Diva Score",
 			value: "divaScore",
-			fn: (d) => getPerformerData(d.id).divaScore
+			fn: (d) => getPerformerData(d.id).divaScore,
+			dir: "desc"
 		},
 		{
 			label: "Key",
 			value: "key",
-			fn: (d) => getPerformerData(d.id).stepsFromC
+			fn: (d) => getPerformerData(d.id).stepsFromC,
+			dir: "desc"
 		}
 	];
 	const eventOptions = _.uniqBy(
@@ -69,8 +76,12 @@
 		sortedFilteredIds = _.orderBy(
 			sortedFilteredIds,
 			sortOptions.find((d) => d.value === sort).fn,
-			sortDirection
+			sortDir
 		);
+	};
+	const setDefaultDir = () => {
+		const dir = sortOptions.find((d) => d.value === sort).dir;
+		if (sortDir !== dir) sortDir = dir;
 	};
 
 	const clear = () => {
@@ -80,11 +91,12 @@
 		genre = "all";
 	};
 	const order = () => {
-		if (sortDirection === "asc") sortDirection = "desc";
-		else sortDirection = "asc";
+		if (sortDir === "asc") sortDir = "desc";
+		else sortDir = "asc";
 	};
 
-	$: sort, sortDirection, event, performer, genre, applyFilters();
+	$: sort, sortDir, event, performer, genre, applyFilters();
+	$: sort, setDefaultDir();
 </script>
 
 <div class="filters">
@@ -92,9 +104,9 @@
 
 	<span>
 		<button class="order" on:click={order}>
-			{#key sortDirection}
+			{#key sortDir}
 				<Icon
-					name={`arrow-${sortDirection === "asc" ? "up" : "down"}`}
+					name={`arrow-${sortDir === "asc" ? "up" : "down"}`}
 					size="1.5rem"
 					stroke="white"
 				/>

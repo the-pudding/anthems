@@ -60,6 +60,8 @@
 				bind:activeColumn
 				{background}
 				{phraseMissing}
+				start={+data[`phrase${[i]}_start`]}
+				end={+data[`phrase${[i]}_end`]}
 			/>
 		{/each}
 	</div>
