@@ -1,7 +1,8 @@
 <script>
-	import { currentPhraseI, currentStepI } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI, locked } from "$stores/misc.js";
 	import _ from "lodash";
 	import copy from "$data/copy.json";
+	import { tick } from "svelte";
 
 	export let lyrics;
 	export let sliderEl;
@@ -13,6 +14,12 @@
 			$currentStepI = 0;
 		}
 	};
+	const skip = async () => {
+		$locked = false;
+		await tick();
+		const heatmap = document.getElementById("heatmap");
+		heatmap.scrollIntoView({ behavior: "smooth", block: "start" });
+	};
 </script>
 
 <div class="progress">
@@ -22,6 +29,10 @@
 			{active ? lyrics : ""}
 		</div>
 	{/each}
+	<div class="skip">
+		<div class="circle" on:click={skip}></div>
+		<span>skip</span>
+	</div>
 </div>
 
 <style>
@@ -60,6 +71,18 @@
 		width: 5rem;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+	.skip {
+		position: relative;
+	}
+	.skip .circle {
+		background: var(--color-red);
+	}
+	.skip span {
+		position: absolute;
+		transform: translate(-50%, 0);
+		left: 50%;
+		font-family: var(--sans);
 	}
 
 	@media (max-width: 600px) {

@@ -27,6 +27,8 @@
 		}));
 	});
 
+	$: console.log({ data });
+
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));
 	$: highlightData = highlight
@@ -51,8 +53,11 @@
 		{data}
 	>
 		<Svg>
-			<AxisX gridlines={false} ticks={2} formatTick={(d) => `${d} sec`} />
-			<AxisY gridlines={false} ticks={4} formatTick={(d) => `${d} Hz`} />
+			<AxisX gridlines={false} ticks={0} formatTick={(d) => `${d} sec`} />
+			<AxisY gridlines={false} ticks={0} formatTick={(d) => `${d} Hz`} />
+			{#if showStandard}
+				<Standard {highlightEnd} {intro} />
+			{/if}
 			<MultiLine
 				{highlight}
 				{isolate}
@@ -61,9 +66,6 @@
 				{intro}
 				{hideAll}
 			/>
-			{#if showStandard}
-				<Standard {highlightEnd} {intro} />
-			{/if}
 		</Svg>
 	</LayerCake>
 </div>

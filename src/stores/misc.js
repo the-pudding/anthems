@@ -8,3 +8,5 @@ export const currentStepI = writable(0);
 
 export const playing = writable(undefined); // {id, phrase}
 export const currentTime = writable(undefined);
+
+export const locked = writable(true);

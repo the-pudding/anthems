@@ -31,16 +31,18 @@
 		);
 	};
 	const prepareLineData = () => {
-		return allIds.map((id) => {
-			const pitch = phrasePitch.map((d) => ({
-				timestamp: d.timestamp,
-				frequency: d[id]
-			}));
-			return {
-				id: id,
-				pitch: pitch
-			};
-		});
+		return allIds
+			.filter((d) => d !== "standard")
+			.map((id) => {
+				const pitch = phrasePitch.map((d) => ({
+					timestamp: d.timestamp,
+					frequency: d[id]
+				}));
+				return {
+					id: id,
+					pitch: pitch
+				};
+			});
 	};
 	const onNewStep = () => {
 		highlight = phrase.steps[$currentStepI].highlight;

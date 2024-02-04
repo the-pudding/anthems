@@ -1,11 +1,19 @@
 <script>
 	import Face from "$components/Phrases.Featured.Face.svelte";
-	import { currentStepI, currentPhraseI } from "$stores/misc.js";
+	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
 	import _ from "lodash";
 
 	export let phraseI;
 	export let featured;
 	export let highlight;
+
+	const selectStandard = () => {
+		if (highlight === "standard") {
+			$playing = undefined;
+		} else {
+			$playing = { id: "standard", phraseI };
+		}
+	};
 
 	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 	$: top = featured.filter((d) => d.type === "top");
@@ -13,6 +21,8 @@
 </script>
 
 <div class="wrapper" class:visible>
+	<button class="standard" on:click={selectStandard}>Standard</button>
+
 	{#if top.length}
 		<h3>Top divas</h3>
 		{#each top as { id }, i}
@@ -25,7 +35,7 @@
 	{/if}
 
 	{#if noteworthy.length}
-		<h3>Noteworthy</h3>
+		<h3>Our Picks</h3>
 		{#each noteworthy as { id }, i}
 			<div class={`section our-picks`}>
 				<div class="pics">
@@ -54,6 +64,17 @@
 		color: var(--color-grey-blue);
 		font-weight: bold;
 		text-transform: uppercase;
+	}
+	.standard {
+		pointer-events: auto;
+		text-transform: uppercase;
+		font-weight: bold;
+		font-family: var(--sans);
+		background: var(--color-grey-blue);
+		width: fit-content;
+		padding: 2px 0.75rem;
+		border-radius: 0;
+		color: var(--color-fg);
 	}
 
 	@media (max-width: 1000px) {

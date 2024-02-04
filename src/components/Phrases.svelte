@@ -15,18 +15,18 @@
 	import inView from "$actions/inView.js";
 	import _ from "lodash";
 
-	const findTopDivas = () => {
-		const topDivas = [];
-		_.range(16).forEach((i) => {
-			const sorted = _.orderBy(ids, (d) => +d[`phrase${i}_diva`], "desc");
-			const topIds = sorted.slice(0, 3).map((d) => {
-				return d.id;
-			});
-			topDivas.push({ i: i, ids: topIds });
-		});
-		console.log(topDivas);
-	};
-	findTopDivas();
+	// const findTopDivas = () => {
+	// 	const topDivas = [];
+	// 	_.range(16).forEach((i) => {
+	// 		const sorted = _.orderBy(ids, (d) => +d[`phrase${i}_diva`], "desc");
+	// 		const topIds = sorted.slice(0, 3).map((d) => {
+	// 			return d.id;
+	// 		});
+	// 		topDivas.push({ i: i, ids: topIds });
+	// 	});
+	// 	console.log(topDivas);
+	// };
+	// findTopDivas();
 
 	let currentSlideI = 0;
 	let sliderEl;
@@ -112,7 +112,7 @@
 
 <style>
 	section {
-		height: calc(100vh - 3rem);
+		height: 100vh;
 		overflow: hidden;
 		display: none;
 		margin-bottom: 10rem;

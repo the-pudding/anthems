@@ -24,7 +24,7 @@
 	$: if ($playing === undefined) pauseAudio();
 
 	const playAudio = ({ id, phraseI }) => {
-		if (!mounted) return;
+		if (!mounted || !id) return;
 
 		pauseAudio();
 

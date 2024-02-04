@@ -92,7 +92,7 @@
 	</Scrolly>
 
 	{#key imgSrc}
-		<img src={imgSrc} class:visible={imgVisible} alt={imgAlt} transition:fade />
+		<!-- <img src={imgSrc} class:visible={imgVisible} alt={imgAlt} transition:fade /> -->
 	{/key}
 </section>
 
