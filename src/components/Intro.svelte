@@ -5,9 +5,10 @@
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
-	import { ready } from "$stores/misc.js";
+	import { ready, playing } from "$stores/misc.js";
 	import { fade } from "svelte/transition";
 	import scrollY from "$stores/scrollY.js";
+	import play from "$svg/play.svg";
 
 	let allPitch;
 	let data;
@@ -40,23 +41,28 @@
 		});
 	};
 	const stepChange = () => {
-		console.log("step change", step);
 		if (step === undefined) {
 			console.log($scrollY);
 			if ($scrollY > 3000) direction = "down";
 			else direction = "up";
 		}
 	};
+	const playableText = () => {
+		const playableText = document.querySelectorAll(`#intro span.playable`);
+		playableText.forEach((el) => {
+			el.addEventListener("click", () => {
+				const id = el.dataset.id;
+				const phraseI = el.dataset.phrase;
 
-	onMount(async () => {
-		const isMobile = $viewport.width <= 600;
-		const module = await import(
-			`$data/pitch/${isMobile ? "mobile" : "desktop"}/full.csv`
-		);
-		allPitch = castFloat(module.default);
-		data = prepareLineData();
-		$ready = true;
-	});
+				if ($playing && $playing.id === id && $playing.phraseI === phraseI) {
+					$playing = undefined;
+				} else {
+					$playing = { id, phraseI };
+				}
+			});
+			el.insertAdjacentHTML("beforeend", play);
+		});
+	};
 
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
 	$: hideAll = step === 2;
@@ -70,6 +76,17 @@
 	$: imgVisible =
 		(step === undefined && direction === "up") || step === 0 || step === 1;
 	$: step, stepChange();
+
+	onMount(async () => {
+		playableText();
+		const isMobile = $viewport.width <= 600;
+		const module = await import(
+			`$data/pitch/${isMobile ? "mobile" : "desktop"}/full.csv`
+		);
+		allPitch = castFloat(module.default);
+		data = prepareLineData();
+		$ready = true;
+	});
 </script>
 
 <section id="intro" class:visible={$ready}>
