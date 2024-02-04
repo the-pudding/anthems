@@ -150,6 +150,7 @@ Usage:
 	@media (max-width: 600px) {
 		section {
 			height: calc(100% - 3rem);
+			width: 100%;
 		}
 	}
 </style>

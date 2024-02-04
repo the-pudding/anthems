@@ -10,13 +10,13 @@
 </script>
 
 <article>
-	<!-- <Title />
-	<Intro /> -->
+	<Title />
+	<Intro />
 	<div class:locked={$locked}>
-		<!-- <Phrases /> -->
+		<Phrases />
 		<Heatmap />
-		<!-- <Methods />
-		<Footer /> -->
+		<Methods />
+		<Footer />
 	</div>
 	<Audio />
 </article>

@@ -2,14 +2,14 @@
 	import Box from "$components/Heatmap.Box.svelte";
 	import Icon from "$components/helpers/Icon.svelte";
 	import _ from "lodash";
-	import { playing } from "$stores/misc.js";
+	import { playing, currentTime } from "$stores/misc.js";
 	import getPerformerData from "$utils/getPerformerData.js";
 
 	export let data;
 	export let activeColumn;
 	export let activeCell;
 
-	const { performer, event, year, key, stepsFromC } = getPerformerData(data.id);
+	const { performer, event, year, key } = getPerformerData(data.id);
 
 	const playAll = () => {
 		const id = data.id;
@@ -19,7 +19,13 @@
 			$playing = { id, phraseI: undefined };
 		}
 	};
+	const trackPhrase = () => {
+		// TODO
+		// calculate which phrase we're on
+		// make that activeCell
+	};
 
+	//$: if ($playing && $playing.phraseI === undefined) trackPhrase($currentTime);
 	$: paused = $playing?.id !== data.id;
 </script>
 

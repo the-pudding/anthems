@@ -89,4 +89,13 @@
 			transform: translateY(0);
 		}
 	}
+
+	@media (max-width: 600px) {
+		.hed {
+			font-size: 1rem;
+		}
+		:global(h1) {
+			font-size: 6rem;
+		}
+	}
 </style>

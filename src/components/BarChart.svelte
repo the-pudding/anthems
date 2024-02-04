@@ -1,15 +1,16 @@
 <script>
-	let divaVals = [];
+	import ids from "$data/ids.csv";
+	import _ from "lodash";
+
 	export let data;
 	export let title;
 	export let key;
 
-	const values = data.map((d, i) => {
-		let val = +d.avg_diva;
-		divaVals.push(val);
-	});
-	const maxDiva = Math.max(...divaVals);
-	const avgDivaScore = 2000;
+	const avgDiva = _.meanBy(
+		ids.filter((d) => d.id !== "standard"),
+		(d) => +d["overall_diva"]
+	);
+	const maxDiva = +_.maxBy(data, (d) => +d["avg_diva"]).avg_diva;
 </script>
 
 <div class="bar-chart-inline">
@@ -20,7 +21,12 @@
 	</div>
 	<div class="chart-wrapper">
 		<div class="baseline" style={`height: ${data.length * 3.75}rem`}></div>
-		<div class="avgline" style={`left: ${(avgDivaScore / maxDiva) * 100}%; height: ${data.length * 3.75}rem`}></div>
+		<div
+			class="avgline"
+			style={`left: ${(2000 / maxDiva) * 100}%; height: ${
+				data.length * 3.75
+			}rem`}
+		></div>
 		{#each data as row, i}
 			<div class={`row row-${i}`}>
 				<p class="category">{row[key] === "rnb" ? "R&B" : row[key]}</p>
@@ -104,7 +110,7 @@
 		z-index: 999;
 	}
 	.avgline::after {
-		content: "Average of All Performances";
+		content: "Average of all performances";
 		width: 8rem;
 		color: var(--color-fg);
 		text-align: center;
