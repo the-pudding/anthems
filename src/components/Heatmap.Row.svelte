@@ -20,6 +20,9 @@
 		}
 	};
 
+	// $: if (data.id === "chloe-bailey_world-series_2022")
+	// 	console.log(data["phrase0_diva"]);
+
 	$: paused = $playing?.id !== data.id;
 </script>
 
@@ -49,8 +52,18 @@
 	<div class="box-wrapper">
 		{#each _.range(1, 17) as phrase, i}
 			{@const phraseIndex = `phrase${[i]}_diva`}
-			{@const background = `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
-			<Box {i} id={data.id} bind:activeCell bind:activeColumn {background} />
+			{@const phraseMissing = !data[phraseIndex]}
+			{@const background = phraseMissing
+				? "var(--color-gray-900)"
+				: `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
+			<Box
+				{i}
+				id={data.id}
+				bind:activeCell
+				bind:activeColumn
+				{background}
+				{phraseMissing}
+			/>
 		{/each}
 	</div>
 </div>

@@ -6,6 +6,7 @@
 	export let activeColumn;
 	export let activeCell;
 	export let background;
+	export let phraseMissing;
 
 	const playPhrase = (i) => {
 		if (activeCell && activeCell.row === id && activeCell.col === i) {
@@ -28,6 +29,7 @@
 	class="phrase-box phrase-box-{i}"
 	class:expanded
 	class:playing={isPlaying}
+	class:missing={phraseMissing}
 	style:background
 	on:click={() => playPhrase(i)}
 >
@@ -43,11 +45,15 @@
 		align-items: center;
 		justify-content: center;
 		transition: width var(--1s);
+		color: var(--color-grey-blue);
 	}
 	.expanded {
 		width: 30%;
 	}
 	.playing {
 		outline: 2px solid var(--color-red) !important;
+	}
+	.missing:hover {
+		cursor: not-allowed;
 	}
 </style>
