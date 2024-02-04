@@ -10,8 +10,8 @@
 </script>
 
 <article>
-	<Title />
-	<Intro />
+	<!-- <Title />
+	<Intro /> -->
 	<div class:locked={$locked}>
 		<!-- <Phrases /> -->
 		<Heatmap />
@@ -31,7 +31,7 @@
 		overflow: visible;
 	}
 	div.locked {
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 
 	@media (max-width: 600px) {

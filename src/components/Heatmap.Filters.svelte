@@ -16,7 +16,11 @@
 	const sortOptions = [
 		{ label: "Name", value: "alpha", fn: (d) => d.id },
 		{ label: "Year", value: "year", fn: (d) => getPerformerData(d.id).year },
-		{ label: "Diva Score", value: "divaScore", fn: (d) => d.id }, // TODO
+		{
+			label: "Diva Score",
+			value: "divaScore",
+			fn: (d) => getPerformerData(d.id).divaScore
+		},
 		{
 			label: "Key",
 			value: "key",

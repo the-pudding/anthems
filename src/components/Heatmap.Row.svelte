@@ -20,9 +20,6 @@
 		}
 	};
 
-	// $: if (data.id === "chloe-bailey_world-series_2022")
-	// 	console.log(data["phrase0_diva"]);
-
 	$: paused = $playing?.id !== data.id;
 </script>
 

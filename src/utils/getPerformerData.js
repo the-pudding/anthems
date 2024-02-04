@@ -26,7 +26,8 @@ const getPerformerData = (id) => {
 	const genre = _.startCase(row.artistGenre).replace("Rnb", "R&B");
 	const key = row.key;
 	const stepsFromC = +row.steps_from_C;
-	return { performer, event, year, genre, key, stepsFromC };
+	const divaScore = +row["overall_diva"];
+	return { performer, event, year, genre, key, stepsFromC, divaScore };
 };
 
 export default getPerformerData;
