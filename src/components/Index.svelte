@@ -9,9 +9,9 @@
 </script>
 
 <article>
-	<Title />
+	<!-- <Title />
 	<Intro />
-	<Phrases />
+	<Phrases /> -->
 	<Heatmap />
 	<Methods />
 

@@ -9,7 +9,7 @@
 	export let activeColumn;
 	export let activeCell;
 
-	const { performer, event, year } = getPerformerData(data.id);
+	const { performer, event, year, key, stepsFromC } = getPerformerData(data.id);
 
 	const playAll = () => {
 		const id = data.id;
@@ -43,7 +43,7 @@
 		<div class="details">
 			<p class="name">{performer}</p>
 			<p class="event"><strong>{year}</strong> {event}</p>
-			<p class="event">key: {data.key}</p>
+			<p class="event">key: {key}</p>
 		</div>
 	</div>
 	<div class="box-wrapper">
