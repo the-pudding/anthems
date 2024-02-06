@@ -10,9 +10,12 @@
 	export let xKey = "avg_diva";
 	export let yKey;
 	export let yFormat = (d) => d;
-	export let showAvg = true;
 	export let active;
 	export let animate;
+	export let highlight;
+	export let showAvg = true;
+	export let showNumber;
+	export let showLegend = true;
 
 	let displayData = data;
 	let barEls = [];
@@ -25,20 +28,22 @@
 	const labelWidth = "7.25rem";
 
 	$: xScale = scaleLinear().domain([0, max]).range([0, maxBarEl?.clientWidth]);
-	$: maxBarEl = barEls.find(
-		(d) => d && Array.from(d.classList).includes("max")
-	);
+	$: maxBarEl = _.maxBy(barEls, (d) => d.clientWidth);
 	$: if (animate && active)
 		displayData = _.orderBy(data, (d) => +d[xKey], "desc");
 	$: if (animate && !active) displayData = data;
 </script>
 
 <div class="bar-chart-inline">
-	<div class="title">Average Diva Score By {title}</div>
-	<div class="legend">
-		<p>◀ Less Diva</p>
-		<p>More Diva ▶</p>
-	</div>
+	<div class="title">{title}</div>
+
+	{#if showLegend}
+		<div class="legend">
+			<p>◀ Less Diva</p>
+			<p>More Diva ▶</p>
+		</div>
+	{/if}
+
 	<div class="chart-wrapper">
 		<div class="baseline" style={`left: ${labelWidth}`}></div>
 		{#if showAvg}
@@ -60,8 +65,18 @@
 				<p class="category" class:small={data.length > 5}>
 					{yFormat(row[yKey])}
 				</p>
-				<div class="full-bar" class:max={i === 0} bind:this={barEls[i]}>
-					<div class="bar" style={`width: ${xScale(row[xKey])}px`} />
+				<div class="full-bar" bind:this={barEls[i]}>
+					<div
+						class="bar"
+						class:highlight={highlight
+							? highlight.includes(+row[yKey])
+							: i === 0}
+						style={`width: ${xScale(row[xKey])}px`}
+					>
+						{#if showNumber}
+							<p class="score">{row[xKey]}</p>
+						{/if}
+					</div>
 				</div>
 			</div>
 		{/each}
@@ -179,16 +194,18 @@
 		background: var(--color-grey-blue);
 		position: relative;
 	}
-	.max .bar {
+	.highlight {
 		background: var(--color-red);
 	}
 	.score {
 		font-family: var(--sans);
-		margin: 0.75rem 0 0.75rem 0.35rem;
-		padding: 0.25rem 0 0 0;
 		font-weight: 700;
 		position: absolute;
-		top: -1rem;
-		right: -3.75rem;
+		top: 0;
+		margin: 0;
+		right: 0;
+		line-height: 1;
+		padding: 0;
+		transform: translate(calc(100% + 0.5rem), 0);
 	}
 </style>

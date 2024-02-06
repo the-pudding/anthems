@@ -92,7 +92,7 @@
 			>
 				{#if slide.type === "phrase"}
 					<Slide slideI={+slide.i} phrase={slide} />
-				{:else}
+				{:else if slide.type === "chart"}
 					<Chart
 						slideI={+slide.i}
 						id={slide.chart}
