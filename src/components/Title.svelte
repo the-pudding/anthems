@@ -36,11 +36,14 @@
 	section {
 		height: calc(100vh - 6rem);
 		position: relative;
+		padding: 3rem 3rem 0 3rem;
 	}
 	:global(h1) {
 		font-family: "Newsagent";
+		font-variant-alternates: swash(fancy);
 		font-size: 12rem;
-		line-height: 1;
+		line-height: 0.75;
+		padding: 1rem 0 4rem 0;
 	}
 	.hed {
 		font-size: 1.3rem;

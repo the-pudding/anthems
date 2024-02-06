@@ -23,8 +23,7 @@
 
 <style>
 	article {
-		padding: 3rem;
-		padding-bottom: 0;
+		padding: 0;
 	}
 	div {
 		height: 100vh;
