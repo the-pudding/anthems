@@ -27,7 +27,7 @@
 		}));
 	});
 
-	$: console.log({ data });
+	// $: console.log({ data });
 
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));

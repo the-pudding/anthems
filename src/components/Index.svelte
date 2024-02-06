@@ -14,9 +14,9 @@
 	<Intro />
 	<div class:locked={$locked}>
 		<Phrases />
-		<Heatmap />
+		<!-- <Heatmap />
 		<Methods />
-		<Footer />
+		<Footer /> -->
 	</div>
 	<Audio />
 </article>

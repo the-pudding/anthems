@@ -67,7 +67,7 @@
 					highlight = undefined;
 					$playing = undefined;
 				} else {
-					highlight = id;
+					if (id !== "standard") highlight = id;
 					$playing = { id, phraseI };
 				}
 			});
