@@ -72,8 +72,8 @@
 		font-family: var(--sans);
 		background: var(--color-grey-blue);
 		width: fit-content;
-		padding: 2px 0.75rem;
-		border-radius: 0;
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
 		color: var(--color-fg);
 	}
 

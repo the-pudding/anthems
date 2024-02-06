@@ -100,9 +100,9 @@
 			class="maya-vid-wrapper"
 		>
 			<div class="vid-overlay"></div>
-			<!-- <video id="maya-vid" muted={!$soundOn}>
+			<video id="maya-vid" muted={!$soundOn}>
 				<source src="/assets/video/maya-brave.mp4" type="video/mp4" />
-			</video> -->
+			</video>
 		</div>
 	{/if}
 	<div class="spacer" />
