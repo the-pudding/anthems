@@ -21,6 +21,10 @@
 	};
 </script>
 
+<div id="transition-to-heatmap">
+	<p>{@html copy.transition}</p>
+</div>
+
 <section id="heatmap" class:visible={$ready}>
 	<div class="sticky">
 		<Filters bind:sortedFilteredIds />
@@ -48,9 +52,15 @@
 	section {
 		width: 100%;
 		display: none;
+		margin-top: 8rem;
 	}
 	section.visible {
 		display: block;
+	}
+	#transition-to-heatmap {
+		padding-top: 4rem;
+		max-width: 600px;
+		margin: auto;
 	}
 	.sticky {
 		position: sticky;

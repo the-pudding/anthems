@@ -5,6 +5,7 @@
 	import Slider from "$components/helpers/Slider.svelte";
 	import Tap from "$components/helpers/Tap.svelte";
 	import {
+		currentSlideI,
 		currentPhraseI,
 		currentStepI,
 		playing,
@@ -28,7 +29,6 @@
 	// };
 	// findTopDivas();
 
-	let currentSlideI = 0;
 	let sliderEl;
 	let tapVisible;
 
@@ -38,15 +38,15 @@
 		if (detail === "right") {
 			if ($currentStepI + 1 < stepsInPhrase) {
 				$currentStepI += 1;
-			} else if (currentSlideI + 1 < slides.length) {
+			} else if ($currentSlideI + 1 < slides.length) {
 				$currentStepI = 0;
 				sliderEl.next();
 			}
 		} else {
 			if ($currentStepI - 1 >= 0) {
 				$currentStepI -= 1;
-			} else if (currentSlideI > 0) {
-				const prevSlide = slides[currentSlideI - 1];
+			} else if ($currentSlideI > 0) {
+				const prevSlide = slides[$currentSlideI - 1];
 				$currentStepI =
 					prevSlide.type === "chart" ? 0 : prevSlide.steps.length - 1;
 				sliderEl.prev();
@@ -68,7 +68,7 @@
 
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
-	$: currentSlide = slides[currentSlideI];
+	$: currentSlide = slides[$currentSlideI];
 	$: currentPhrase = phrases[$currentPhraseI];
 	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
@@ -82,18 +82,22 @@
 	on:enter={sectionEnter}
 	on:exit={sectionExit}
 >
-	<Slider bind:this={sliderEl} bind:current={currentSlideI}>
+	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
 		{#each slides as slide}
-			{@const active = +slide.i === currentSlideI}
-			<div class="slide-wrapper" class:active>
+			{@const active = +slide.i === $currentSlideI}
+			<div
+				class="slide-wrapper"
+				class:chart={slide.type === "chart"}
+				class:active
+			>
 				{#if slide.type === "phrase"}
 					<Slide slideI={+slide.i} phrase={slide} />
-				{:else}
+				{:else if slide.type === "chart"}
 					<Chart
 						slideI={+slide.i}
 						id={slide.chart}
 						text={slide.text}
-						active={+slide.i === currentSlideI}
+						active={+slide.i === $currentSlideI}
 					/>
 				{/if}
 			</div>
@@ -115,13 +119,16 @@
 		height: 100vh;
 		overflow: hidden;
 		display: none;
-		margin-bottom: 10rem;
 	}
 	section.visible {
 		display: block;
 	}
 	.slide-wrapper {
 		opacity: 0.5;
+		height: 100%;
+	}
+	.slide-wrapper.chart {
+		opacity: 0.1;
 	}
 	.slide-wrapper.active {
 		opacity: 1;

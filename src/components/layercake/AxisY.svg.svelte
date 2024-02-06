@@ -61,6 +61,6 @@
 	}
 
 	.tick text {
-		fill: var(--color-gray-600);
+		fill: var(--color-fg);
 	}
 </style>

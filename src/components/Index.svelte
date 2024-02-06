@@ -30,7 +30,7 @@
 		overflow: visible;
 	}
 	div.locked {
-		/* overflow: hidden; */
+		overflow: hidden;
 	}
 
 	@media (max-width: 600px) {
