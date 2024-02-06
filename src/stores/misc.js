@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 export const soundOn = writable(true);
 export const ready = writable(true);
 
+export const currentSlideI = writable(0);
 export const currentPhraseI = writable(0);
 export const currentStepI = writable(0);
 

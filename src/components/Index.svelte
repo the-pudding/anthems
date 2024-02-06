@@ -14,9 +14,9 @@
 	<Intro />
 	<div class:locked={$locked}>
 		<Phrases />
-		<!-- <Heatmap />
+		<Heatmap />
 		<Methods />
-		<Footer /> -->
+		<Footer />
 	</div>
 	<Audio />
 </article>
@@ -31,7 +31,7 @@
 		overflow: visible;
 	}
 	div.locked {
-		/* overflow: hidden; */
+		overflow: hidden;
 	}
 
 	@media (max-width: 600px) {

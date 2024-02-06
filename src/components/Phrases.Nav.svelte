@@ -17,7 +17,7 @@
 	const skip = async () => {
 		$locked = false;
 		await tick();
-		const heatmap = document.getElementById("heatmap");
+		const heatmap = document.getElementById("transition-to-heatmap");
 		heatmap.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
 </script>

@@ -138,7 +138,7 @@
 	}
 	h2 {
 		font-family: Newsagent;
-		font-size: 5rem;
+		font-size: 4rem;
 		display: flex;
 		justify-content: space-evenly;
 		margin-bottom: 0;
@@ -152,7 +152,7 @@
 	}
 	.text p {
 		display: none;
-		line-height: 1.75;
+		line-height: 2;
 	}
 	.text p.visible {
 		display: block;
@@ -176,7 +176,7 @@
 
 	@media (max-width: 1200px) {
 		h2 {
-			font-size: 3.75rem;
+			font-size: 2.75rem;
 		}
 	}
 
@@ -185,7 +185,13 @@
 			flex-direction: column;
 		}
 		h2 {
-			font-size: 2.5rem;
+			font-size: 2.25rem;
+		}
+	}
+
+	@media (max-width: 800px) {
+		h2 {
+			font-size: 1.75rem;
 		}
 	}
 

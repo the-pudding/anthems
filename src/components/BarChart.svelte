@@ -1,16 +1,36 @@
 <script>
 	import ids from "$data/ids.csv";
 	import _ from "lodash";
+	import { scaleLinear } from "d3-scale";
+	import { flip } from "svelte/animate";
+	import { cubicOut } from "svelte/easing";
 
 	export let data;
 	export let title;
-	export let key;
+	export let xKey = "avg_diva";
+	export let yKey;
+	export let yFormat = (d) => d;
+	export let showAvg = true;
+	export let active;
+	export let animate;
 
-	const avgDiva = _.meanBy(
+	let displayData = data;
+	let barEls = [];
+
+	const avg = _.meanBy(
 		ids.filter((d) => d.id !== "standard"),
 		(d) => +d["overall_diva"]
 	);
-	const maxDiva = +_.maxBy(data, (d) => +d["avg_diva"]).avg_diva;
+	const max = +_.maxBy(data, (d) => +d[xKey])[xKey];
+	const labelWidth = "7.25rem";
+
+	$: xScale = scaleLinear().domain([0, max]).range([0, maxBarEl?.clientWidth]);
+	$: maxBarEl = barEls.find(
+		(d) => d && Array.from(d.classList).includes("max")
+	);
+	$: if (animate && active)
+		displayData = _.orderBy(data, (d) => +d[xKey], "desc");
+	$: if (animate && !active) displayData = data;
 </script>
 
 <div class="bar-chart-inline">
@@ -20,23 +40,28 @@
 		<p>More Diva ▶</p>
 	</div>
 	<div class="chart-wrapper">
-		<div class="baseline" style={`height: ${data.length * 3.75}rem`}></div>
-		<div
-			class="avgline"
-			style={`left: ${(2000 / maxDiva) * 100}%; height: ${
-				data.length * 3.75
-			}rem`}
-		></div>
-		{#each data as row, i}
-			<div class={`row row-${i}`}>
-				<p class="category">{row[key] === "rnb" ? "R&B" : row[key]}</p>
-				<div class="full-bar">
-					<div
-						class="bar"
-						style={`width: calc(${(row.avg_diva / maxDiva) * 100}%)`}
-					>
-						<!-- <p class="score">{row.avg_diva}</p> -->
-					</div>
+		<div class="baseline" style={`left: ${labelWidth}`}></div>
+		{#if showAvg}
+			<div
+				class="avgline"
+				style={`left: calc(${labelWidth} + ${xScale(avg)}px)`}
+			></div>
+		{/if}
+
+		{#each displayData as row, i (row[yKey])}
+			<div
+				class="row"
+				animate:flip={{
+					delay: active ? 1000 + Math.random() * 750 : 0,
+					duration: active ? 1000 : 0,
+					easing: cubicOut
+				}}
+			>
+				<p class="category" class:small={data.length > 5}>
+					{yFormat(row[yKey])}
+				</p>
+				<div class="full-bar" class:max={i === 0} bind:this={barEls[i]}>
+					<div class="bar" style={`width: ${xScale(row[xKey])}px`} />
 				</div>
 			</div>
 		{/each}
@@ -45,9 +70,9 @@
 
 <style>
 	.bar-chart-inline {
+		flex: 1;
 		width: 100%;
-		height: 100%;
-		padding: 3rem 1rem 5rem 1rem;
+		padding: 3rem 1rem 4rem 1rem;
 		display: flex;
 		flex-direction: column;
 	}
@@ -81,17 +106,21 @@
 		margin: 0;
 	}
 	.chart-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
 		position: relative;
 		width: calc(100% - 2rem);
 		max-width: 50rem;
 		margin: 0 auto;
+		flex: 1;
 	}
 	.baseline {
 		position: absolute;
 		top: 0rem;
-		left: 6.5rem;
 		border-left: 2px dashed var(--color-fg);
 		z-index: 999;
+		height: 100%;
 	}
 	.baseline::after {
 		content: "Standard";
@@ -105,9 +134,9 @@
 	.avgline {
 		position: absolute;
 		top: 0rem;
-		left: 10rem;
 		border-left: 2px dashed var(--color-fg);
 		z-index: 999;
+		height: 100%;
 	}
 	.avgline::after {
 		content: "Average of all performances";
@@ -125,6 +154,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		margin: 4px 0;
 	}
 	.category {
 		color: var(--color-fg);
@@ -132,21 +162,24 @@
 		text-transform: capitalize;
 		font-size: var(--28px);
 		text-align: right;
-		width: 6rem;
+		width: 7rem;
 		margin: 0 0.5rem 0 0;
+		line-height: 1;
+	}
+	.category.small {
+		font-size: var(--18px);
 	}
 	.full-bar {
+		height: 100%;
 		width: calc(100% - 6.5rem);
 		display: flex;
 		flex-direction: row;
 	}
 	.bar {
 		background: var(--color-grey-blue);
-		height: 1.5rem;
-		margin: 1rem 0;
 		position: relative;
 	}
-	.row-0 .bar {
+	.max .bar {
 		background: var(--color-red);
 	}
 	.score {
