@@ -11,3 +11,4 @@ export const playing = writable(undefined); // {id, phrase}
 export const currentTime = writable(undefined);
 
 export const locked = writable(true);
+export const outOfIntro = writable(false);

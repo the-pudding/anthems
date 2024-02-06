@@ -5,7 +5,7 @@
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
-	import { ready, playing } from "$stores/misc.js";
+	import { ready, playing, soundOn } from "$stores/misc.js";
 	import { fade } from "svelte/transition";
 	import scrollY from "$stores/scrollY.js";
 	import play from "$svg/play.svg";
@@ -13,7 +13,6 @@
 	let allPitch;
 	let data;
 	let step;
-	let direction = "up";
 	let video;
 
 	const steps = copy.intro;
@@ -42,16 +41,15 @@
 		});
 	};
 	const stepChange = () => {
-		if (step === undefined) {
-			console.log($scrollY);
-			if ($scrollY > 3000) direction = "down";
-			else direction = "up";
-		}
+		// if (step === undefined) {
+		// 	if ($scrollY > 3000) direction = "down";
+		// 	else direction = "up";
+		// }
 		if (step === 2) {
 			setTimeout(() => {
 				video = document.getElementById("maya-vid");
 				video.play();
-			}, 1500)
+			}, 1500);
 		}
 	};
 	const playableText = () => {
@@ -80,8 +78,7 @@
 		  }_cutout.png`
 		: "";
 	$: imgAlt = step === 1 ? "Fergie" : "Whitney Houston";
-	$: imgVisible =
-		(step === undefined && direction === "up") || step === 0 || step === 1;
+	$: imgVisible = step === undefined || step === 0 || step === 1;
 	$: step, stepChange();
 
 	onMount(async () => {
@@ -98,12 +95,15 @@
 
 <section id="intro" class:visible={$ready}>
 	{#if step === 2 && step !== undefined}
-	<div transition:fade={{ delay: 0, duration: 1000 }} class="maya-vid-wrapper">
-		<div class="vid-overlay"></div>
-		<video id="maya-vid">
-			<source src="/assets/video/maya-brave.mp4" type="video/mp4" />
-		</video>
-	</div>
+		<div
+			transition:fade={{ delay: 0, duration: 1000 }}
+			class="maya-vid-wrapper"
+		>
+			<div class="vid-overlay"></div>
+			<!-- <video id="maya-vid" muted={!$soundOn}>
+				<source src="/assets/video/maya-brave.mp4" type="video/mp4" />
+			</video> -->
+		</div>
 	{/if}
 	<div class="spacer" />
 	<div class="sticky">
@@ -150,14 +150,14 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-  		height: 100vh;
+		height: 100vh;
 		z-index: 1;
 	}
 	.vid-overlay {
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		min-width: 100%; 
+		min-width: 100%;
 		min-height: 100%;
 		background: var(--color-dark-blue);
 		z-index: 100;
@@ -168,7 +168,7 @@
 		position: fixed;
 		right: 0;
 		bottom: 0;
-		min-width: 100%; 
+		min-width: 100%;
 		min-height: 100%;
 		object-fit: cover;
 		filter: saturate(0%);

@@ -9,7 +9,8 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		ready
+		ready,
+		outOfIntro
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
@@ -54,6 +55,7 @@
 		}
 	};
 	const sectionEnter = () => {
+		$outOfIntro = true;
 		tapVisible = true;
 	};
 	const sectionExit = () => {

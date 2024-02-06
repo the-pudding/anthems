@@ -116,7 +116,7 @@
 	path {
 		fill: none;
 		stroke: var(--color-fg);
-		opacity: 0.1;
+		opacity: 0.05;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		stroke-width: 2px;
