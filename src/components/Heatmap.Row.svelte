@@ -57,7 +57,7 @@
 			{@const phraseIndex = `phrase${[i]}_diva`}
 			{@const phraseMissing = !data[phraseIndex]}
 			{@const background = phraseMissing
-				? "var(--color-gray-900)"
+				? "url(assets/x-paper.png) no-repeat center"
 				: `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
 			<Box
 				{i}
@@ -88,7 +88,8 @@
 		width: 18rem;
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: start;
+		padding: 0.25rem 0 0.5rem 0;
 	}
 	.play-btn {
 		background: var(--color-fg);
@@ -98,7 +99,15 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0 0.5rem 0 0;
+		margin: 0.25rem 0.5rem 0 0;
+	}
+	:global(.play-btn span) {
+		padding: 0.25rem 0 0 0;
+		margin-left: 0.125rem;
+	}
+	:global(.play-btn.playing span) {
+		padding: 0.25rem 0 0 0;
+		margin-left: 0;
 	}
 	.play-btn.playing {
 		background: var(--color-red);
