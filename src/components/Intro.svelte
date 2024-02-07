@@ -5,7 +5,14 @@
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
-	import { ready, playing, soundOn, inIntro, inTitle } from "$stores/misc.js";
+	import {
+		entered,
+		loaded,
+		playing,
+		soundOn,
+		inIntro,
+		inTitle
+	} from "$stores/misc.js";
 	import { fade } from "svelte/transition";
 	import play from "$svg/play.svg";
 	import inView from "$actions/inView.js";
@@ -41,13 +48,15 @@
 		});
 	};
 	const playVideo = () => {
+		if (!videoEl) return;
 		setTimeout(() => {
 			videoEl.currentTime = 0;
 			videoEl.play();
 		}, 500);
 	};
 	const pauseVideo = () => {
-		if (videoEl) videoEl.pause();
+		if (!videoEl) return;
+		videoEl.pause();
 	};
 	const playableText = () => {
 		const playableText = document.querySelectorAll(`#intro span.playable`);
@@ -103,19 +112,19 @@
 			if (this.status === 200) {
 				const videoBlob = this.response;
 				const videoUrl = URL.createObjectURL(videoBlob);
-				videoEl.src = videoUrl;
-				$ready = true;
+				if (videoEl) videoEl.src = videoUrl;
+				$loaded = true;
 			}
 		};
 		request.send();
 	});
 </script>
 
-<section id="intro" class:visible={$ready} use:inView on:enter={sectionEnter}>
-	<div class="maya-vid-wrapper" class:visible={videoVisible}>
+<section id="intro" use:inView on:enter={sectionEnter}>
+	<!-- <div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
 		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
-	</div>
+	</div> -->
 
 	<div class="spacer" />
 	<div class="sticky">
@@ -147,14 +156,14 @@
 </section>
 
 <style>
-	section {
+	/* section {
 		display: none;
-	}
-	section.visible {
+	} */
+	/* section.visible {
 		display: block;
-	}
+	} */
 	.spacer {
-		height: 50vh;
+		height: 5vh;
 	}
 	.sticky {
 		position: sticky;

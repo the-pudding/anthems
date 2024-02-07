@@ -6,13 +6,16 @@
 	import Audio from "$components/Audio.svelte";
 	import Methods from "$components/Methods.svelte";
 	import Footer from "$components/Footer.svelte";
-	import { locked, ready } from "$stores/misc.js";
+	import { locked, entered } from "$stores/misc.js";
 </script>
 
 <article>
-	<Title />
-	<Intro />
-	<div class:locked={$locked} class:visible={$ready}>
+	<div class="start" class:locked={!$entered}>
+		<Title />
+		<Intro />
+	</div>
+
+	<div class="middle" class:locked={$locked} class:visible={$entered}>
 		<Phrases />
 		<Heatmap />
 		<Methods />
@@ -25,15 +28,20 @@
 	article {
 		padding: 0;
 	}
-	div {
-		height: 100vh;
+	.start {
+		height: auto;
 		overflow: visible;
-		display: none;
 	}
-	div.visible {
+	.middle {
+		height: 100vh;
+		display: none;
+		overflow: visible;
+	}
+	.middle.visible {
 		display: block;
 	}
 	div.locked {
+		height: 100vh;
 		overflow: hidden;
 	}
 
