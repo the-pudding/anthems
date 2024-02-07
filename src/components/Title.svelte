@@ -1,21 +1,35 @@
 <script>
 	import copy from "$data/copy.json";
 	import Icon from "$components/helpers/Icon.svelte";
-	import { soundOn, loaded, inIntro, inTitle, entered } from "$stores/misc.js";
+	import {
+		soundOn,
+		userMuted,
+		loaded,
+		inIntro,
+		inTitle,
+		entered
+	} from "$stores/misc.js";
 	import inView from "$actions/inView.js";
+	import { tick } from "svelte";
 
 	const onMute = () => {
+		$userMuted = !$userMuted;
 		$soundOn = !$soundOn;
 	};
 	const sectionEnter = () => {
-		$inIntro = false;
-		$inTitle = true;
+		if ($entered) {
+			$inIntro = false;
+			$inTitle = true;
+		}
 	};
 	const sectionExit = () => {
-		$inTitle = false;
+		if ($entered) {
+			$inTitle = false;
+		}
 	};
-	const enter = () => {
+	const enter = async () => {
 		$entered = true;
+		await tick();
 		const introEl = document.querySelector("#intro");
 		introEl.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
@@ -39,6 +53,7 @@
 		height: 100vh;
 		position: relative;
 		padding: 3rem 3rem 0 3rem;
+		margin-bottom: 3rem;
 	}
 	:global(h1) {
 		font-family: "Newsagent";

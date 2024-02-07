@@ -6,7 +6,20 @@
 	import Audio from "$components/Audio.svelte";
 	import Methods from "$components/Methods.svelte";
 	import Footer from "$components/Footer.svelte";
-	import { locked, entered } from "$stores/misc.js";
+	import { locked, entered, ios, userMuted, soundOn } from "$stores/misc.js";
+	import { onMount } from "svelte";
+
+	onMount(() => {
+		$ios = !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
+
+		document.addEventListener("visibilitychange", (event) => {
+			if (document.visibilityState == "visible") {
+				if (!$userMuted) $soundOn = true;
+			} else {
+				$soundOn = false;
+			}
+		});
+	});
 </script>
 
 <article>

@@ -9,7 +9,8 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		inIntro
+		inIntro,
+		entered
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
@@ -53,7 +54,7 @@
 		}
 	};
 	const sectionEnter = () => {
-		$inIntro = false;
+		if ($entered) $inIntro = false;
 	};
 
 	const slides = copy.slides.map((d) => ({

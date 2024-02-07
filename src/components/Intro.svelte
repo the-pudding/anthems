@@ -75,7 +75,7 @@
 		});
 	};
 	const sectionEnter = () => {
-		$inIntro = true;
+		if ($entered) $inIntro = true;
 	};
 
 	$: videoVisible = $inIntro && step === 2;
@@ -90,7 +90,7 @@
 		: "";
 	$: imgAlt = step === 1 ? "Fergie" : "Whitney Houston";
 	$: imgVisible =
-		($inIntro || $inTitle) && (step === undefined || step === 0 || step === 1);
+		$inTitle || ($inIntro && (step === undefined || step === 0 || step === 1));
 
 	onMount(async () => {
 		playableText();
@@ -121,10 +121,10 @@
 </script>
 
 <section id="intro" use:inView on:enter={sectionEnter}>
-	<!-- <div class="maya-vid-wrapper" class:visible={videoVisible}>
+	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
 		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
-	</div> -->
+	</div>
 
 	<div class="spacer" />
 	<div class="sticky">
@@ -156,12 +156,6 @@
 </section>
 
 <style>
-	/* section {
-		display: none;
-	} */
-	/* section.visible {
-		display: block;
-	} */
 	.spacer {
 		height: 5vh;
 	}
@@ -179,10 +173,12 @@
 		width: 100%;
 		height: 100vh;
 		z-index: 1;
+		visibility: hidden;
 		opacity: 0;
 		transition: opacity var(--1s);
 	}
 	.maya-vid-wrapper.visible {
+		visibility: visible;
 		opacity: 1;
 	}
 	.vid-overlay {
