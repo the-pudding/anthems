@@ -53,7 +53,6 @@
 	export let phraseI;
 
 	let mounted = false;
-	const { performer } = getPerformerData(id);
 
 	const faceSvgs = {
 		"alicia-keys": aliciaSvg,
@@ -132,6 +131,8 @@
 
 	$: name = id.split("_")[0];
 	$: highlight, updateStroke();
+	$: performer = getPerformerData(id);
+	$: updateStroke(performer);
 
 	function setMargins(performer) {
 		let bottomMargin = extraMarginsList.includes(performer) ? -0.75 : 0;
@@ -156,7 +157,7 @@
 			src={`assets/cutouts/${name}.png`}
 		/>
 	</div>
-	<p class:highlight={id === highlight}>{performer}</p>
+	<p class:highlight={id === highlight}>{performer.performer}</p>
 </button>
 <!-- <button on:click={onClick} style="margin: .5rem 0; pointer-events: auto"
 	>{name}</button
