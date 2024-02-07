@@ -21,14 +21,20 @@
 	$: noteworthy = featured.filter((d) => d.type === "our-pick");
 	$: lastPhrase = $currentPhraseI == 15;
 	$: innerHeight = 0;
-	$: console.log(innerHeight)
 </script>
 
 <svelte:window bind:innerHeight />
 
 {#if innerHeight}
-	<div class="wrapper" class:visible class:lastPhrase style="height: {innerHeight}px">
-		<button class="standard" on:click={selectStandard}>Standard <span>{@html play}</span></button>
+	<div
+		class="wrapper"
+		class:visible
+		class:lastPhrase
+		style="height: {innerHeight}px"
+	>
+		<button class="standard" on:click={selectStandard}
+			>Standard <span>{@html play}</span></button
+		>
 
 		{#if top.length}
 			<h3>Top divas</h3>

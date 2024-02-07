@@ -6,11 +6,11 @@
  * 	on:enter={() => console.log("enter")}
  * 	on:exit={() => console.log("exit")}
  * >
- * 
+ *
  * optional params { root, top, bottom, progress }
  * top and bottom are numbers
  * use:inView={{ bottom: 100 }} // 100 pixels from bottom of viewport
- * 
+ *
  * progress is a boolean for incremental updates
  * use:inView={{ progres: true }}
  */
@@ -33,11 +33,12 @@ export default function inView(node, params = {}) {
 		const marginTop = top ? top * -1 : 0;
 		const marginBottom = bottom ? bottom * -1 : 0;
 		const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+		console.log({ rootMargin });
 		const options = { root, rootMargin };
 		if (observer) observer.disconnect();
-		observer = new IntersectionObserver(handleIntersect, options);;
+		observer = new IntersectionObserver(handleIntersect, options);
 		observer.observe(node);
-	}
+	};
 
 	setObserver(params);
 

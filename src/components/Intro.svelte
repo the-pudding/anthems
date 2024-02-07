@@ -21,6 +21,7 @@
 	let data;
 	let step;
 	let videoEl;
+	let sectionEl;
 
 	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
@@ -75,12 +76,19 @@
 		});
 	};
 	const sectionEnter = () => {
-		if ($entered) $inIntro = true;
+		if ($entered) {
+			$inIntro = true;
+		}
+	};
+	const sectionExit = () => {
+		if ($entered) {
+			$inIntro = false;
+		}
 	};
 
 	$: videoVisible = $inIntro && step === 2;
 	$: if (videoVisible) playVideo();
-	$: if (!videoVisible) pauseVideo();
+	$: if (!videoVisible || !$inIntro) pauseVideo();
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
 	$: showStandard = step >= 4;
 	$: imgSrc = imgVisible
@@ -120,7 +128,13 @@
 	});
 </script>
 
-<section id="intro" use:inView on:enter={sectionEnter}>
+<section
+	id="intro"
+	bind:this={sectionEl}
+	use:inView={{ top: 250 }}
+	on:enter={sectionEnter}
+	on:exit={sectionExit}
+>
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
 		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
