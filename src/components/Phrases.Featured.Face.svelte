@@ -1,8 +1,10 @@
 <script>
+	import getPerformerData from "$utils/getPerformerData.js";
 	import aliciaSvg from "$svg/silhouettes/silhouettes_alicia-keys.svg";
 	import anthonySvg from "$svg/silhouettes/silhouettes_anthony-hamilton.svg";
 	import arethaSvg from "$svg/silhouettes/silhouettes_aretha-franklin.svg";
 	import beyonceSvg from "$svg/silhouettes/silhouettes_beyonce.svg";
+	import billySvg from "$svg/silhouettes/silhouettes_billy-joel.svg";
 	import carrieSvg from "$svg/silhouettes/silhouettes_carrie-underwood.svg";
 	import chakaSvg from "$svg/silhouettes/silhouettes_chaka-khan.svg";
 	import cherSvg from "$svg/silhouettes/silhouettes_cher.svg";
@@ -51,12 +53,14 @@
 	export let phraseI;
 
 	let mounted = false;
+	const { performer } = getPerformerData(id);
 
 	const faceSvgs = {
 		"alicia-keys": aliciaSvg,
 		"anthony-hamilton": anthonySvg,
 		"aretha-franklin": arethaSvg,
 		beyonce: beyonceSvg,
+		"billy-joel": billySvg,
 		"carrie-underwood": carrieSvg,
 		"chaka-khan": chakaSvg,
 		cher: cherSvg,
@@ -97,6 +101,10 @@
 		usher: usherSvg,
 		"whitney-houston": whitneySvg
 	};
+	const extraMarginsList = ["Anthony Hamilton", "Hunter Hayes", "Fantasia", "Luke Bryan", "John Legend", "Scotty Mccreery",
+								"Aretha Franklin", "Usher", "Marvin Gaye", "John Oates", "Christina Aguilera", "Kelsey Grammer",
+								"Trace Adkins", "Taylor Swift", "Demi Lovato", "Carrie Underwood", "Peabo Bryson", "Lady Gaga",
+								"Mary J. Blige", "Billy Joel"]
 
 	const onClick = () => {
 		if (highlight === id) {
@@ -125,6 +133,11 @@
 	$: name = id.split("_")[0];
 	$: highlight, updateStroke();
 
+	function setMargins(performer) {
+		let bottomMargin = extraMarginsList.includes(performer) ? -0.75 : 0;
+		return bottomMargin;
+	}
+
 	onMount(() => {
 		mounted = true;
 		updateStroke();
@@ -132,15 +145,18 @@
 </script>
 
 <button class="pic" on:click={onClick}>
-	<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
-		{@html faceSvgs[name]}
+	<div class="pic-wrapper" style="margin-bottom:{setMargins(performer)}rem">
+		<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
+			{@html faceSvgs[name]}
+		</div>
+	
+		<img
+			alt={`headshot of ${_.startCase(name)}`}
+			class:highlight={id === highlight}
+			src={`assets/cutouts/${name}.png`}
+		/>
 	</div>
-
-	<img
-		alt={`headshot of ${_.startCase(name)}`}
-		class:highlight={id === highlight}
-		src={`assets/cutouts/${name}.png`}
-	/>
+	<p class:highlight={id === highlight}>{performer}</p>
 </button>
 <!-- <button on:click={onClick} style="margin: .5rem 0; pointer-events: auto"
 	>{name}</button
@@ -157,11 +173,21 @@
 		cursor: pointer;
 	}
 	.pic {
-		width: 6rem;
+		width: 7rem;
 		position: relative;
 		background: none;
 		padding: 0;
 		pointer-events: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.pic:hover p {
+		font-weight: 700;
+	}
+	.pic-wrapper {
+		width: 6rem;
+		position: relative;
 	}
 	.crown {
 		position: absolute;
@@ -186,6 +212,15 @@
 	:global(.svg-wrapper svg) {
 		width: 100%;
 		height: 100%;
+	}
+	p {
+		color: var(--color-grey-blue);
+		font-size: var(--14px);
+		margin: 0 auto 1rem auto;
+	}
+	p.highlight {
+		color: var(--color-red);
+		font-weight: 700;
 	}
 
 	@media (max-width: 1000px) {
