@@ -97,7 +97,7 @@
 
 	<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 
-	<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
+	<Nav {sliderEl} />
 </section>
 
 <style>

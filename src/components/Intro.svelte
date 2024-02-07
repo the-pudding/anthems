@@ -118,8 +118,6 @@
 		};
 		request.send();
 	});
-
-	$: console.log({ step });
 </script>
 
 <section id="intro" use:inView on:enter={sectionEnter}>

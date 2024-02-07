@@ -27,11 +27,7 @@
 
 		{#each data as { id_start, similarity_score }}
 			{@const left = xScale(+similarity_score)}
-			{#if id_start === "billy-joel"}
-				<span style:left={`${left}px`}>billy-joel</span>
-			{:else}
-				<img src={`assets/cutouts/${id_start}.png`} style:left={`${left}px`} />
-			{/if}
+			<img src={`assets/cutouts/${id_start}.png`} style:left={`${left}px`} />
 		{/each}
 	</div>
 </div>
@@ -82,7 +78,7 @@
 		top: 40%;
 		transform: translate(0, -50%);
 		position: absolute;
-		height: 200px;
+		height: 150px;
 		pointer-events: auto;
 	}
 	.line {

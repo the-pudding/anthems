@@ -5,14 +5,15 @@
 	import { tick } from "svelte";
 	import Icon from "$components/helpers/Icon.svelte";
 	import { onMount } from "svelte";
+	import { scaleLinear } from "d3-scale";
 
-	export let lyrics;
 	export let sliderEl;
-	
+
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 	let selected;
 	let dropdownI;
 	let selectEl;
+	let progressWidth;
 
 	onMount(() => {
 		selectEl = document.querySelector("#nav-phrases");
@@ -33,41 +34,45 @@
 	};
 
 	const onChange = (i) => {
-		const match = phrases.find((el) => el.lyrics == i)
+		const match = phrases.find((el) => el.lyrics == i);
 		dropdownI = +match.i;
-		
 		sliderEl.jump(dropdownI);
-	}
+	};
 
-	function updateDropdown(currentPhraseI) {
+	function updateDropdown() {
 		if (selectEl) {
 			const options = Array.from(selectEl.options);
-			const optionToSelect = options.find(item => item.value == phrases[currentPhraseI].lyrics);
+			const optionToSelect = options.find(
+				(item) => item.value == phrases[$currentPhraseI].lyrics
+			);
 			optionToSelect.selected = true;
-			dropdownI = currentPhraseI;
+			dropdownI = $currentPhraseI;
 		}
 	}
-	$: updateDropdown($currentPhraseI);
-	$: pulse = $currentPhraseI == 15 ? true : false;
+	$: xScale = scaleLinear()
+		.domain([0, 15])
+		.range([0, progressWidth || 0]);
+	$: $currentPhraseI, updateDropdown();
+	$: pulse = $locked && $currentPhraseI == 15;
 </script>
 
 <div class="progress">
-	<div class="bar-wrapper">
+	<div class="bar-wrapper" bind:clientWidth={progressWidth}>
 		<div class="horiz-bar"></div>
-		<div class="select-wrapper" style="left: calc({dropdownI*4.5}%)">
-			<select bind:value={selected} on:change={() => onChange(selected)} name="phrases" id="nav-phrases">
+		<div class="select-wrapper" style={`left: ${xScale($currentPhraseI)}px`}>
+			<select
+				bind:value={selected}
+				on:change={() => onChange(selected)}
+				name="phrases"
+				id="nav-phrases"
+			>
 				{#each phrases as phrase}
 					<option value={phrase.lyrics}>{phrase.lyrics}</option>
 				{/each}
 			</select>
 		</div>
 	</div>
-	<!-- {#each _.range(16) as phrase}
-		{@const active = phrase === $currentPhraseI}
-		<div class="circle" class:active on:click={() => onClick(phrase)}>
-			{active ? lyrics : ""}
-		</div>
-	{/each} -->
+
 	<div class="skip">
 		<div class="circle" class:pulse on:click={skip}>
 			<Icon name="chevron-down" size="1.75rem" fill="none" />
@@ -90,7 +95,7 @@
 		pointer-events: auto;
 	}
 	.bar-wrapper {
-		width:calc(100% - 8rem);
+		width: calc(100% - 8rem);
 		height: 2rem;
 		position: relative;
 	}
@@ -99,12 +104,12 @@
 		width: 100%;
 		top: 50%;
 		height: 2rem;
-		transform: translate(0, -50%);
+		transform: translate(-50%, -50%);
 		width: 7rem;
 		background: var(--color-fg);
 		border-radius: 1rem;
 		z-index: 999;
-		transition: left 0.5s linear;
+		transition: left calc(var(--1s) * 0.5) linear;
 	}
 	select {
 		width: 100%;
@@ -152,7 +157,7 @@
 	.skip {
 		position: relative;
 		width: 8rem;
-		margin: 0 0 0 3rem;
+		margin: 0 0 0 6rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -161,10 +166,10 @@
 		background: var(--color-red);
 		width: 1.75rem;
 		height: 1.75rem;
-		margin-right: 0.5rem
+		margin-right: 0.5rem;
 	}
 	.pulse {
-		animation: pulse-animation 1.25s infinite;
+		animation: pulse-animation calc(var(--1s) * 1.25) infinite;
 	}
 	.skip p {
 		font-family: var(--sans);
@@ -172,13 +177,13 @@
 
 	@keyframes pulse-animation {
 		0% {
-			transform: scale(1)
+			transform: scale(1);
 		}
 		50% {
-			transform: scale(1.25)
+			transform: scale(1.25);
 		}
 		100% {
-			transform: scale(1)
+			transform: scale(1);
 		}
 	}
 
