@@ -5,15 +5,15 @@
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import copy from "$data/copy.json";
-	import { ready, playing, soundOn } from "$stores/misc.js";
+	import { ready, playing, soundOn, inIntro, inTitle } from "$stores/misc.js";
 	import { fade } from "svelte/transition";
-	import scrollY from "$stores/scrollY.js";
 	import play from "$svg/play.svg";
+	import inView from "$actions/inView.js";
 
 	let allPitch;
 	let data;
 	let step;
-	let video;
+	let videoEl;
 
 	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
@@ -40,17 +40,14 @@
 			};
 		});
 	};
-	const stepChange = () => {
-		// if (step === undefined) {
-		// 	if ($scrollY > 3000) direction = "down";
-		// 	else direction = "up";
-		// }
-		if (step === 2) {
-			setTimeout(() => {
-				video = document.getElementById("maya-vid");
-				video.play();
-			}, 1500);
-		}
+	const playVideo = () => {
+		setTimeout(() => {
+			videoEl.currentTime = 0;
+			videoEl.play();
+		}, 500);
+	};
+	const pauseVideo = () => {
+		if (videoEl) videoEl.pause();
 	};
 	const playableText = () => {
 		const playableText = document.querySelectorAll(`#intro span.playable`);
@@ -68,9 +65,14 @@
 			el.insertAdjacentHTML("beforeend", play);
 		});
 	};
+	const sectionEnter = () => {
+		$inIntro = true;
+	};
 
+	$: videoVisible = $inIntro && step === 2;
+	$: if (videoVisible) playVideo();
+	$: if (!videoVisible) pauseVideo();
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
-	$: hideAll = step === 2;
 	$: showStandard = step >= 4;
 	$: imgSrc = imgVisible
 		? `assets/three-color/${
@@ -78,37 +80,53 @@
 		  }_cutout.png`
 		: "";
 	$: imgAlt = step === 1 ? "Fergie" : "Whitney Houston";
-	$: imgVisible = step === undefined || step === 0 || step === 1;
-	$: step, stepChange();
+	$: imgVisible =
+		($inIntro || $inTitle) && (step === undefined || step === 0 || step === 1);
 
 	onMount(async () => {
 		playableText();
+
+		// Load line data
 		const isMobile = $viewport.width <= 600;
 		const module = await import(
 			`$data/pitch/${isMobile ? "mobile" : "desktop"}/full.csv`
 		);
 		allPitch = castFloat(module.default);
 		data = prepareLineData();
-		$ready = true;
+
+		// Load Maya video
+		const src = "/assets/video/maya-brave.mp4";
+		const request = new XMLHttpRequest();
+		request.open("GET", src, true);
+		request.responseType = "blob";
+		request.onload = function () {
+			if (this.status === 200) {
+				const videoBlob = this.response;
+				const videoUrl = URL.createObjectURL(videoBlob);
+				videoEl.src = videoUrl;
+				$ready = true;
+			}
+		};
+		request.send();
 	});
 </script>
 
-<section id="intro" class:visible={$ready}>
-	{#if step === 2 && step !== undefined}
-		<div
-			transition:fade={{ delay: 0, duration: 1000 }}
-			class="maya-vid-wrapper"
-		>
-			<div class="vid-overlay"></div>
-			<!-- <video id="maya-vid" muted={!$soundOn}>
-				<source src="/assets/video/maya-brave.mp4" type="video/mp4" />
-			</video> -->
-		</div>
-	{/if}
+<section id="intro" class:visible={$ready} use:inView on:enter={sectionEnter}>
+	<div class="maya-vid-wrapper" class:visible={videoVisible}>
+		<div class="vid-overlay"></div>
+		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
+	</div>
+
 	<div class="spacer" />
 	<div class="sticky">
 		{#if data}
-			<Lines {data} intro={true} {showStandard} {isolate} {hideAll} />
+			<Lines
+				{data}
+				intro={true}
+				{showStandard}
+				{isolate}
+				hideAll={videoVisible}
+			/>
 		{:else}
 			<p>Loading...</p>
 		{/if}
@@ -124,7 +142,7 @@
 	</Scrolly>
 
 	{#key imgSrc}
-		<!-- <img src={imgSrc} class:visible={imgVisible} alt={imgAlt} transition:fade /> -->
+		<img src={imgSrc} class:visible={imgVisible} alt={imgAlt} transition:fade />
 	{/key}
 </section>
 
@@ -152,6 +170,11 @@
 		width: 100%;
 		height: 100vh;
 		z-index: 1;
+		opacity: 0;
+		transition: opacity var(--1s);
+	}
+	.maya-vid-wrapper.visible {
+		opacity: 1;
 	}
 	.vid-overlay {
 		position: fixed;

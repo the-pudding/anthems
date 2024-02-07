@@ -2,20 +2,22 @@
 	import { onMount } from "svelte";
 	import copy from "$data/copy.json";
 	import Icon from "$components/helpers/Icon.svelte";
-	import play from "$svg/play.svg";
-	import { soundOn, ready } from "$stores/misc.js";
+	import { soundOn, ready, inIntro, inTitle } from "$stores/misc.js";
+	import inView from "$actions/inView.js";
 
-	onMount(() => {
-		const enableAudio = document.getElementById("enable-audio");
-	});
-
-	// TODO: add page leaving logic with soundOn
 	const onMute = () => {
 		$soundOn = !$soundOn;
 	};
+	const sectionEnter = () => {
+		$inIntro = false;
+		$inTitle = true;
+	};
+	const sectionExit = () => {
+		$inTitle = false;
+	};
 </script>
 
-<section id="title">
+<section id="title" use:inView on:enter={sectionEnter} on:exit={sectionExit}>
 	<div class="hed">{@html copy.hed}</div>
 	<div class="byline">{@html copy.byline}</div>
 	<div class="scroll" class:visible={$ready}>
@@ -34,7 +36,7 @@
 
 <style>
 	section {
-		height: calc(100vh - 6rem);
+		height: 100vh;
 		position: relative;
 		padding: 3rem 3rem 0 3rem;
 	}

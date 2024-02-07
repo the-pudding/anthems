@@ -3,7 +3,7 @@
 	import ids from "$data/ids.csv";
 	import Row from "$components/Heatmap.Row.svelte";
 	import copy from "$data/copy.json";
-	import { playing, ready } from "$stores/misc.js";
+	import { playing } from "$stores/misc.js";
 
 	let sortedFilteredIds = ids.filter((d) => d.id !== "standard");
 	let activeColumn;
@@ -25,7 +25,7 @@
 	<p>{@html copy.transition}</p>
 </div>
 
-<section id="heatmap" class:visible={$ready}>
+<section id="heatmap">
 	<div class="sticky">
 		<Filters bind:sortedFilteredIds />
 		<div class="top-row">
@@ -51,11 +51,7 @@
 <style>
 	section {
 		width: 100%;
-		display: none;
 		margin-top: 8rem;
-	}
-	section.visible {
-		display: block;
 	}
 	#transition-to-heatmap {
 		padding-top: 4rem;

@@ -9,8 +9,7 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		ready,
-		outOfIntro
+		inIntro
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
@@ -31,7 +30,6 @@
 	// findTopDivas();
 
 	let sliderEl;
-	let tapVisible;
 
 	const onTap = ({ detail }) => {
 		if ($playing) $playing = undefined;
@@ -55,11 +53,7 @@
 		}
 	};
 	const sectionEnter = () => {
-		$outOfIntro = true;
-		tapVisible = true;
-	};
-	const sectionExit = () => {
-		tapVisible = false;
+		$inIntro = false;
 	};
 
 	const slides = copy.slides.map((d) => ({
@@ -77,13 +71,7 @@
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
 </script>
 
-<section
-	id="phrase-by-phrase"
-	class:visible={$ready}
-	use:inView
-	on:enter={sectionEnter}
-	on:exit={sectionExit}
->
+<section id="phrase-by-phrase" use:inView on:enter={sectionEnter}>
 	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
 		{#each slides as slide}
 			{@const active = +slide.i === $currentSlideI}
@@ -106,24 +94,16 @@
 		{/each}
 	</Slider>
 
+	<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
+
 	<Nav lyrics={currentPhrase.lyrics} {sliderEl} />
-	<Tap
-		on:tap={onTap}
-		full={true}
-		enableKeyboard={true}
-		visible={tapVisible}
-		size={"50%"}
-	/>
 </section>
 
 <style>
 	section {
 		height: 100vh;
 		overflow: hidden;
-		display: none;
-	}
-	section.visible {
-		display: block;
+		position: relative;
 	}
 	.slide-wrapper {
 		opacity: 0.5;
