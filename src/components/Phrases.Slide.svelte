@@ -118,7 +118,7 @@
 
 <style>
 	.slide {
-		background: var(--color-dark-blue);
+		background: var(--color-extra-dark-blue);
 		border: 3px solid var(--color-grey-blue);
 		height: 100%;
 		padding: 1rem 2rem;
