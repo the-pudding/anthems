@@ -45,7 +45,7 @@
 			});
 	};
 	const onNewStep = () => {
-		highlight = phrase.steps[$currentStepI].highlight;
+		highlight = undefined;
 	};
 	const load = async () => {
 		const isMobile = $viewport.width <= 600;

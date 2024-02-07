@@ -21,7 +21,7 @@
 </script>
 
 <div class="wrapper" class:visible>
-	<button class="standard" on:click={selectStandard}>Standard</button>
+	<button class="standard" on:click={selectStandard}>Standard </button>
 
 	{#if top.length}
 		<h3>Top divas</h3>
@@ -76,7 +76,6 @@
 		border-radius: 0;
 		color: var(--color-fg);
 	}
-
 	@media (max-width: 1000px) {
 		.wrapper {
 			display: flex;

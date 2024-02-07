@@ -118,6 +118,8 @@
 		};
 		request.send();
 	});
+
+	$: console.log({ step });
 </script>
 
 <section id="intro" use:inView on:enter={sectionEnter}>
@@ -163,7 +165,7 @@
 		position: sticky;
 		z-index: 1;
 		height: 500px;
-		top: 10vh;
+		top: 10vh; /* maybe don't do this */
 		padding: 0 2rem;
 	}
 	.maya-vid-wrapper {

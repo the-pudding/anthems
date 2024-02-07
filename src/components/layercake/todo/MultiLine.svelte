@@ -3,9 +3,10 @@
   Generates an SVG multi-series line chart. It expects your data to be an array of objects, each with a `values` key that is an array of data objects.
  -->
 <script>
-	import { getContext, onMount } from "svelte";
+	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
+	import { currentPhraseI, currentStepI } from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
@@ -55,8 +56,10 @@
 		});
 		return segments;
 	};
+
 	const calculateSegmentLengths = () => {
 		if (intro) return;
+
 		featuredIds.forEach((id) => {
 			const segments = Array.from(
 				document.querySelectorAll(`#${id}_line_phrase${phraseI} .animated`)
@@ -66,11 +69,8 @@
 		});
 	};
 
-	$: $viewport.width, calculateSegmentLengths();
-
-	onMount(() => {
-		calculateSegmentLengths();
-	});
+	$: if ($currentPhraseI === 0 && $currentStepI > 0) calculateSegmentLengths();
+	$: $viewport.width, $currentPhraseI, calculateSegmentLengths();
 </script>
 
 {#key $xScale.range()}
