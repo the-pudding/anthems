@@ -120,7 +120,6 @@
 	:global(.standard span svg path) {
 		fill: var(--color-fg);
 	}
-
 	@media (max-width: 1000px) {
 		.wrapper {
 			display: flex;

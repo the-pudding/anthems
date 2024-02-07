@@ -13,10 +13,8 @@
 	export let arrowStroke = "#000";
 	export let arrowStrokeWidth = "2";
 	export let arrowPosition = "center"; // start, center, end
-	export let visible;
 
 	const dispatch = createEventDispatcher();
-	let innerHeight;
 
 	$: getW = (dir) =>
 		["left", "right"].includes(dir) ? size : full ? "100%" : size;
@@ -37,9 +35,9 @@
 	);
 </script>
 
-<svelte:window on:keydown={onKeyDown} bind:innerHeight />
+<svelte:window on:keydown={onKeyDown} />
 
-<section class:debug style="height: {innerHeight}px;">
+<section class:debug>
 	{#each directions as dir}
 		<button
 			on:click={dispatch("tap", dir)}
@@ -47,7 +45,6 @@
 			aria-label={dir}
 			class="{dir} {arrowPosition}"
 			class:full
-			class:visible
 			disabled={disable.includes(dir)}
 		>
 			{#if visibleArrows.includes(dir)}
@@ -65,7 +62,7 @@
 
 <style>
 	section {
-		position: fixed;
+		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -82,12 +79,8 @@
 		outline: none;
 		border: none;
 		box-shadow: none;
-		pointer-events: none;
-	}
-	button.visible {
 		pointer-events: auto;
 	}
-
 	button:disabled {
 		opacity: 0.2;
 		cursor: not-allowed;

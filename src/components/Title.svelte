@@ -1,29 +1,45 @@
 <script>
-	import { onMount } from "svelte";
 	import copy from "$data/copy.json";
 	import Icon from "$components/helpers/Icon.svelte";
-	import play from "$svg/play.svg";
-	import { soundOn, ready } from "$stores/misc.js";
+	import {
+		soundOn,
+		userMuted,
+		loaded,
+		inIntro,
+		inTitle,
+		entered
+	} from "$stores/misc.js";
+	import inView from "$actions/inView.js";
+	import { tick } from "svelte";
 
-	onMount(() => {
-		const enableAudio = document.getElementById("enable-audio");
-	});
-
-	// TODO: add page leaving logic with soundOn
 	const onMute = () => {
+		$userMuted = !$userMuted;
 		$soundOn = !$soundOn;
+	};
+	const sectionEnter = () => {
+		if ($entered) {
+			$inIntro = false;
+			$inTitle = true;
+		}
+	};
+	const sectionExit = () => {
+		if ($entered) {
+			$inTitle = false;
+		}
+	};
+	const enter = async () => {
+		$entered = true;
+		await tick();
+		const introEl = document.querySelector("#intro");
+		introEl.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
 </script>
 
-<section id="title">
+<section id="title" use:inView on:enter={sectionEnter} on:exit={sectionExit}>
 	<div class="hed">{@html copy.hed}</div>
 	<div class="byline">{@html copy.byline}</div>
-	<div class="scroll" class:visible={$ready}>
-		<div>Scroll</div>
-		<span class="icon">
-			<Icon name="chevron-down" size="4rem" fill="none" />
-		</span>
-	</div>
+
+	<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
 
 	<button class="icon mute" on:click={onMute}>
 		{#key $soundOn}
@@ -34,9 +50,10 @@
 
 <style>
 	section {
-		height: calc(100vh - 6rem);
+		height: 100vh;
 		position: relative;
 		padding: 3rem 3rem 0 3rem;
+		margin-bottom: 3rem;
 	}
 	:global(h1) {
 		font-family: "Newsagent";
@@ -55,24 +72,24 @@
 	.byline {
 		font-family: var(--sans);
 	}
-	.scroll {
-		position: absolute;
-		bottom: 3rem;
-		text-transform: uppercase;
-		font-family: var(--sans);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	button.begin {
 		visibility: hidden;
+		margin-top: 3rem;
+		font-size: 1.5rem;
+		font-family: var(--sans);
+		background: var(--color-fg);
+		color: var(--color-bg);
 	}
-	.scroll.visible {
+	button.begin:hover {
+		background: var(--color-grey-blue);
+	}
+	button.begin.visible {
 		visibility: visible;
-		animation: bounce var(--1s) infinite;
 	}
+
 	.icon {
 		color: var(--color-grey-blue);
 	}
-
 	.mute {
 		position: fixed;
 		top: 2rem;
@@ -80,19 +97,6 @@
 		background: none;
 		z-index: 10;
 	}
-
-	@keyframes bounce {
-		0% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-0.5rem);
-		}
-		100% {
-			transform: translateY(0);
-		}
-	}
-
 	@media (max-width: 600px) {
 		.hed {
 			font-size: 1rem;

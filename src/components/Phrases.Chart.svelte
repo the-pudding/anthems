@@ -1,6 +1,7 @@
 <script>
 	import Slide from "$components/helpers/Slider.Slide.svelte";
 	import BarChart from "$components/BarChart.svelte";
+	import Spectrum from "$components/Spectrum.svelte";
 	import divaByEvent from "$data/diva_by_event.csv";
 	import divaByGenre from "$data/diva_by_genre.csv";
 	import divaByPhrase from "$data/diva_by_phrase.csv";
@@ -55,6 +56,8 @@
 				showNumber={true}
 				showLegend={false}
 			/>
+		{:else if id === "repeat"}
+			<Spectrum title={"How Similar Repeat Performers are to Themselves"} />
 		{/if}
 	</div>
 </Slide>

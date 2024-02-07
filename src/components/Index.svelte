@@ -6,13 +6,29 @@
 	import Audio from "$components/Audio.svelte";
 	import Methods from "$components/Methods.svelte";
 	import Footer from "$components/Footer.svelte";
-	import { locked } from "$stores/misc.js";
+	import { locked, entered, ios, userMuted, soundOn } from "$stores/misc.js";
+	import { onMount } from "svelte";
+
+	onMount(() => {
+		$ios = !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
+
+		document.addEventListener("visibilitychange", (event) => {
+			if (document.visibilityState == "visible") {
+				if (!$userMuted) $soundOn = true;
+			} else {
+				$soundOn = false;
+			}
+		});
+	});
 </script>
 
 <article>
-	<Title />
-	<Intro />
-	<div class:locked={$locked}>
+	<div class="start" class:locked={!$entered}>
+		<Title />
+		<Intro />
+	</div>
+
+	<div class="middle" class:locked={$locked} class:visible={$entered}>
 		<Phrases />
 		<Heatmap />
 		<Methods />
@@ -25,11 +41,20 @@
 	article {
 		padding: 0;
 	}
-	div {
-		height: 100vh;
+	.start {
+		height: auto;
 		overflow: visible;
 	}
+	.middle {
+		height: 100vh;
+		display: none;
+		overflow: visible;
+	}
+	.middle.visible {
+		display: block;
+	}
 	div.locked {
+		height: 100vh;
 		overflow: hidden;
 	}
 

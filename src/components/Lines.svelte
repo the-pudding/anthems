@@ -53,12 +53,12 @@
 		<Svg>
 			<AxisX
 				gridlines={false}
-				ticks={intro ? 4 : 0}
+				ticks={intro && !hideAll ? 4 : 0}
 				formatTick={(d) => `${d} sec`}
 			/>
 			<AxisY
 				gridlines={false}
-				ticks={intro ? 2 : 0}
+				ticks={intro && !hideAll ? 2 : 0}
 				formatTick={(d) => `${d} Hz`}
 			/>
 			{#if showStandard}

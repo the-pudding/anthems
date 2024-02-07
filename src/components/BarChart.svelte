@@ -20,13 +20,13 @@
 	let displayData = data;
 	let barEls = [];
 
-	const avg = _.meanBy(
+	const labelWidth = "7.25rem";
+
+	$: avg = _.meanBy(
 		ids.filter((d) => d.id !== "standard"),
 		(d) => +d["overall_diva"]
 	);
-	const max = +_.maxBy(data, (d) => +d[xKey])[xKey];
-	const labelWidth = "7.25rem";
-
+	$: max = +_.maxBy(data, (d) => +d[xKey])[xKey];
 	$: xScale = scaleLinear().domain([0, max]).range([0, maxBarEl?.clientWidth]);
 	$: maxBarEl = _.maxBy(barEls, (d) => d.clientWidth);
 	$: if (animate && active)
