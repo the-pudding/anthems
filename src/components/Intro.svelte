@@ -160,7 +160,7 @@
 		position: sticky;
 		z-index: 1;
 		height: 500px;
-		top: 0rem;
+		top: 10vh;
 		padding: 0 2rem;
 	}
 	.maya-vid-wrapper {
