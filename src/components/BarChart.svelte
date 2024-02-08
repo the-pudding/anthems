@@ -4,6 +4,7 @@
 	import { scaleLinear } from "d3-scale";
 	import { flip } from "svelte/animate";
 	import { cubicOut } from "svelte/easing";
+	import { onMount } from "svelte";
 
 	export let data;
 	export let title;
@@ -27,11 +28,13 @@
 		(d) => +d["overall_diva"]
 	);
 	$: max = +_.maxBy(data, (d) => +d[xKey])[xKey];
-	$: xScale = scaleLinear().domain([0, max]).range([0, maxBarEl?.clientWidth]);
-	$: maxBarEl = _.maxBy(barEls, (d) => d.clientWidth);
+	$: xScale = scaleLinear().domain([0, max]).range([0, maxWidth]);
+	$: maxWidth = _.maxBy(barEls, (d) => d.clientWidth)?.clientWidth;
 	$: if (animate && active)
 		displayData = _.orderBy(data, (d) => +d[xKey], "desc");
 	$: if (animate && !active) displayData = data;
+
+	// $: console.log({ title, maxWidth });
 </script>
 
 <div class="bar-chart-inline">
