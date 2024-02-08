@@ -10,7 +10,8 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		loaded
+		loaded,
+		currentTime
 	} from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
@@ -105,9 +106,11 @@
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
 						{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI}
+							{@const started = $currentTime > 0}
+							{@const playingMe =
+								$playing && $playing.id === group.id && started}
 							{@const visible =
-								highlighted ||
-								(isolated && $playing && $playing.id === group.id)}
+								(isolated && playingMe) || (highlighted && started)}
 							<path
 								class={"animated"}
 								class:visible

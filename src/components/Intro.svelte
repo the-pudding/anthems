@@ -54,10 +54,10 @@
 	};
 	const playVideo = () => {
 		if (!videoEl) return;
-		setTimeout(() => {
-			videoEl.currentTime = 0;
-			videoEl.play();
-		}, 500);
+		// setTimeout(() => {
+		videoEl.currentTime = 0;
+		videoEl.play();
+		// }, 500);
 	};
 	const pauseVideo = () => {
 		if (!videoEl) return;
