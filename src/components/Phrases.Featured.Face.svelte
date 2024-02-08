@@ -51,6 +51,7 @@
 	export let id;
 	export let highlight;
 	export let phraseI;
+	export let clickable = true;
 
 	let mounted = false;
 	const { performer } = getPerformerData(id);
@@ -101,12 +102,31 @@
 		usher: usherSvg,
 		"whitney-houston": whitneySvg
 	};
-	const extraMarginsList = ["Anthony Hamilton", "Hunter Hayes", "Fantasia", "Luke Bryan", "John Legend", "Scotty Mccreery",
-								"Aretha Franklin", "Usher", "Marvin Gaye", "John Oates", "Christina Aguilera", "Kelsey Grammer",
-								"Trace Adkins", "Taylor Swift", "Demi Lovato", "Carrie Underwood", "Peabo Bryson", "Lady Gaga",
-								"Mary J. Blige", "Billy Joel"]
+	const extraMarginsList = [
+		"Anthony Hamilton",
+		"Hunter Hayes",
+		"Fantasia",
+		"Luke Bryan",
+		"John Legend",
+		"Scotty Mccreery",
+		"Aretha Franklin",
+		"Usher",
+		"Marvin Gaye",
+		"John Oates",
+		"Christina Aguilera",
+		"Kelsey Grammer",
+		"Trace Adkins",
+		"Taylor Swift",
+		"Demi Lovato",
+		"Carrie Underwood",
+		"Peabo Bryson",
+		"Lady Gaga",
+		"Mary J. Blige",
+		"Billy Joel"
+	];
 
 	const onClick = () => {
+		if (!clickable) return;
 		if (highlight === id) {
 			highlight = undefined;
 			$playing = undefined;
@@ -125,7 +145,7 @@
 			const id = svg.id.replace("_face", "");
 			const path = svg.querySelector("path");
 			path.style.stroke =
-			highlight === id ? "var(--color-red)" : "var(--color-fg)";
+				highlight === id ? "var(--color-red)" : "var(--color-fg)";
 			path.style.strokeWidth = highlight === id ? "30px" : "15px";
 		});
 	};
@@ -149,18 +169,16 @@
 		<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
 			{@html faceSvgs[name]}
 		</div>
-	
+
 		<img
 			alt={`headshot of ${_.startCase(name)}`}
 			class:highlight={id === highlight}
+			class:clickable
 			src={`assets/cutouts/${name}.png`}
 		/>
 	</div>
-	<p class:highlight={id === highlight}>{performer}</p>
+	<p class:hide={!clickable} class:highlight={id === highlight}>{performer}</p>
 </button>
-<!-- <button on:click={onClick} style="margin: .5rem 0; pointer-events: auto"
-	>{name}</button
-> -->
 
 <style>
 	img {
@@ -168,9 +186,12 @@
 		z-index: 2;
 		width: 100%;
 	}
-	img:not(.highlight):hover {
+	img.clickable:not(.highlight):hover {
 		opacity: 0.5;
 		cursor: pointer;
+	}
+	img:not(.clickable):hover {
+		cursor: default;
 	}
 	.pic {
 		width: 7rem;
@@ -183,6 +204,7 @@
 		align-items: center;
 	}
 	.pic:hover p {
+		visibility: visible;
 		font-weight: 700;
 	}
 	.pic-wrapper {
@@ -221,6 +243,9 @@
 	p.highlight {
 		color: var(--color-red);
 		font-weight: 700;
+	}
+	p.hide {
+		visibility: hidden;
 	}
 
 	@media (max-width: 1000px) {
