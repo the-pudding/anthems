@@ -25,6 +25,10 @@
 
 	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
+	const featuredIds = [
+		"whitney-houston_super-bowl_1991",
+		"fergie_nba-allstar-game_2018"
+	];
 
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
@@ -86,7 +90,7 @@
 		}
 	};
 
-	$: videoVisible = $inIntro && step === 2;
+	$: videoVisible = $inIntro && !$inTitle && step === 2;
 	$: if (videoVisible) playVideo();
 	$: if (!videoVisible || !$inIntro) pauseVideo();
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
@@ -148,6 +152,7 @@
 				intro={true}
 				{showStandard}
 				{isolate}
+				{featuredIds}
 				hideAll={videoVisible}
 			/>
 		{:else}
