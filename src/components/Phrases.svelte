@@ -8,13 +8,10 @@
 		currentSlideI,
 		currentPhraseI,
 		currentStepI,
-		playing,
-		inIntro,
-		entered
+		playing
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import ids from "$data/ids.csv";
-	import inView from "$actions/inView.js";
 	import _ from "lodash";
 
 	// const findTopDivas = () => {
@@ -53,9 +50,6 @@
 			}
 		}
 	};
-	const sectionEnter = () => {
-		if ($entered) $inIntro = false;
-	};
 
 	const slides = copy.slides.map((d) => ({
 		...d,
@@ -72,7 +66,7 @@
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
 </script>
 
-<section id="phrase-by-phrase" use:inView on:enter={sectionEnter}>
+<section id="phrase-by-phrase">
 	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
 		{#each slides as slide}
 			{@const active = +slide.i === $currentSlideI}

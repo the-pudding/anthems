@@ -5,7 +5,6 @@
 		soundOn,
 		userMuted,
 		loaded,
-		inIntro,
 		inTitle,
 		entered
 	} from "$stores/misc.js";
@@ -18,7 +17,6 @@
 	};
 	const sectionEnter = () => {
 		if ($entered) {
-			$inIntro = false;
 			$inTitle = true;
 		}
 	};

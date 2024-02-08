@@ -54,11 +54,21 @@
 	$: leftBtnLocked = currDivaPage == 0;
 	$: rightBtnLocked = currDivaCollection.length < 3;
 	$: divaTextHead = !lastPhrase && currDivaPage > 0 ? "Our Picks" : "Top Divas";
+	$: innerHeight = 0;
+</script>
 
 </script>
 
-<div class="wrapper" class:visible class:lastPhrase>
-	<button class="standard" on:click={selectStandard}>Standard <span>{@html play}</span></button>
+{#if innerHeight}
+	<div
+		class="wrapper"
+		class:visible
+		class:lastPhrase
+		style="height: {innerHeight}px"
+	>
+		<button class="standard" on:click={selectStandard}
+			>Standard <span>{@html play}</span></button
+		>
 
 	{#if totalDivaArray.length > 4}
 		<div class="pagination">

@@ -6,7 +6,13 @@
 	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
-	import { currentPhraseI, currentStepI } from "$stores/misc.js";
+	import {
+		currentPhraseI,
+		currentStepI,
+		playing,
+		loaded,
+		currentTime
+	} from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
@@ -45,7 +51,7 @@
 			segments.push({ data: currentSegment });
 		}
 
-		segments = segments.map(({ data }) => {
+		segments = segments.map(({ data }, i) => {
 			const duration = data[data.length - 1].timestamp - data[0].timestamp;
 			const delay = data[0].timestamp;
 			return {
@@ -54,22 +60,30 @@
 				delay
 			};
 		});
+
+		if (intro && id === "whitney-houston_super-bowl_1991") {
+			segments = segments.slice(-4);
+		} else if (intro && id === "fergie_nba-allstar-game_2018") {
+			segments = segments.slice(43, 47);
+		}
+
 		return segments;
 	};
-
 	const calculateSegmentLengths = () => {
-		if (intro) return;
-
 		featuredIds.forEach((id) => {
 			const segments = Array.from(
-				document.querySelectorAll(`#${id}_line_phrase${phraseI} .animated`)
+				document.querySelectorAll(
+					`#${id}_line_phrase${intro ? "_intro" : phraseI} .animated`
+				)
 			);
 			const lengths = segments.map((el) => el.getTotalLength());
 			segmentLengths[id] = lengths;
 		});
 	};
 
-	$: if ($currentPhraseI === 0 && $currentStepI > 0) calculateSegmentLengths();
+	$: if (!intro && $currentPhraseI === 0 && $currentStepI > 0)
+		calculateSegmentLengths();
+	$: if (intro && $loaded) calculateSegmentLengths();
 	$: $viewport.width, $currentPhraseI, calculateSegmentLengths();
 </script>
 
@@ -78,7 +92,7 @@
 		{#each $data as group}
 			{@const fade = highlight && group.id !== highlight}
 			{@const highlighted = highlight && group.id === highlight}
-			{@const isolated = isolate && group.id === isolate}
+			{@const isolated = intro && isolate && group.id === isolate}
 			{@const hide = hideAll ? true : isolate && group.id !== isolate}
 			<g id={`${group.id}_line_phrase${intro ? "_intro" : phraseI}`}>
 				<path
@@ -92,17 +106,24 @@
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
 						{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI}
+							{@const started = $currentTime > 0}
+							{@const playingMe =
+								$playing && $playing.id === group.id && started}
+							{@const visible =
+								(isolated && playingMe) || (highlighted && started)}
 							<path
-								class="animated"
-								class:visible={highlighted}
+								class={"animated"}
+								class:visible
 								d={generatePath(data)}
 								style:stroke-dasharray={`${
 									segmentLengths[group.id][segmentI]
 								}px`}
-								style:stroke-dashoffset={highlighted
+								style:stroke-dashoffset={visible
 									? "0"
 									: `${segmentLengths[group.id][segmentI]}px`}
-								style={`--duration: ${duration}s; --delay: ${delay}s;`}
+								style={`--duration: ${intro ? 0 : duration}s; --delay: ${
+									intro ? 0 : delay
+								}s;`}
 							/>
 						{/each}
 					</g>
@@ -130,7 +151,7 @@
 	}
 	path.isolated {
 		opacity: 1;
-		stroke: var(--color-red);
+		stroke: var(--color-fg);
 	}
 	path.highlighted {
 		opacity: 1;

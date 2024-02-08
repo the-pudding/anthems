@@ -16,14 +16,20 @@
 	import { fade } from "svelte/transition";
 	import play from "$svg/play.svg";
 	import inView from "$actions/inView.js";
+	import { base } from "$app/paths";
 
 	let allPitch;
 	let data;
 	let step;
 	let videoEl;
+	let sectionEl;
 
 	const steps = copy.intro;
 	const allIds = ids.map((d) => d.id);
+	const featuredIds = [
+		"whitney-houston_super-bowl_1991",
+		"fergie_nba-allstar-game_2018"
+	];
 
 	const castFloat = (arr) => {
 		return arr.map((obj) =>
@@ -49,10 +55,10 @@
 	};
 	const playVideo = () => {
 		if (!videoEl) return;
-		setTimeout(() => {
-			videoEl.currentTime = 0;
-			videoEl.play();
-		}, 500);
+		// setTimeout(() => {
+		videoEl.currentTime = 0;
+		videoEl.play();
+		// }, 500);
 	};
 	const pauseVideo = () => {
 		if (!videoEl) return;
@@ -75,12 +81,23 @@
 		});
 	};
 	const sectionEnter = () => {
-		if ($entered) $inIntro = true;
+		if ($entered) {
+			$inIntro = true;
+		}
+	};
+	const sectionExit = () => {
+		if ($entered) {
+			$inIntro = false;
+		}
+	};
+	const onNewStep = () => {
+		$playing = undefined;
 	};
 
-	$: videoVisible = $inIntro && step === 2;
+	$: step, onNewStep();
+	$: videoVisible = $inIntro && !$inTitle && step === 2;
 	$: if (videoVisible) playVideo();
-	$: if (!videoVisible) pauseVideo();
+	$: if (!videoVisible || !$inIntro) pauseVideo();
 	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
 	$: showStandard = step >= 4;
 	$: imgSrc = imgVisible
@@ -104,7 +121,7 @@
 		data = prepareLineData();
 
 		// Load Maya video
-		const src = "/assets/video/maya-brave.mp4";
+		const src = `${base}/assets/video/maya-brave.mp4`;
 		const request = new XMLHttpRequest();
 		request.open("GET", src, true);
 		request.responseType = "blob";
@@ -112,15 +129,23 @@
 			if (this.status === 200) {
 				const videoBlob = this.response;
 				const videoUrl = URL.createObjectURL(videoBlob);
-				if (videoEl) videoEl.src = videoUrl;
-				$loaded = true;
+				if (videoEl) {
+					videoEl.src = videoUrl;
+					$loaded = true;
+				}
 			}
 		};
 		request.send();
 	});
 </script>
 
-<section id="intro" use:inView on:enter={sectionEnter}>
+<section
+	id="intro"
+	bind:this={sectionEl}
+	use:inView={{ top: 250 }}
+	on:enter={sectionEnter}
+	on:exit={sectionExit}
+>
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
 		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
@@ -134,6 +159,7 @@
 				intro={true}
 				{showStandard}
 				{isolate}
+				{featuredIds}
 				hideAll={videoVisible}
 			/>
 		{:else}
