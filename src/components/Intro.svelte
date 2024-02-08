@@ -16,6 +16,7 @@
 	import { fade } from "svelte/transition";
 	import play from "$svg/play.svg";
 	import inView from "$actions/inView.js";
+	import { base } from "$app/paths";
 
 	let allPitch;
 	let data;
@@ -120,7 +121,7 @@
 		data = prepareLineData();
 
 		// Load Maya video
-		const src = "/assets/video/maya-brave.mp4";
+		const src = `${base}/assets/video/maya-brave.mp4`;
 		const request = new XMLHttpRequest();
 		request.open("GET", src, true);
 		request.responseType = "blob";
