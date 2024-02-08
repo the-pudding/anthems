@@ -129,8 +129,10 @@
 			if (this.status === 200) {
 				const videoBlob = this.response;
 				const videoUrl = URL.createObjectURL(videoBlob);
-				if (videoEl) videoEl.src = videoUrl;
-				$loaded = true;
+				if (videoEl) {
+					videoEl.src = videoUrl;
+					$loaded = true;
+				}
 			}
 		};
 		request.send();
