@@ -89,7 +89,11 @@
 			$inIntro = false;
 		}
 	};
+	const onNewStep = () => {
+		$playing = undefined;
+	};
 
+	$: step, onNewStep();
 	$: videoVisible = $inIntro && !$inTitle && step === 2;
 	$: if (videoVisible) playVideo();
 	$: if (!videoVisible || !$inIntro) pauseVideo();

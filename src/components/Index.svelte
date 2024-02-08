@@ -28,12 +28,12 @@
 		<Intro />
 	</div>
 
-	<!-- <div class="middle" class:locked={$locked} class:visible={$entered}>
+	<div class="middle" class:locked={$locked} class:visible={$entered}>
 		<Phrases />
 		<Heatmap />
 		<Methods />
 		<Footer />
-	</div> -->
+	</div>
 	<Audio />
 </article>
 

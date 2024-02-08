@@ -50,32 +50,22 @@
 			segments.push({ data: currentSegment });
 		}
 
-		const whitneySegments = 4;
-
 		segments = segments.map(({ data }, i) => {
-			let duration;
-			let delay;
-			if (intro) {
-				const startTs =
-					+segments[segments.length - whitneySegments].data[0].timestamp;
-				duration =
-					i < segments.length - whitneySegments
-						? 0
-						: data[data.length - 1].timestamp - data[0].timestamp;
-				delay =
-					i < segments.length - whitneySegments
-						? 0
-						: data[0].timestamp - startTs;
-			} else {
-				duration = data[data.length - 1].timestamp - data[0].timestamp;
-				delay = data[0].timestamp;
-			}
+			const duration = data[data.length - 1].timestamp - data[0].timestamp;
+			const delay = data[0].timestamp;
 			return {
 				data,
 				duration,
 				delay
 			};
 		});
+
+		if (intro && id === "whitney-houston_super-bowl_1991") {
+			segments = segments.slice(-4);
+		} else if (intro && id === "fergie_nba-allstar-game_2018") {
+			segments = segments.slice(43, 47);
+		}
+
 		return segments;
 	};
 	const calculateSegmentLengths = () => {
@@ -114,12 +104,12 @@
 
 				{#if featuredIds.includes(group.id)}
 					<g class="segments">
-						{#each segments(group.pitch, group.id).slice(0, 5) as { data, duration, delay }, segmentI}
+						{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI}
 							{@const visible =
 								highlighted ||
 								(isolated && $playing && $playing.id === group.id)}
 							<path
-								class="animated"
+								class={"animated"}
 								class:visible
 								d={generatePath(data)}
 								style:stroke-dasharray={`${
@@ -128,7 +118,9 @@
 								style:stroke-dashoffset={visible
 									? "0"
 									: `${segmentLengths[group.id][segmentI]}px`}
-								style={`--duration: ${duration}s; --delay: ${delay}s;`}
+								style={`--duration: ${intro ? 0 : duration}s; --delay: ${
+									intro ? 0 : delay
+								}s;`}
 							/>
 						{/each}
 					</g>
