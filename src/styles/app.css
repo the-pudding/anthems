@@ -50,6 +50,11 @@ a {
 a:hover {
 	border-bottom: 2px solid var(--color-grey-blue);
 }
+button {
+	font-family: var(--sans);
+	background: var(--color-fg);
+	color: var(--color-bg);
+}
 
 /* dark theme */
 /* this is a starting place for dark mode - test before deploying */

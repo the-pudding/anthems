@@ -3,11 +3,12 @@
 	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
 	import _ from "lodash";
 	import play from "$svg/play.svg";
-	import Icon from "$components/helpers/Icon.svelte";
 
 	export let phraseI;
 	export let featured;
 	export let highlight;
+
+	let showingMore = false;
 
 	const selectStandard = () => {
 		if (highlight === "standard") {
@@ -16,106 +17,48 @@
 			$playing = { id: "standard", phraseI };
 		}
 	};
-
-	function divaPageChangeFWD() {
-		currDivaPage = currDivaPage >= Math.ceil(totalDivaArray.length/3) ? Math.ceil(totalDivaArray.length/3) : currDivaPage + 1;
-		if (currDivaPage == 0) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(0,4) : totalDivaArray.slice(0,3);
-		} else if (currDivaPage == 1) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(4,8) : totalDivaArray.slice(3,6);
-		} else if (currDivaPage == 2) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(8,10) : totalDivaArray.slice(6,9);
-		}
-	}
-
-	function divaPageChangeBCK() {
-		currDivaPage = currDivaPage <= 0 ? 0 : currDivaPage - 1;
-		if (currDivaPage == 0) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(0,4) : totalDivaArray.slice(0,3);
-		} else if (currDivaPage == 1) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(4,8) : totalDivaArray.slice(3,6);
-		} else if (currDivaPage == 2) {
-			currDivaCollection = lastPhrase ? totalDivaArray.slice(8,10) : totalDivaArray.slice(6,9);
-		}
-	}
-
-	function updateDivaPage($currentPhraseI) {
-		currDivaPage = 0;
-	}
+	const showMore = () => {
+		showingMore = true;
+		visibleFaces = allFaces;
+	};
 
 	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 	$: top = featured.filter((d) => d.type === "top");
 	$: noteworthy = featured.filter((d) => d.type === "our-pick");
-	$: lastPhrase = $currentPhraseI == 15;
-	$: totalDivaArray = top.concat(noteworthy);
-	$: currDivaCollection = lastPhrase ? totalDivaArray.slice(0,4) : totalDivaArray.slice(0,3);
-	$: currDivaPage = 0;
-	$: updateDivaPage($currentPhraseI)
-	$: leftBtnLocked = currDivaPage == 0;
-	$: rightBtnLocked = currDivaCollection.length < 3;
-	$: divaTextHead = !lastPhrase && currDivaPage > 0 ? "Our Picks" : "Top Divas";
-	$: innerHeight = 0;
+	$: allFaces = [...top, ...noteworthy];
+	$: visibleFaces = allFaces.slice(0, 3);
 </script>
 
-</script>
-
-{#if innerHeight}
-	<div
-		class="wrapper"
-		class:visible
-		class:lastPhrase
-		style="height: {innerHeight}px"
+<div class="wrapper">
+	<button class="standard" on:click={selectStandard}
+		>Standard <span>{@html play}</span></button
 	>
-		<button class="standard" on:click={selectStandard}
-			>Standard <span>{@html play}</span></button
-		>
+	<div class="faces" class:visible class:scrollable={showingMore}>
+		<h3>Top divas</h3>
+		{#each visibleFaces as { id, type }, i}
+			{#if type === "our-pick" && i > 0 && visibleFaces[i - 1].type === "top"}
+				<h3>Our picks</h3>
+			{/if}
 
-	{#if totalDivaArray.length > 4}
-		<div class="pagination">
-			<button id="left-btn" on:click={divaPageChangeBCK} class:leftBtnLocked>
-				<Icon name="chevron-left" size="1.25rem" fill="none" />
-			</button>
-			<h3>{divaTextHead}</h3>
-			<button id="right-btn" on:click={divaPageChangeFWD} class:rightBtnLocked>
-				<Icon name="chevron-right" size="1.25rem" fill="none" />
-			</button>
-		</div>
-	{#each currDivaCollection as { id }, i}
-		<div class={`section top`}>
-			<div class="pics">
+			<div class="face">
 				<Face {id} bind:highlight {phraseI} />
 			</div>
-		</div>
-	{/each}
-	{:else}
-		{#if top.length}
-		<div class="pagination">
-			<h3>Top Divas</h3>
-		</div>
-			{#each top as { id }, i}
-				<div class={`section top`}>
-					<div class="pics">
-						<Face {id} bind:highlight {phraseI} />
-					</div>
-				</div>
-			{/each}
-		{/if}
-	{/if}
-<!-- 
-	{#if noteworthy.length}
-		<h3>Our Picks</h3>
-		{#each noteworthy as { id }, i}
-			<div class={`section our-picks`}>
-				<div class="pics">
-					<Face {id} bind:highlight {phraseI} />
-				</div>
-			</div>
 		{/each}
-	{/if} -->
+
+		<button
+			class="show-more"
+			on:click={showMore}
+			class:visible={!showingMore && allFaces.length > 3}>show more</button
+		>
+	</div>
 </div>
 
 <style>
 	.wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+	.faces {
 		margin-right: 3rem;
 		padding-top: 1rem;
 		max-width: 8rem;
@@ -125,49 +68,34 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		/* align-items: center; */
+		height: 100%;
+		overflow: hidden;
 	}
-	.wrapper.visible {
+	.faces.scrollable {
+		overflow: scroll;
+	}
+	.faces.visible {
 		visibility: visible;
 		opacity: 1;
 	}
-	.pagination {
-		margin: 1.5rem 0 1rem 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
-	.pagination button {
-		background: transparent;
-		padding: 0;
-		margin: 0;
-		pointer-events: auto;
-	}
-	.pagination button.leftBtnLocked, .pagination button.rightBtnLocked {
-		pointer-events: none;
-		opacity: 0.25;
-		cursor: not-allowed;
-	}
-	:global(.pagination button svg path) {
-		stroke: var(--color-fg);
-	}
 	h3 {
 		font-size: 1rem;
-		width: 100%;
 		font-family: var(--sans);
 		color: var(--color-fg);
 		font-weight: bold;
 		text-transform: uppercase;
 		text-align: center;
-		margin: -0.25rem 0 0 0;
+		margin: 0 0 1rem 0;
 	}
-	.section {
+	.show-more {
+		pointer-events: auto;
+		visibility: hidden;
+	}
+	.show-more.visible {
+		visibility: visible;
+	}
+	.face {
 		min-height: 9rem;
-	}
-	#more-divas {
-		position: absolute;
-		bottom: 0;
-		left: 0;
 	}
 	.standard {
 		width: 100%;
@@ -182,6 +110,7 @@
 		border-radius: 0.25rem;
 		color: var(--color-dark-blue);
 		position: relative;
+		margin-bottom: 1rem;
 	}
 	:global(.standard span) {
 		position: absolute;
@@ -195,7 +124,7 @@
 		fill: var(--color-fg);
 	}
 	@media (max-width: 1000px) {
-		.wrapper {
+		.faces {
 			display: flex;
 			justify-content: space-between;
 			width: 100%;
@@ -203,21 +132,14 @@
 			margin-right: 0;
 			margin-bottom: 3rem;
 		}
-		.pics {
+		.face {
 			display: flex;
-		}
-		.our-picks {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-end;
 		}
 	}
 
 	@media (max-width: 600px) {
-		.pics {
+		.face {
 			height: 50px;
-			display: flex;
-			justify-content: center;
 		}
 		h3 {
 			margin-top: 0;

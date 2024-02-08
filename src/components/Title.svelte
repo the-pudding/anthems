@@ -74,9 +74,6 @@
 		visibility: hidden;
 		margin-top: 3rem;
 		font-size: 1.5rem;
-		font-family: var(--sans);
-		background: var(--color-fg);
-		color: var(--color-bg);
 	}
 	button.begin:hover {
 		background: var(--color-grey-blue);

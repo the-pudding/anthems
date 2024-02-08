@@ -54,6 +54,7 @@
 	export let clickable = true;
 
 	let mounted = false;
+	const { performer } = getPerformerData(id);
 
 	const faceSvgs = {
 		"alicia-keys": aliciaSvg,
@@ -151,8 +152,6 @@
 
 	$: name = id.split("_")[0];
 	$: highlight, updateStroke();
-	$: performer = getPerformerData(id);
-	$: updateStroke(performer);
 
 	function setMargins(performer) {
 		let bottomMargin = extraMarginsList.includes(performer) ? -0.75 : 0;
