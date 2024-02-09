@@ -4,7 +4,6 @@
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
 	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
-	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
 	import play from "$svg/play.svg";
 	import { onMount } from "svelte";
@@ -48,7 +47,6 @@
 		highlight = undefined;
 	};
 	const load = async () => {
-		// const isMobile = $viewport.width <= 600;
 		const module = await import(`$data/pitch/desktop/phrase${phraseI}.csv`);
 		loaded = true;
 		phrasePitch = castFloat(module.default);
