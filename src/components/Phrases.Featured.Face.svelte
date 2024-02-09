@@ -247,7 +247,7 @@
 	p {
 		color: var(--color-grey-blue);
 		font-size: var(--14px);
-		margin: 0 auto 1rem auto;
+		margin: 0 0.5rem 1rem 0.5rem;
 	}
 	p.highlight {
 		color: var(--color-red);

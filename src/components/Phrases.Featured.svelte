@@ -40,7 +40,13 @@
 			{/if}
 
 			<div class="face">
-				<Face {id} bind:highlight {phraseI} />
+				<Face
+					id={id === "amber-riley_mlb-allstar-game_2010"
+						? "beyonce_super-bowl_2004"
+						: id}
+					bind:highlight
+					{phraseI}
+				/>
 			</div>
 		{/each}
 
@@ -86,9 +92,6 @@
 	.show-more.visible {
 		visibility: visible;
 	}
-	/* .face {
-		min-height: 9rem;
-	} */
 	.standard {
 		width: 100%;
 		height: 2rem;
@@ -103,6 +106,9 @@
 		color: var(--color-dark-blue);
 		position: relative;
 		margin-bottom: 1rem;
+	}
+	.standard:hover {
+		opacity: 0.6;
 	}
 	:global(.standard span) {
 		position: absolute;

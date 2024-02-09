@@ -6,13 +6,7 @@
 	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
-	import {
-		currentPhraseI,
-		currentStepI,
-		playing,
-		loaded,
-		currentTime
-	} from "$stores/misc.js";
+	import { currentPhraseI, playing, currentTime } from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
@@ -61,7 +55,6 @@
 			};
 		});
 
-		// TODO different numbers for mobile
 		if (intro && id === "whitney-houston_super-bowl_1991") {
 			segments = segments.slice(-4);
 		} else if (intro && id === "fergie_nba-allstar-game_2018") {
@@ -80,59 +73,59 @@
 			const lengths = segments.map((el) => el.getTotalLength());
 			segmentLengths[id] = lengths;
 		});
+		segmentLengths = segmentLengths;
 	};
 
-	$: if (!intro && $currentPhraseI === 0 && $currentStepI > 0)
-		calculateSegmentLengths();
-	$: if (intro && $loaded) calculateSegmentLengths();
+	$: if (highlight) calculateSegmentLengths();
 	$: $viewport.width, $currentPhraseI, calculateSegmentLengths();
+	$: $xScale.range(), ($data = $data);
+
+	onMount(async () => {
+		await tick();
+		calculateSegmentLengths();
+	});
 </script>
 
-{#key $xScale.range()}
-	<g class="line-group">
-		{#each $data as group}
-			{@const fade = highlight && group.id !== highlight}
-			{@const highlighted = highlight && group.id === highlight}
-			{@const isolated = intro && isolate && group.id === isolate}
-			{@const hide = hideAll ? true : isolate && group.id !== isolate}
-			<g id={`${group.id}_line_phrase${intro ? "_intro" : phraseI}`}>
-				<path
-					class:highlighted
-					class:fade
-					class:isolated
-					class:hide
-					d={generatePath(group.pitch)}
-				/>
+<g class="line-group">
+	{#each $data as group}
+		{@const fade = highlight && group.id !== highlight}
+		{@const highlighted = highlight && group.id === highlight}
+		{@const isolated = intro && isolate && group.id === isolate}
+		{@const hide = hideAll ? true : isolate && group.id !== isolate}
+		<g id={`${group.id}_line_phrase${intro ? "_intro" : phraseI}`}>
+			<path
+				class:highlighted
+				class:fade
+				class:isolated
+				class:hide
+				d={generatePath(group.pitch)}
+			/>
 
-				{#if featuredIds.includes(group.id)}
-					<g class="segments">
-						{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI}
-							{@const started = $currentTime > 0}
-							{@const playingMe =
-								$playing && $playing.id === group.id && started}
-							{@const visible =
-								(isolated && playingMe) || (highlighted && started)}
-							<path
-								class={"animated"}
-								class:visible
-								d={generatePath(data)}
-								style:stroke-dasharray={`${
-									segmentLengths[group.id][segmentI]
-								}px`}
-								style:stroke-dashoffset={visible
-									? "0"
-									: `${segmentLengths[group.id][segmentI]}px`}
-								style={`--duration: ${intro ? 0 : duration}s; --delay: ${
-									intro ? 0 : delay
-								}s;`}
-							/>
-						{/each}
-					</g>
-				{/if}
-			</g>
-		{/each}
-	</g>
-{/key}
+			{#if featuredIds.includes(group.id)}
+				<g class="segments">
+					{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI (`${group.id}-${phraseI}-${segmentI}`)}
+						{@const started = $currentTime > 0}
+						{@const playingMe = $playing && $playing.id === group.id && started}
+						{@const visible =
+							(isolated && playingMe) || (highlighted && started)}
+						<path
+							class={"animated"}
+							class:visible
+							d={generatePath(data)}
+							style:stroke-dasharray={`${segmentLengths[group.id][segmentI]}px`}
+							style:stroke-dashoffset={visible
+								? "0"
+								: `${segmentLengths[group.id][segmentI]}px`}
+							style={`--duration: ${intro ? 0 : duration}s; --delay: ${
+								intro ? 0 : delay
+							}s;`}
+						/>
+					{/each}
+				</g>
+			{/if}
+		</g>
+	{/each}
+</g>
 
 <style>
 	path {
@@ -161,9 +154,10 @@
 		stroke: var(--color-red);
 		stroke-width: 3px;
 		opacity: 0;
-		transition: stroke-dashoffset var(--duration) linear var(--delay);
+		transition: none;
 	}
 	path.animated.visible {
+		transition: stroke-dashoffset var(--duration) linear var(--delay);
 		opacity: 1;
 	}
 </style>
