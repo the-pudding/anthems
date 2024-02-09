@@ -100,8 +100,8 @@
 	}
 	.left-overlay, .right-overlay {
 		height: 100%;
-		background: rgba(124, 164, 174, 0.65);
-		outline: 2px solid var(--color-grey-blue);
+		background: rgba(124, 164, 174, 0.85);
+		outline: 2px solid var(--color-fg);
 		position: relative;
 		font-family: var(--sans);
 		font-weight: 700;
@@ -271,15 +271,11 @@
 		opacity: 0.5;
 	}
 
-	@keyframes pulse-animation {
-		0% {
-			transform: translate(50%, -50%);
-		}
-		50% {
-			transform: translate(40%, -50%);
-		}
-		100% {
-			transform: translate(50%, -50%);
+	@media (max-width: 600px) {
+		.directions {
+			padding: 0 0 0 1rem;
+			font-size: var(--18px);
+			width: 70%;
 		}
 	}
 </style>

@@ -22,7 +22,9 @@
 </script>
 
 <div id="transition-to-heatmap">
-	<p>{@html copy.transition}</p>
+	{#each copy.transition as { value }}
+		<p>{@html value}</p>
+	{/each}
 </div>
 
 <section id="heatmap">
