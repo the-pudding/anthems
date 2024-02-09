@@ -162,7 +162,7 @@
 >
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
-		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn}> </video>
+		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn} poster="/assets/video/maya-poster.jpg"> </video>
 	</div>
 
 	<div class="spacer" />
