@@ -119,6 +119,7 @@
 		height: 100%;
 		padding: 1rem 2rem;
 		display: flex;
+		position: relative;
 	}
 	.line-wrapper {
 		display: flex;

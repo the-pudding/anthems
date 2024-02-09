@@ -1,6 +1,7 @@
 <script>
+	import Icon from "$components/helpers/Icon.svelte";
 	import Face from "$components/Phrases.Featured.Face.svelte";
-	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
+	import { playing } from "$stores/misc.js";
 	import _ from "lodash";
 	import play from "$svg/play.svg";
 
@@ -9,6 +10,7 @@
 	export let highlight;
 
 	let showingMore = false;
+	let sliderOpen = false;
 
 	const selectStandard = () => {
 		if (highlight === "standard") {
@@ -21,6 +23,12 @@
 		showingMore = true;
 		visibleFaces = allFaces;
 	};
+	const openSlider = () => {
+		sliderOpen = true;
+	};
+	const closeSlider = () => {
+		sliderOpen = false;
+	};
 
 	$: top = featured.filter((d) => d.type === "top");
 	$: noteworthy = featured.filter((d) => d.type === "our-pick");
@@ -29,10 +37,16 @@
 </script>
 
 <div class="wrapper">
+	<button class="close-slider" on:click={closeSlider} class:visible={sliderOpen}
+		>x</button
+	>
+
 	<button class="standard" on:click={selectStandard}
 		>Standard <span>{@html play}</span></button
 	>
-	<div class="faces" class:scrollable={showingMore}>
+	<button class="open-slider" on:click={openSlider}>Show divas</button>
+
+	<div class="faces" class:scrollable={showingMore} class:visible={sliderOpen}>
 		<h3>Top divas</h3>
 		{#each visibleFaces as { id, type }, i}
 			{#if type === "our-pick" && i > 0 && visibleFaces[i - 1].type === "top"}
@@ -50,11 +64,11 @@
 			</div>
 		{/each}
 
-		<button
-			class="show-more"
-			on:click={showMore}
-			class:visible={!showingMore && allFaces.length > 3}>show more</button
-		>
+		{#if allFaces.length > 3}
+			<button class="show-more" on:click={showMore} class:visible={!showingMore}
+				>Show more</button
+			>
+		{/if}
 	</div>
 </div>
 
@@ -62,6 +76,9 @@
 	.wrapper {
 		display: flex;
 		flex-direction: column;
+	}
+	button {
+		pointer-events: auto;
 	}
 	.faces {
 		margin-right: 3rem;
@@ -86,16 +103,14 @@
 		margin: 0 0 1rem 0;
 	}
 	.show-more {
-		pointer-events: auto;
-		visibility: hidden;
+		display: none;
 	}
 	.show-more.visible {
-		visibility: visible;
+		display: flex;
 	}
 	.standard {
 		width: 100%;
 		height: 2rem;
-		pointer-events: auto;
 		text-transform: uppercase;
 		font-weight: bold;
 		font-family: var(--sans);
@@ -121,38 +136,72 @@
 	:global(.standard span svg path) {
 		fill: var(--color-fg);
 	}
+	.open-slider {
+		display: none;
+	}
+	.close-slider {
+		display: none;
+	}
+
 	@media (max-width: 1000px) {
+		.open-slider {
+			display: flex;
+		}
+		.wrapper {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			z-index: 10;
+		}
+		.standard {
+			margin: 0;
+		}
+		h3 {
+			display: none;
+		}
 		.faces {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+			align-items: center;
+			position: absolute;
 			width: 100%;
 			max-width: none;
 			margin-right: 0;
-			margin-bottom: 3rem;
+			margin-bottom: 0;
+			top: 0;
+			left: 0;
+			background: var(--color-extra-dark-blue);
+			height: auto;
+			transform: translate(0, calc(-100% + -5rem));
+			transition: transform calc(var(--1s) * 0.7) ease-in-out;
+			overflow-x: scroll;
 		}
 		.face {
 			display: flex;
+			min-width: calc(33% - 2rem);
 		}
-		h3 {
-			display: none;
-		}
-		.standard {
-			margin-top: 0.5rem;
-			margin-bottom: 0;
-		}
-	}
-
-	@media (max-width: 600px) {
-		.faces {
-			margin-bottom: 0;
-		}
-		h3 {
-			margin-top: 0;
-			margin-bottom: 0.5rem;
+		.faces.visible {
+			transform: translate(0, 0);
 		}
 		.show-more {
 			display: none;
+			margin-right: 1rem;
+			font-size: var(--14px);
+			white-space: nowrap;
+		}
+		.show-more.visible {
+			display: flex;
+		}
+		.close-slider {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 10;
+			display: none;
+		}
+		.close-slider.visible {
+			display: flex;
 		}
 	}
 </style>
