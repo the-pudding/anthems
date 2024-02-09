@@ -19,6 +19,8 @@
 				$soundOn = false;
 			}
 		});
+
+		$entered = true;
 	});
 </script>
 

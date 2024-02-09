@@ -32,7 +32,7 @@
 </script>
 
 <div class="spectrum-chart">
-	<div class="title">{title}</div>
+	<h3 class="title">{title}</h3>
 	<div class="legend">
 		<p>◀ More similar</p>
 		<p>More different ▶</p>
@@ -58,7 +58,7 @@
 		width: 100%;
 		padding: 3rem 1rem 4rem 1rem;
 	}
-	.title {
+	h3 {
 		font-family: var(--sans);
 		color: var(--color-grey-blue);
 		font-weight: 700;
@@ -110,7 +110,7 @@
 		.spectrum-chart {
 			padding: 0;
 		}
-		.title {
+		h3 {
 			margin: 0;
 			padding: 0;
 		}
