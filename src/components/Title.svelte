@@ -41,7 +41,10 @@
 		<div class="handwritting-wrapper" transition:fade={{ duration: 500 }}>
 			{#each stanzas as stanza, i}
 				<div class="stanza-image-wrap" style="animation-delay: {i}s">
-					<img src="assets/stanza{stanza}.png"  alt="Francis Scott Key's handwritten lyrics to the Star Spangeled Banner" />
+					<img
+						src="assets/stanza{stanza}.png"
+						alt="Francis Scott Key's handwritten lyrics to the Star Spangeled Banner"
+					/>
 				</div>
 			{/each}
 		</div>
@@ -96,8 +99,7 @@
 		background: var(--color-red);
 		transform: translateY(-2px);
 		transition: all 250ms;
-		box-shadow: rgba(	2, 39, 61, 1) 0 4px 12px;
-		
+		box-shadow: rgba(2, 39, 61, 1) 0 4px 12px;
 	}
 	button.begin.visible {
 		visibility: visible;
@@ -119,7 +121,7 @@
 		justify-content: center;
 		z-index: 1;
 		mix-blend-mode: overlay;
-		opacity: 0.5;
+		opacity: 0.6;
 		pointer-events: none;
 	}
 	.stanza-image-wrap {

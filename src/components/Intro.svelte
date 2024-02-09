@@ -68,27 +68,26 @@
 	};
 
 	const playableText = () => {
-		const playableText = document.querySelectorAll(`#intro span.playable`);
-		playableText.forEach((el) => {
-			el.addEventListener("click", () => {
-				const id = el.dataset.id;
-				const phraseI = el.dataset.phrase;
-
-				if ($playing && $playing.id === id && $playing.phraseI === phraseI) {
-					$playing = undefined;
-					el.children[0].style.opacity = 1;
-					el.children[1].style.opacity = 0;
-				} else {
-					$playing = { id, phraseI };
-					el.children[0].style.opacity = 0;
-					el.children[1].style.opacity = 1;
-				}
-			});
-			// on end, switch to play
-			el.insertAdjacentHTML("beforeend", play);
-			el.insertAdjacentHTML("beforeend", pause);
-			el.children[1].style.opacity = 0;
-		});
+		// const playableText = document.querySelectorAll(`#intro span.playable`);
+		// playableText.forEach((el) => {
+		// 	el.addEventListener("click", () => {
+		// 		const id = el.dataset.id;
+		// 		const phraseI = el.dataset.phrase;
+		// 		if ($playing && $playing.id === id && $playing.phraseI === phraseI) {
+		// 			$playing = undefined;
+		// 			el.children[0].style.opacity = 1;
+		// 			el.children[1].style.opacity = 0;
+		// 		} else {
+		// 			$playing = { id, phraseI };
+		// 			el.children[0].style.opacity = 0;
+		// 			el.children[1].style.opacity = 1;
+		// 		}
+		// 	});
+		// 	// on end, switch to play
+		// 	el.insertAdjacentHTML("beforeend", play);
+		// 	el.insertAdjacentHTML("beforeend", pause);
+		// 	el.children[1].style.opacity = 0;
+		// });
 	};
 	const sectionEnter = () => {
 		if ($entered) {
@@ -162,7 +161,13 @@
 >
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
-		<video bind:this={videoEl} id="maya-vid" muted={!$soundOn} poster="/assets/video/maya-poster.jpg"> </video>
+		<video
+			bind:this={videoEl}
+			id="maya-vid"
+			muted={!$soundOn}
+			poster="/assets/video/maya-poster.jpg"
+		>
+		</video>
 	</div>
 
 	<div class="spacer" />

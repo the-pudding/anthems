@@ -1,7 +1,13 @@
 <script>
 	import { ChevronLeft, ChevronRight } from "lucide-svelte";
 	import { createEventDispatcher } from "svelte";
-	import { currentPhraseI, currentSlideI, currentStepI, inIntro, locked } from "$stores/misc.js";
+	import {
+		currentPhraseI,
+		currentSlideI,
+		currentStepI,
+		inIntro,
+		locked
+	} from "$stores/misc.js";
 	import { fade, fly } from "svelte/transition";
 
 	export let debug = false;
@@ -41,7 +47,8 @@
 	$: visibleArrows = directions.filter((d) =>
 		typeof showArrows === "boolean" ? showArrows : showArrows.includes(d)
 	);
-	$: haltTap = $currentPhraseI == 0 && $currentStepI == 0 && tapperOverlayVisible;
+	$: haltTap =
+		$currentPhraseI == 0 && $currentStepI == 0 && tapperOverlayVisible;
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -50,7 +57,7 @@
 	{#each directions as dir}
 		<button
 			on:click={dispatch("tap", dir)}
-			class:haltTap={haltTap}
+			class:haltTap
 			style="width: {getW(dir)}; height: {getH(dir)};"
 			aria-label={dir}
 			class="{dir} {arrowPosition}"
@@ -61,7 +68,11 @@
 	{/each}
 </section>
 {#if $currentPhraseI == 0 && $currentStepI == 0 && tapperOverlayVisible}
-	<section class="tapper-overlay" on:click={hideTapperOverlay} transition:fade={{duration: 500}}>
+	<section
+		class="tapper-overlay"
+		on:click={hideTapperOverlay}
+		transition:fade={{ duration: 500 }}
+	>
 		<div class="left-overlay">
 			<div>
 				<ChevronLeft color={arrowStroke} strokeWidth={arrowStrokeWidth} />
@@ -69,7 +80,10 @@
 			</div>
 		</div>
 		<div class="right-overlay">
-			<p class="directions">Click right to go forward and left to go back. You can also use the arrow keys on your keyboard.</p>
+			<p class="directions">
+				Click right to go forward and left to go back. You can also use the
+				arrow keys on your keyboard.
+			</p>
 			<div>
 				<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} />
 				<p>Next</p>
@@ -79,7 +93,8 @@
 {/if}
 
 <style>
-	.tapper, .tapper-overlay {
+	.tapper,
+	.tapper-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -98,7 +113,8 @@
 		margin: 0.5rem 0 0 0.5rem;
 		pointer-events: auto;
 	}
-	.left-overlay, .right-overlay {
+	.left-overlay,
+	.right-overlay {
 		height: 100%;
 		background: rgba(124, 164, 174, 0.85);
 		outline: 2px solid var(--color-fg);
@@ -123,7 +139,8 @@
 		padding: 0 0 0 3rem;
 		width: 50%;
 	}
-	.left-overlay div, .right-overlay div {
+	.left-overlay div,
+	.right-overlay div {
 		position: absolute;
 		top: 45%;
 		padding: 0 0.5rem;
@@ -134,7 +151,8 @@
 	.right-overlay div {
 		right: 0;
 	}
-	.left-overlay div p, .right-overlay div p {
+	.left-overlay div p,
+	.right-overlay div p {
 		margin: 0;
 		text-transform: uppercase;
 		font-size: var(--12px);

@@ -105,6 +105,7 @@
 	.tick text.bandwidth {
 		font-family: "Newsagent";
 		font-size: 1.6rem;
+		fill: var(--color-fg);
 	}
 	.tick text.small {
 		font-size: 1rem;

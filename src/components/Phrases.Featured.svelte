@@ -8,7 +8,6 @@
 	export let featured;
 	export let highlight;
 
-	let showingMore = false;
 	let sliderOpen = false;
 
 	const selectStandard = () => {
@@ -18,37 +17,27 @@
 			$playing = { id: "standard", phraseI };
 		}
 	};
-	const showMore = () => {
-		showingMore = true;
-		visibleFaces = allFaces;
-	};
 	const openSlider = () => {
 		sliderOpen = true;
 	};
 	const closeSlider = () => {
 		sliderOpen = false;
 	};
-
-	$: top = featured.filter((d) => d.type === "top");
-	$: noteworthy = featured.filter((d) => d.type === "our-pick");
-	$: allFaces = [...top, ...noteworthy];
-	$: visibleFaces = allFaces.slice(0, 3);
 </script>
 
 <div class="wrapper">
 	<button class="close-slider" on:click={closeSlider} class:visible={sliderOpen}
 		>x</button
 	>
-
 	<button class="standard" on:click={selectStandard}
 		>Standard <span>{@html play}</span></button
 	>
 	<button class="open-slider" on:click={openSlider}>Show divas</button>
 
-	<div class="faces" class:scrollable={showingMore} class:visible={sliderOpen}>
+	<div class="faces" class:visible={sliderOpen}>
 		<h3>Top divas</h3>
-		{#each visibleFaces as { id, type }, i}
-			{#if type === "our-pick" && i > 0 && visibleFaces[i - 1].type === "top"}
+		{#each featured as { id, type }, i}
+			{#if type === "our-pick" && i > 0 && featured[i - 1].type === "top"}
 				<h3>Our picks</h3>
 			{/if}
 
@@ -62,12 +51,6 @@
 				/>
 			</div>
 		{/each}
-
-		{#if allFaces.length > 3}
-			<button class="show-more" on:click={showMore} class:visible={!showingMore}
-				>Show more</button
-			>
-		{/if}
 	</div>
 </div>
 
@@ -85,11 +68,9 @@
 		max-width: 8rem;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		position: relative;
 		height: 100%;
-		overflow: hidden;
-	}
-	.faces.scrollable {
 		overflow: scroll;
 	}
 	h3 {
@@ -174,7 +155,6 @@
 			height: auto;
 			transform: translate(0, calc(-100% + -5rem));
 			transition: transform calc(var(--1s) * 0.7) ease-in-out;
-			overflow-x: scroll;
 		}
 		.face {
 			display: flex;

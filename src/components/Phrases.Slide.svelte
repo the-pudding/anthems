@@ -53,22 +53,22 @@
 		data = prepareLineData();
 	};
 	const playableText = () => {
-		const playableText = document.querySelectorAll(
-			`#slide-${slideI} span.playable`
-		);
-		playableText.forEach((el) => {
-			el.addEventListener("click", () => {
-				const id = el.dataset.id;
-				if (highlight === id) {
-					highlight = undefined;
-					$playing = undefined;
-				} else {
-					if (id !== "standard") highlight = id;
-					$playing = { id, phraseI };
-				}
-			});
-			el.insertAdjacentHTML("beforeend", play);
-		});
+		// const playableText = document.querySelectorAll(
+		// 	`#slide-${slideI} span.playable`
+		// );
+		// playableText.forEach((el) => {
+		// 	el.addEventListener("click", () => {
+		// 		const id = el.dataset.id;
+		// 		if (highlight === id) {
+		// 			highlight = undefined;
+		// 			$playing = undefined;
+		// 		} else {
+		// 			if (id !== "standard") highlight = id;
+		// 			$playing = { id, phraseI };
+		// 		}
+		// 	});
+		// 	el.insertAdjacentHTML("beforeend", play);
+		// });
 	};
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
