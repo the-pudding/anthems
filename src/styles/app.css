@@ -46,6 +46,7 @@ strong {
 a {
 	font-weight: bold;
 	border-bottom: 2px solid var(--color-red);
+	transition: border-bottom 250ms;
 }
 a:hover {
 	border-bottom: 2px solid var(--color-grey-blue);

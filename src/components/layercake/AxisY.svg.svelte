@@ -99,7 +99,7 @@
 
 	.tick text {
 		font-family: var(--sans);
-		fill: var(--color-fg);
+		fill: var(--color-grey-blue);
 		text-transform: capitalize;
 	}
 	.tick text.bandwidth {

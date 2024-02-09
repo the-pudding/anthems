@@ -107,6 +107,11 @@
 		justify-content: center;
 		align-items: center;
 		margin: 0.4rem 0.5rem 0 0;
+		transition: all 250ms;
+	}
+	.play-btn:hover {
+		background: var(--color-red);
+		transform: translateY(-2px);
 	}
 	:global(.play-btn span) {
 		padding: 0.25rem 0 0 0;

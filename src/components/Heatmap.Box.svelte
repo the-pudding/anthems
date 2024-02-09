@@ -64,7 +64,11 @@
 	.playing {
 		outline: 2px solid var(--color-red) !important;
 	}
+	.phrase-box:hover {
+		outline: 2px solid var(--color-red) !important;
+	}
 	.missing:hover {
 		cursor: not-allowed;
+		outline: 0 !important;
 	}
 </style>

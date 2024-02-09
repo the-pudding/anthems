@@ -124,7 +124,11 @@
 					{/key}
 				</button>
 			</span>
-			<button class="clear" on:click={clear}>Clear</button>
+			<button class="clear" on:click={clear}>Clear<Icon
+				name={"x"}
+				size="1.5rem"
+				stroke="white"
+			/></button>
 		</div>
 	</div>
 
@@ -151,8 +155,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: start;
-		padding: 0.5rem 6rem 0.5rem 1rem;
-		background: var(--color-bg);
+		padding: 1rem 6rem 0.5rem 1rem;
+		background: var(--color-extra-dark-blue);
 	}
 	button {
 		background: none;
@@ -163,10 +167,22 @@
 		padding: 0;
 	}
 	button.clear {
+		padding: 0.5rem;
 		border: 1px solid var(--color-fg);
+		display: flex;
+		align-items: center;
+		transition: all 250ms;
+		margin: 0 0 0 0.5rem;
+	}
+	:global(button.clear span) {
+		margin: 0 0 0 0.25rem;
+		padding: 0;
 	}
 	button.clear:hover {
-		background: var(--color-grey-blue);
+		color: var(--color-bg);
+		border: 1px solid var(--color-red);
+		background: var(--color-red);
+		transform: translateY(-2px);
 	}
 	span {
 		display: flex;
