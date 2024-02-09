@@ -4,6 +4,7 @@
 	import _ from "lodash";
 	import { playing, currentTime } from "$stores/misc.js";
 	import getPerformerData from "$utils/getPerformerData.js";
+	import viewport from "$stores/viewport.js";
 
 	export let data;
 	export let activeColumn;
@@ -26,6 +27,7 @@
 	};
 
 	//$: if ($playing && $playing.phraseI === undefined) trackPhrase($currentTime);
+	$: mobile = $viewport.width < 600;
 	$: paused = $playing?.id !== data.id;
 </script>
 
@@ -42,6 +44,7 @@
 					name={paused ? "play" : "pause"}
 					fill={"var(--color-dark-blue)"}
 					stroke={"transparent"}
+					size={mobile ? ".75rem" : "1.25em"}
 					strokeWidth={0}
 				/>
 			{/key}
@@ -49,7 +52,7 @@
 		<div class="details">
 			<p class="name">{performer}</p>
 			<p class="event"><strong>{year}</strong> {event}</p>
-			<p class="event">key: {key}</p>
+			<p class="key">key: {key}</p>
 		</div>
 	</div>
 	<div class="box-wrapper">
@@ -85,11 +88,15 @@
 		border-top: none;
 	}
 	.details-wrapper {
-		width: 18rem;
+		width: 15rem;
 		display: flex;
 		flex-direction: row;
 		align-items: start;
 		padding: 0.25rem 0 0.5rem 0;
+	}
+	.details {
+		display: flex;
+		flex-direction: column;
 	}
 	.play-btn {
 		background: var(--color-fg);
@@ -99,7 +106,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0.25rem 0.5rem 0 0;
+		margin: 0.4rem 0.5rem 0 0;
 	}
 	:global(.play-btn span) {
 		padding: 0.25rem 0 0 0;
@@ -123,12 +130,52 @@
 		font-family: Newsagent;
 		font-size: var(--28px);
 	}
-	.event {
+	.event,
+	.key {
 		font-family: var(--sans);
+		margin: 0;
 	}
 	.box-wrapper {
-		width: calc(100% - 20rem);
+		flex: 1;
 		display: flex;
 		flex-direction: row;
+	}
+
+	@media (max-width: 600px) {
+		.heatmap-row {
+			flex-direction: column;
+			align-items: start;
+			padding: 0.5rem;
+		}
+		.details-wrapper {
+			width: 100%;
+			align-items: center;
+		}
+		.box-wrapper {
+			width: 100%;
+		}
+		.details {
+			flex-direction: row;
+		}
+		.key {
+			display: none;
+		}
+		.name {
+			font-size: 13px;
+			font-family: var(--serif);
+			margin-right: 0.5rem;
+		}
+		.play-btn {
+			height: 1.25rem;
+			width: 1.25rem;
+		}
+		:global(.play-btn span) {
+			padding: 0.1rem 0 0 0;
+			margin-left: 0.125rem;
+		}
+		:global(.play-btn.playing span) {
+			padding: 0.1rem 0 0 0;
+			margin-left: 0;
+		}
 	}
 </style>

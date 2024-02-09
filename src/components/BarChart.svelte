@@ -33,8 +33,6 @@
 	$: if (animate && active)
 		displayData = _.orderBy(data, (d) => +d[xKey], "desc");
 	$: if (animate && !active) displayData = data;
-
-	// $: console.log({ title, maxWidth });
 </script>
 
 <div class="bar-chart-inline">
@@ -157,12 +155,12 @@
 		height: 100%;
 	}
 	.avgline::after {
-		content: "Average of all performances";
+		content: "Average";
 		width: 8rem;
 		color: var(--color-fg);
 		text-align: center;
 		position: absolute;
-		bottom: -2.5rem;
+		bottom: -1.5rem;
 		left: -4.25rem;
 		font-family: var(--sans);
 		font-size: var(--14px);
@@ -210,5 +208,33 @@
 		line-height: 1;
 		padding: 0;
 		transform: translate(calc(100% + 0.5rem), 0);
+	}
+
+	@media (max-width: 600px) {
+		.bar-chart-inline {
+			padding: 0 0 2rem 0;
+		}
+		.legend {
+			padding: 1rem 0 0 0;
+			margin: 0 0 0.5rem 0;
+			width: 100%;
+		}
+		.legend p:first-of-type {
+			margin: 0 0 0 4.5rem;
+		}
+		.title {
+			font-size: var(--16px);
+			padding: 0;
+			margin: 0;
+		}
+		.chart-wrapper {
+			margin: 0;
+		}
+		.category {
+			width: 6rem;
+		}
+		.category.small {
+			font-size: 0.5rem;
+		}
 	}
 </style>

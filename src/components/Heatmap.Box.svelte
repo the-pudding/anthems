@@ -50,6 +50,7 @@
 		background: var(--color-light-blue);
 		width: 6.25%;
 		margin: 0.125rem;
+		padding: 0;
 		height: 4rem;
 		display: flex;
 		align-items: center;
@@ -58,7 +59,7 @@
 		color: var(--color-grey-blue);
 	}
 	.expanded {
-		width: 30%;
+		width: 60%;
 	}
 	.playing {
 		outline: 2px solid var(--color-red) !important;

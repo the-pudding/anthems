@@ -61,6 +61,7 @@
 			};
 		});
 
+		// TODO different numbers for mobile
 		if (intro && id === "whitney-houston_super-bowl_1991") {
 			segments = segments.slice(-4);
 		} else if (intro && id === "fergie_nba-allstar-game_2018") {

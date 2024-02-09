@@ -34,33 +34,42 @@
 			dir: "desc"
 		}
 	];
-	const eventOptions = _.uniqBy(
-		ids
-			.filter((d) => d.id !== "standard")
-			.map((d) => ({
-				label: getPerformerData(d.id).event,
-				value: _.kebabCase(getPerformerData(d.id).event)
-			})),
-		(d) => d.value
-	);
-	const performerOptions = _.uniqBy(
-		ids
-			.filter((d) => d.id !== "standard")
-			.map((d) => ({
-				label: getPerformerData(d.id).performer,
-				value: _.kebabCase(getPerformerData(d.id).performer)
-			})),
-		(d) => d.value
-	);
-	const genreOptions = _.uniqBy(
-		ids
-			.filter((d) => d.id !== "standard")
-			.map((d) => ({
-				label: getPerformerData(d.id).genre,
-				value: _.kebabCase(getPerformerData(d.id).genre)
-			})),
-		(d) => d.value
-	);
+	const eventOptions = [
+		..._.uniqBy(
+			ids
+				.filter((d) => d.id !== "standard")
+				.map((d) => ({
+					label: getPerformerData(d.id).event,
+					value: _.kebabCase(getPerformerData(d.id).event)
+				})),
+			(d) => d.value
+		),
+		{ label: "All events", value: "all" }
+	];
+	const performerOptions = [
+		..._.uniqBy(
+			ids
+				.filter((d) => d.id !== "standard")
+				.map((d) => ({
+					label: getPerformerData(d.id).performer,
+					value: _.kebabCase(getPerformerData(d.id).performer)
+				})),
+			(d) => d.value
+		),
+		{ label: "All artists", value: "all" }
+	];
+	const genreOptions = [
+		..._.uniqBy(
+			ids
+				.filter((d) => d.id !== "standard")
+				.map((d) => ({
+					label: getPerformerData(d.id).genre,
+					value: _.kebabCase(getPerformerData(d.id).genre)
+				})),
+			(d) => d.value
+		),
+		{ label: "All genres", value: "all" }
+	];
 
 	const applyFilters = () => {
 		sortedFilteredIds = ids
@@ -100,52 +109,49 @@
 </script>
 
 <div class="filters">
-	<button on:click={clear}>Clear</button>
+	<div class="sort-by">
+		<h3>Sort by</h3>
+		<div class="dropdowns">
+			<span>
+				<Select options={sortOptions} bind:value={sort} />
+				<button class="order" on:click={order}>
+					{#key sortDir}
+						<Icon
+							name={`arrow-${sortDir === "asc" ? "up" : "down"}`}
+							size="1.5rem"
+							stroke="white"
+						/>
+					{/key}
+				</button>
+			</span>
+			<button class="clear" on:click={clear}>Clear</button>
+		</div>
+	</div>
 
-	<span>
-		<button class="order" on:click={order}>
-			{#key sortDir}
-				<Icon
-					name={`arrow-${sortDir === "asc" ? "up" : "down"}`}
-					size="1.5rem"
-					stroke="white"
-				/>
-			{/key}
-		</button>
-		<Select label={"Sort by"} options={sortOptions} bind:value={sort} />
-	</span>
+	<div class="filter-by">
+		<h3>Filter by</h3>
+		<div class="dropdowns">
+			<span>
+				<Select options={eventOptions} bind:value={event} />
+			</span>
 
-	<span>
-		<Select
-			label={"Filter by event"}
-			options={eventOptions}
-			bind:value={event}
-		/>
-	</span>
+			<span>
+				<Select options={performerOptions} bind:value={performer} />
+			</span>
 
-	<span>
-		<Select
-			label={"Filter by performer"}
-			options={performerOptions}
-			bind:value={performer}
-		/>
-	</span>
-
-	<span>
-		<Select
-			label={"Filter by genre"}
-			options={genreOptions}
-			bind:value={genre}
-		/>
-	</span>
+			<span>
+				<Select options={genreOptions} bind:value={genre} />
+			</span>
+		</div>
+	</div>
 </div>
 
 <style>
 	.filters {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		padding: 0.5rem 0;
+		align-items: start;
+		padding: 0.5rem 6rem 0.5rem 1rem;
 		background: var(--color-bg);
 	}
 	button {
@@ -154,11 +160,63 @@
 	}
 	button.order {
 		width: 3rem;
+		padding: 0;
+	}
+	button.clear {
+		border: 1px solid var(--color-fg);
+	}
+	button.clear:hover {
+		background: var(--color-grey-blue);
 	}
 	span {
 		display: flex;
-		align-items: end;
-		margin: 0 1rem;
+		align-items: center;
 		font-family: var(--sans);
+	}
+	h3 {
+		text-transform: uppercase;
+		font-size: 1rem;
+		font-family: var(--sans);
+		color: var(--color-grey-blue);
+		font-weight: bold;
+		margin: 0;
+	}
+	.sort-by,
+	.filter-by {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+	.sort-by {
+		width: 70%;
+	}
+	.sort-by .dropdowns {
+		justify-content: start;
+	}
+	.dropdowns {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.filter-by span {
+		display: inline-block;
+		flex: 1;
+	}
+
+	@media (max-width: 800px) {
+		.filters {
+			flex-direction: column;
+			padding: 0.5rem;
+			border-bottom: 1px solid var(--color-fg);
+		}
+		.sort-by .dropdowns {
+			justify-content: space-between;
+		}
+		span {
+			align-items: end;
+		}
 	}
 </style>

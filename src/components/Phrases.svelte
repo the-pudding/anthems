@@ -96,7 +96,7 @@
 
 <style>
 	section {
-		height: 100vh;
+		height: 100svh;
 		overflow: hidden;
 		position: relative;
 	}

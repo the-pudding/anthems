@@ -3,6 +3,7 @@
 	import { scaleLinear } from "d3-scale";
 	import _ from "lodash";
 	import Face from "$components/Phrases.Featured.Face.svelte";
+	import viewport from "$stores/viewport.js";
 
 	export let title = "";
 
@@ -21,9 +22,13 @@
 		"mary-j-blige": "mary-j-blige_world-series_2009"
 	};
 
+	$: mobile = $viewport.width < 600;
+	$: paddingLeft = mobile ? 0 : 50;
+	$: paddingRight = mobile ? 0 : 200;
+
 	$: xScale = scaleLinear()
 		.domain([min, max])
-		.range([50, width - 200]);
+		.range([paddingLeft, width - paddingRight]);
 </script>
 
 <div class="spectrum-chart">
@@ -99,5 +104,24 @@
 		width: 100%;
 		position: absolute;
 		top: 40%;
+	}
+
+	@media (max-width: 600px) {
+		.spectrum-chart {
+			padding: 0;
+		}
+		.title {
+			margin: 0;
+			padding: 0;
+		}
+		.legend {
+			padding: 1rem 0 0 0;
+			margin: 0;
+			width: 100%;
+		}
+		.legend p:first-of-type,
+		.legend p:last-of-type {
+			margin: 0;
+		}
 	}
 </style>

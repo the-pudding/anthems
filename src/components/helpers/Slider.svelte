@@ -149,7 +149,7 @@ Usage:
 
 	@media (max-width: 600px) {
 		section {
-			height: calc(100% - 3rem);
+			height: calc(100% - 4rem);
 			width: 100%;
 		}
 	}

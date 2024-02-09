@@ -76,8 +76,11 @@
 	}
 
 	@media (max-width: 600px) {
+		.container {
+			padding-top: 3rem;
+		}
 		.text {
-			font-size: 0.9rem;
+			font-size: var(--14px);
 			margin-left: 0;
 		}
 	}

@@ -48,10 +48,8 @@
 		highlight = undefined;
 	};
 	const load = async () => {
-		const isMobile = $viewport.width <= 600;
-		const module = await import(
-			`$data/pitch/${isMobile ? "mobile" : "desktop"}/phrase${phraseI}.csv`
-		);
+		// const isMobile = $viewport.width <= 600;
+		const module = await import(`$data/pitch/desktop/phrase${phraseI}.csv`);
 		loaded = true;
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
@@ -144,7 +142,6 @@
 	.text {
 		margin-bottom: 3rem;
 		margin-left: 3rem;
-		height: 120px;
 		max-width: 600px;
 		pointer-events: auto;
 	}
@@ -189,7 +186,7 @@
 
 	@media (max-width: 800px) {
 		h2 {
-			font-size: 1.75rem;
+			font-size: 2rem;
 		}
 	}
 
@@ -199,17 +196,21 @@
 		}
 		h2 {
 			font-size: 1.75rem;
+			margin: 0;
 		}
 		.text {
-			font-size: 0.9rem;
+			font-size: var(--14px);
 			margin-left: 0;
-			flex-basis: 80px;
+			margin-bottom: 0;
+		}
+		.text p {
+			line-height: 1.7;
 		}
 	}
 
 	@media (max-width: 400px) {
 		h2 {
-			font-size: 1.25rem;
+			font-size: 1.6rem;
 		}
 	}
 </style>

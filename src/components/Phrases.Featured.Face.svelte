@@ -124,6 +124,7 @@
 		"Mary J. Blige",
 		"Billy Joel"
 	];
+	const longHair = ["kelly-clarkson", "carrie-underwood", "jordin-sparks"];
 
 	const onClick = () => {
 		if (!clickable) return;
@@ -164,7 +165,11 @@
 	});
 </script>
 
-<button class="pic" on:click={onClick}>
+<button
+	class="pic"
+	class:long-hair={longHair.some((d) => id.startsWith(d))}
+	on:click={onClick}
+>
 	<div class="pic-wrapper" style="margin-bottom:{setMargins(performer)}rem">
 		<div class={`svg-wrapper phrase${phraseI}`} id={`${id}_face`}>
 			{@html faceSvgs[name]}
@@ -194,7 +199,7 @@
 		cursor: default;
 	}
 	.pic {
-		width: 7rem;
+		/* width: 7rem; */
 		position: relative;
 		background: none;
 		padding: 0;
@@ -203,12 +208,16 @@
 		flex-direction: column;
 		align-items: center;
 	}
+	.pic.long-hair {
+		margin-top: 1rem;
+	}
 	.pic:hover p {
 		visibility: visible;
 		font-weight: 700;
 	}
 	.pic-wrapper {
-		width: 6rem;
+		width: 80%;
+		/* width: 6rem; */
 		position: relative;
 	}
 	.crown {
@@ -252,6 +261,12 @@
 		img {
 			height: 100%;
 			width: auto;
+		}
+		.pic-wrapper {
+			width: 70%;
+		}
+		.pic p {
+			max-width: 90px;
 		}
 	}
 </style>

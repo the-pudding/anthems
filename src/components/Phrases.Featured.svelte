@@ -22,7 +22,6 @@
 		visibleFaces = allFaces;
 	};
 
-	$: visible = $currentPhraseI !== 0 || $currentStepI >= 3;
 	$: top = featured.filter((d) => d.type === "top");
 	$: noteworthy = featured.filter((d) => d.type === "our-pick");
 	$: allFaces = [...top, ...noteworthy];
@@ -33,7 +32,7 @@
 	<button class="standard" on:click={selectStandard}
 		>Standard <span>{@html play}</span></button
 	>
-	<div class="faces" class:visible class:scrollable={showingMore}>
+	<div class="faces" class:scrollable={showingMore}>
 		<h3>Top divas</h3>
 		{#each visibleFaces as { id, type }, i}
 			{#if type === "our-pick" && i > 0 && visibleFaces[i - 1].type === "top"}
@@ -62,9 +61,6 @@
 		margin-right: 3rem;
 		padding-top: 1rem;
 		max-width: 8rem;
-		opacity: 0;
-		visibility: hidden;
-		transition: opacity 0.5s ease-in-out;
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -73,10 +69,6 @@
 	}
 	.faces.scrollable {
 		overflow: scroll;
-	}
-	.faces.visible {
-		visibility: visible;
-		opacity: 1;
 	}
 	h3 {
 		font-size: 1rem;
@@ -94,9 +86,9 @@
 	.show-more.visible {
 		visibility: visible;
 	}
-	.face {
+	/* .face {
 		min-height: 9rem;
-	}
+	} */
 	.standard {
 		width: 100%;
 		height: 2rem;
@@ -126,6 +118,7 @@
 	@media (max-width: 1000px) {
 		.faces {
 			display: flex;
+			flex-direction: row;
 			justify-content: space-between;
 			width: 100%;
 			max-width: none;
@@ -135,15 +128,25 @@
 		.face {
 			display: flex;
 		}
+		h3 {
+			display: none;
+		}
+		.standard {
+			margin-top: 0.5rem;
+			margin-bottom: 0;
+		}
 	}
 
 	@media (max-width: 600px) {
-		.face {
-			height: 50px;
+		.faces {
+			margin-bottom: 0;
 		}
 		h3 {
 			margin-top: 0;
 			margin-bottom: 0.5rem;
+		}
+		.show-more {
+			display: none;
 		}
 	}
 </style>

@@ -1,6 +1,7 @@
 <script>
 	import Scrolly from "$components/helpers/Scrolly.svelte";
 	import Lines from "$components/Lines.svelte";
+	import Icon from "$components/helpers/Icon.svelte";
 	import { onMount } from "svelte";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
@@ -15,6 +16,7 @@
 	} from "$stores/misc.js";
 	import { fade } from "svelte/transition";
 	import play from "$svg/play.svg";
+	import pause from "$svg/pause.svg";
 	import inView from "$actions/inView.js";
 	import { base } from "$app/paths";
 
@@ -64,6 +66,7 @@
 		if (!videoEl) return;
 		videoEl.pause();
 	};
+
 	const playableText = () => {
 		const playableText = document.querySelectorAll(`#intro span.playable`);
 		playableText.forEach((el) => {
@@ -73,11 +76,18 @@
 
 				if ($playing && $playing.id === id && $playing.phraseI === phraseI) {
 					$playing = undefined;
+					el.children[0].style.opacity = 1;
+					el.children[1].style.opacity = 0;
 				} else {
 					$playing = { id, phraseI };
+					el.children[0].style.opacity = 0;
+					el.children[1].style.opacity = 1;
 				}
 			});
+			// on end, switch to play
 			el.insertAdjacentHTML("beforeend", play);
+			el.insertAdjacentHTML("beforeend", pause);
+			el.children[1].style.opacity = 0;
 		});
 	};
 	const sectionEnter = () => {
@@ -98,8 +108,12 @@
 	$: videoVisible = $inIntro && !$inTitle && step === 2;
 	$: if (videoVisible) playVideo();
 	$: if (!videoVisible || !$inIntro) pauseVideo();
-	$: isolate = step === undefined ? steps[0].isolate : steps[step].isolate;
-	$: showStandard = step >= 4;
+	$: isolate =
+		step === undefined
+			? steps[0].isolate
+			: step >= steps.length
+			? undefined
+			: steps[step].isolate;
 	$: imgSrc = imgVisible
 		? `assets/three-color/${
 				step === 1 ? "fergie" : "whitney-houston"
@@ -157,13 +171,12 @@
 			<Lines
 				{data}
 				intro={true}
-				{showStandard}
 				{isolate}
 				{featuredIds}
-				hideAll={videoVisible}
+				hideAll={videoVisible || $inTitle}
 			/>
 		{:else}
-			<p>Loading...</p>
+			<!-- <p>Loading...</p> -->
 		{/if}
 	</div>
 
@@ -174,6 +187,7 @@
 				<p>{@html text}</p>
 			</div>
 		{/each}
+		<div class="step" style:height={"300px"}></div>
 	</Scrolly>
 
 	{#key imgSrc}
@@ -189,7 +203,8 @@
 		position: sticky;
 		z-index: 1;
 		height: 500px;
-		top: 10vh; /* maybe don't do this */
+		top: 50%;
+		transform: translate(0, -75%);
 		padding: 0 2rem;
 	}
 	.maya-vid-wrapper {
@@ -245,7 +260,7 @@
 		margin-top: 0;
 	}
 	.step:last-child {
-		margin-bottom: 50vh;
+		margin-bottom: 0;
 	}
 	img {
 		position: fixed;
@@ -257,5 +272,23 @@
 	}
 	img.visible {
 		visibility: visible;
+	}
+
+	@media (max-width: 600px) {
+		img {
+			width: 100%;
+		}
+		.sticky {
+			height: 250px;
+			transform: translate(0, -50%);
+		}
+		.step {
+			margin-left: 0;
+		}
+		.step p {
+			font-size: var(--14px);
+			background: rgb(2 39 61 / 90%);
+			margin: 0 1rem;
+		}
 	}
 </style>

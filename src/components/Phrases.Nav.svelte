@@ -77,7 +77,7 @@
 		<div class="circle" class:pulse on:click={skip}>
 			<Icon name="chevron-down" size="1.75rem" fill="none" />
 		</div>
-		<p>More data</p>
+		<p class="more-data">More data</p>
 	</div>
 </div>
 
@@ -88,14 +88,13 @@
 		margin: auto;
 		display: flex;
 		flex-direction: row;
-		/* justify-content: space-evenly; */
 		align-items: center;
 		z-index: 2;
 		position: relative;
 		pointer-events: auto;
 	}
 	.bar-wrapper {
-		width: calc(100% - 8rem);
+		flex: 1;
 		height: 2rem;
 		position: relative;
 	}
@@ -156,8 +155,7 @@
 	}
 	.skip {
 		position: relative;
-		width: 8rem;
-		margin: 0 0 0 6rem;
+		margin-left: 6rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -189,7 +187,7 @@
 
 	@media (max-width: 600px) {
 		.progress {
-			height: 3rem;
+			height: 4rem;
 		}
 		.circle {
 			width: 4rem;
@@ -201,6 +199,15 @@
 			padding: 2px 4px;
 			font-size: 10px;
 			width: 4rem;
+		}
+		.more-data {
+			display: none;
+		}
+		.skip {
+			margin-left: 1rem;
+		}
+		.bar-wrapper {
+			margin: 0 4.5rem;
 		}
 	}
 </style>

@@ -64,7 +64,7 @@
 		z-index: 2;
 	}
 	.top-row {
-		padding: 0.5rem 1rem 0.5rem 21rem;
+		padding: 0.5rem 1rem 0.5rem 16rem;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
@@ -94,5 +94,11 @@
 	}
 	:global(#heatmap span.icon) {
 		pointer-events: none;
+	}
+
+	@media (max-width: 800px) {
+		.top-row {
+			display: none;
+		}
 	}
 </style>

@@ -21,7 +21,11 @@ const getPerformerData = (id) => {
 		.replace("Ncaa", "NCAA")
 		.replace("Dnc", "DNC")
 		.replace("Rnc", "RNC")
-		.replace("Nfl", "NFL");
+		.replace("Nfl", "NFL")
+		.replace("NCAA Football Championship", "NCAA Championship")
+		.replace("Regular Season Game", "Regular Season")
+		.replace("Stanley Cup Playoffs", "Stanley Cup")
+		.replace("All-Star Game", "All-Star");
 	const year = +id.split("_")[2];
 	const genre = _.startCase(row.artistGenre).replace("Rnb", "R&B");
 	const key = row.key;

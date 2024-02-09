@@ -22,4 +22,16 @@
 	p {
 		font-family: var(--sans);
 	}
+
+	@media (max-width: 600px) {
+		h2 {
+			font-size: 2.5rem;
+		}
+		section {
+			padding: 0 1rem;
+		}
+		p {
+			font-size: var(--14px);
+		}
+	}
 </style>

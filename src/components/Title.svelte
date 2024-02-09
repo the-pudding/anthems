@@ -93,11 +93,20 @@
 		z-index: 10;
 	}
 	@media (max-width: 600px) {
+		section {
+			padding: 2rem 2rem 0 2rem;
+		}
 		.hed {
+			padding-right: 2rem;
 			font-size: 1rem;
+			margin-top: 3rem;
 		}
 		:global(h1) {
 			font-size: 6rem;
+		}
+		.mute {
+			top: 1.5rem;
+			right: 1.5rem;
 		}
 	}
 </style>

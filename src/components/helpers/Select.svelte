@@ -79,4 +79,16 @@
 		cursor: not-allowed;
 		background-color: var(--color-gray-300);
 	}
+
+	@media (max-width: 600px) {
+		select {
+			height: 35px;
+			font-size: var(--14px);
+		}
+		.select:after {
+			width: 0.8em;
+			height: 0.8em;
+			bottom: 1em;
+		}
+	}
 </style>

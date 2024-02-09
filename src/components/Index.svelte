@@ -46,7 +46,7 @@
 		overflow: visible;
 	}
 	.middle {
-		height: 100vh;
+		height: 100svh;
 		display: none;
 		overflow: visible;
 	}
@@ -54,13 +54,13 @@
 		display: block;
 	}
 	div.locked {
-		height: 100vh;
+		height: 100svh;
 		overflow: hidden;
 	}
 
 	@media (max-width: 600px) {
 		article {
-			padding: 1rem;
+			padding: 0.5rem 0.5rem 0 0.5rem;
 		}
 	}
 </style>
