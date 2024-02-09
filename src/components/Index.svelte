@@ -25,16 +25,16 @@
 </script>
 
 <article>
-	<!-- <div class="start" class:locked={!$entered}>
+	<div class="start" class:locked={!$entered}>
 		<Title />
 		<Intro />
-	</div> -->
+	</div>
 
 	<div class="middle" class:locked={$locked} class:visible={$entered}>
 		<Phrases />
-		<!-- <Heatmap />
+		<Heatmap />
 		<Methods />
-		<Footer /> -->
+		<Footer />
 	</div>
 	<Audio />
 </article>

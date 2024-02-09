@@ -1,5 +1,4 @@
 <script>
-	import Icon from "$components/helpers/Icon.svelte";
 	import Face from "$components/Phrases.Featured.Face.svelte";
 	import { playing } from "$stores/misc.js";
 	import _ from "lodash";
