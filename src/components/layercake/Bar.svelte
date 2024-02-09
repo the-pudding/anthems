@@ -1,17 +1,44 @@
 <script>
 	import { getContext } from "svelte";
-
-	const { data, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+	const { data, x, y, xGet, yGet, xScale, yScale } = getContext("LayerCake");
 
 	export let fill = "#ccc";
+	export let showNumber = false;
+	export let highlight;
+
+	$: max = $xScale.domain()[1];
 </script>
 
 <g>
 	{#each $data as d, i}
-		{@const x = $xScale.range()[0]}
-		{@const y = $yGet(d)}
-		{@const width = $xGet(d)}
+		{@const rectX = $xScale.range()[0] < 0 ? 0 : $xScale.range()[0]}
+		{@const rectY = $yGet(d) < 0 ? 0 : $yGet(d)}
+		{@const width = $xGet(d) < 0 ? 0 : $xGet(d)}
 		{@const height = $yScale.bandwidth()}
-		<rect data-id={i} {x} {y} {width} {height} {fill} />
+		{@const highlighted =
+			(highlight && highlight.includes(+$y(d))) || $x(d) === max}
+		<rect
+			data-id={i}
+			x={rectX}
+			y={rectY}
+			{width}
+			{height}
+			fill={highlighted ? "red" : fill}
+		/>
+
+		{#if showNumber}
+			<text x={rectX + width + 5} y={rectY + height / 2} fill="var(--color-fg)">
+				{$x(d).toFixed(0)}
+			</text>
+		{/if}
 	{/each}
 </g>
+
+<style>
+	text {
+		font-family: var(--sans);
+		font-weight: bold;
+		font-size: 0.8rem;
+		alignment-baseline: middle;
+	}
+</style>

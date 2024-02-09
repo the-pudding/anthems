@@ -1,10 +1,11 @@
 <script>
+	import { LayerCake, Svg } from "layercake";
+	import { scaleBand } from "d3-scale";
+	import Bar from "$components/layercake/Bar.svelte";
+	import LineMarker from "$components/layercake/Bar.LineMarker.svelte";
+	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import ids from "$data/ids.csv";
 	import _ from "lodash";
-	import { scaleLinear } from "d3-scale";
-	import { flip } from "svelte/animate";
-	import { cubicOut } from "svelte/easing";
-	import { onMount } from "svelte";
 
 	export let data;
 	export let title;
@@ -14,227 +15,81 @@
 	export let active;
 	export let animate;
 	export let highlight;
-	export let showAvg = true;
 	export let showNumber;
+	export let showAvg = true;
 	export let showLegend = true;
 
-	let displayData = data;
-	let barEls = [];
+	data.forEach((d) => {
+		d[xKey] = +d[xKey];
+	});
 
-	const labelWidth = "7.25rem";
+	let avg = _.meanBy(ids, (d) => +d["overall_diva"]);
+	let small = data.length < 10;
 
-	$: avg = _.meanBy(
-		ids.filter((d) => d.id !== "standard"),
-		(d) => +d["overall_diva"]
+	const longestLabel = yFormat(
+		_.maxBy(data, (d) => yFormat(d[yKey]).length)[yKey]
 	);
-	$: max = +_.maxBy(data, (d) => +d[xKey])[xKey];
-	$: xScale = scaleLinear().domain([0, max]).range([0, maxWidth]);
-	$: maxWidth = _.maxBy(barEls, (d) => d.clientWidth)?.clientWidth;
-	$: if (animate && active)
-		displayData = _.orderBy(data, (d) => +d[xKey], "desc");
-	$: if (animate && !active) displayData = data;
 </script>
 
-<div class="bar-chart-inline">
-	<div class="title">{title}</div>
+<h3>{title}</h3>
+<div class="chart-container" class:small>
+	<LayerCake
+		padding={{
+			top: showAvg && showLegend ? 30 : 0,
+			bottom: 50,
+			left: longestLabel.length * 5 + 20,
+			right: 50
+		}}
+		x={xKey}
+		y={yKey}
+		yScale={scaleBand().paddingInner(0.4)}
+		yDomain={data.map((d) => d[yKey])}
+		xDomain={[0, null]}
+		{data}
+	>
+		<Svg>
+			<AxisY gridlines={false} baseline={false} formatTick={yFormat} />
+			<Bar fill="var(--color-grey-blue)" {showNumber} {highlight} />
 
-	{#if showLegend}
-		<div class="legend">
-			<p>◀ Less Diva</p>
-			<p>More Diva ▶</p>
-		</div>
-	{/if}
-
-	<div class="chart-wrapper">
-		<div class="baseline" style={`left: ${labelWidth}`}></div>
-		{#if showAvg}
-			<div
-				class="avgline"
-				style={`left: calc(${labelWidth} + ${xScale(avg)}px)`}
-			></div>
-		{/if}
-
-		{#each displayData as row, i (row[yKey])}
-			<div
-				class="row"
-				animate:flip={{
-					delay: active ? 1000 + Math.random() * 750 : 0,
-					duration: active ? 1000 : 0,
-					easing: cubicOut
-				}}
-			>
-				<p class="category" class:small={data.length > 5}>
-					{yFormat(row[yKey])}
-				</p>
-				<div class="full-bar" bind:this={barEls[i]}>
-					<div
-						class="bar"
-						class:highlight={highlight
-							? highlight.includes(+row[yKey])
-							: i === 0}
-						style={`width: ${xScale(row[xKey])}px`}
-					>
-						{#if showNumber}
-							<p class="score">{row[xKey]}</p>
-						{/if}
-					</div>
-				</div>
-			</div>
-		{/each}
-	</div>
+			{#if showLegend}
+				<LineMarker value={0} label="Standard" />
+			{/if}
+			{#if showAvg}
+				<LineMarker value={avg} label="Average" />
+			{/if}
+		</Svg>
+	</LayerCake>
 </div>
 
 <style>
-	.bar-chart-inline {
-		flex: 1;
+	.chart-container {
 		width: 100%;
-		padding: 3rem 1rem 4rem 1rem;
-		display: flex;
-		flex-direction: column;
+		flex: 1;
 	}
-	.title {
+	.chart-container.small {
+		flex: none;
+		height: 60%;
+	}
+	h3 {
 		font-family: var(--sans);
 		color: var(--color-grey-blue);
 		font-weight: 700;
 		text-transform: uppercase;
-		margin: 0 auto 2.5rem auto;
+		margin-bottom: 2.5rem;
 		font-size: var(--18px);
 		width: calc(100% - 2rem);
 		max-width: 50rem;
-		padding: 0 0 0 6.5rem;
-	}
-	.legend {
-		width: calc(100% - 2rem);
-		max-width: 50rem;
-		margin: 0 auto 1rem auto;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		font-family: var(--sans);
-		font-size: var(--14px);
-		color: var(--color-fg);
-		padding: 0 0 0 4rem;
-	}
-	.legend p:first-of-type {
-		margin: 0 0 0 2.5rem;
-	}
-	.legend p:last-of-type {
-		margin: 0;
-	}
-	.chart-wrapper {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		position: relative;
-		width: calc(100% - 2rem);
-		max-width: 50rem;
-		margin: 0 auto;
-		flex: 1;
-	}
-	.baseline {
-		position: absolute;
-		top: 0rem;
-		border-left: 2px dashed var(--color-fg);
-		z-index: 999;
-		height: 100%;
-	}
-	.baseline::after {
-		content: "Standard";
-		color: var(--color-fg);
-		position: absolute;
-		bottom: -1.5rem;
-		left: -1.85rem;
-		font-family: var(--sans);
-		font-size: var(--14px);
-	}
-	.avgline {
-		position: absolute;
-		top: 0rem;
-		border-left: 2px dashed var(--color-fg);
-		z-index: 999;
-		height: 100%;
-	}
-	.avgline::after {
-		content: "Average";
-		width: 8rem;
-		color: var(--color-fg);
-		text-align: center;
-		position: absolute;
-		bottom: -1.5rem;
-		left: -4.25rem;
-		font-family: var(--sans);
-		font-size: var(--14px);
-	}
-	.row {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		margin: 4px 0;
-	}
-	.category {
-		color: var(--color-fg);
-		font-family: Newsagent;
-		text-transform: capitalize;
-		font-size: var(--28px);
-		text-align: right;
-		width: 7rem;
-		margin: 0 0.5rem 0 0;
-		line-height: 1;
-	}
-	.category.small {
-		font-size: var(--18px);
-	}
-	.full-bar {
-		height: 100%;
-		width: calc(100% - 6.5rem);
-		display: flex;
-		flex-direction: row;
-	}
-	.bar {
-		background: var(--color-grey-blue);
-		position: relative;
-	}
-	.highlight {
-		background: var(--color-red);
-	}
-	.score {
-		font-family: var(--sans);
-		font-weight: 700;
-		position: absolute;
-		top: 0;
-		margin: 0;
-		right: 0;
-		line-height: 1;
-		padding: 0;
-		transform: translate(calc(100% + 0.5rem), 0);
 	}
 
 	@media (max-width: 600px) {
-		.bar-chart-inline {
-			padding: 0 0 2rem 0;
-		}
-		.legend {
-			padding: 1rem 0 0 0;
-			margin: 0 0 0.5rem 0;
-			width: 100%;
-		}
-		.legend p:first-of-type {
-			margin: 0 0 0 4.5rem;
-		}
-		.title {
+		h3 {
 			font-size: var(--16px);
 			padding: 0;
-			margin: 0;
+			margin-bottom: 2rem;
 		}
-		.chart-wrapper {
-			margin: 0;
-		}
-		.category {
-			width: 6rem;
-		}
-		.category.small {
-			font-size: 0.5rem;
+		.chart-container.small {
+			flex: 1;
+			max-height: 300px;
 		}
 	}
 </style>
