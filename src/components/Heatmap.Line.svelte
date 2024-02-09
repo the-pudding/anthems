@@ -35,4 +35,8 @@
 		width: 100%;
 		height: 100%;
 	}
+
+	:global(.phrase-box .chart-container svg path) {
+		stroke: var(--color-fg);
+	}
 </style>

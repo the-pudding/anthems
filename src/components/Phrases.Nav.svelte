@@ -137,7 +137,8 @@
 	}
 	.circle:hover {
 		cursor: pointer;
-		opacity: 0.5;
+		transform: scale(1.25);
+		transition: all 250ms;
 	}
 	.active {
 		width: auto;

@@ -244,7 +244,7 @@
 		z-index: 1;
 	}
 	.step {
-		margin: 75vh 0 75vh 3rem;
+		margin: 75vh 0 75vh 5rem;
 		max-width: 28rem;
 	}
 	.step p {

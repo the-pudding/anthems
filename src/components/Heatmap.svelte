@@ -68,7 +68,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		background: var(--color-bg);
+		background: var(--color-extra-dark-blue);
 		border-bottom: 1px solid var(--color-fg);
 	}
 	.top-row-phrase {
@@ -86,7 +86,10 @@
 		padding: 0;
 	}
 	.top-row-phrase:hover {
-		background: var(--color-gray-800);
+		/* color: var(--color-red); */
+		font-weight: 700;
+		border-bottom: 3px solid var(--color-red);
+		/* background: var(--color-dark-blue); */
 	}
 	.active {
 		width: 30%;
