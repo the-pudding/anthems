@@ -8,7 +8,8 @@
 	let sortedFilteredIds = ids.filter((d) => d.id !== "standard");
 	let activeColumn;
 	let activeCell;
-	let sectionEl;
+
+	$: console.log($playing);
 
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 

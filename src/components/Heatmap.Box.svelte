@@ -23,10 +23,8 @@
 		if (activeColumn && i !== activeColumn) activeColumn = undefined;
 	};
 
-	$: expanded =
-		activeColumn === i ||
-		(activeCell && activeCell.row === id && activeCell.col === i);
 	$: isPlaying = activeCell && activeCell.row === id && activeCell.col === i;
+	$: expanded = activeColumn === i || isPlaying;
 	$: lineData = full
 		.map((d) => ({ timestamp: +d.timestamp, frequency: +d[id] }))
 		.filter((d) => d.timestamp >= start && d.timestamp <= end);
