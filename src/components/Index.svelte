@@ -11,8 +11,8 @@
 	import { onMount } from "svelte";
 
 	onMount(() => {
-		$entered = true; // TODO REMOVE
-		$locked = false;
+		// $entered = true;
+		// $locked = false;
 
 		$ios = !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
@@ -43,13 +43,13 @@
 </script>
 
 <article>
-	<!-- <div class="start" class:locked={!$entered}>
+	<div class="start" class:locked={!$entered}>
 		<Title />
 		<Intro />
-	</div> -->
+	</div>
 
 	<div class="middle" class:locked={$locked} class:visible={$entered}>
-		<!-- <Phrases /> -->
+		<Phrases />
 		<Heatmap />
 		<Methods />
 		<Footer />
