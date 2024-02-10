@@ -30,7 +30,7 @@
 	$: flatData = flatten(data, "pitch");
 	$: zScale = scaleOrdinal().domain(data.map((d) => d.id));
 	$: highlightData = highlight
-		? data.find((d) => d.id === highlight).pitch
+		? data.find((d) => d.id === highlight)?.pitch
 		: undefined;
 	$: highlightEnd = highlightData
 		? _.last(highlightData.filter((d) => d.frequency)).timestamp

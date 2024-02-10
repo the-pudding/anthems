@@ -62,7 +62,7 @@
 				class:active
 			>
 				{#if slide.type === "phrase"}
-					<Slide slideI={+slide.i} phrase={slide} />
+					<Slide slideI={+slide.i} phrase={slide} {active} />
 				{:else if slide.type === "chart"}
 					<Chart
 						slideI={+slide.i}

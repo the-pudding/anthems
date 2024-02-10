@@ -29,23 +29,20 @@
 
 <div class="wrapper">
 	{#if sliderOpen}
-	<button class="close-slider" on:click={closeSlider} class:visible={sliderOpen} in:fade={{ duration: 500, delay: 1000}}
-		><Icon
-			name={"x"}
-			size="1rem"
-			stroke="white"
-		/>
-	</button>
+		<button
+			class="close-slider"
+			on:click={closeSlider}
+			class:visible={sliderOpen}
+			in:fade={{ duration: 500, delay: 1000 }}
+			><Icon name={"x"} size="1rem" stroke="white" />
+		</button>
 	{/if}
 	<button class="standard" on:click={selectStandard}
 		>Standard <span>{@html play}</span></button
 	>
-	<button class="open-slider" on:click={openSlider}>Show divas
-		<Icon
-			name={"music-4"}
-			size="1rem"
-			stroke="white"
-		/>
+	<button class="open-slider" on:click={openSlider}
+		>Show divas
+		<Icon name={"music-4"} size="1rem" stroke="white" />
 	</button>
 
 	<div class="faces" class:visible={sliderOpen}>
@@ -56,13 +53,7 @@
 			{/if}
 
 			<div class="face">
-				<Face
-					id={id === "amber-riley_mlb-allstar-game_2010"
-						? "beyonce_super-bowl_2004"
-						: id}
-					bind:highlight
-					{phraseI}
-				/>
+				<Face {id} bind:highlight {phraseI} />
 			</div>
 		{/each}
 	</div>
@@ -117,7 +108,9 @@
 		margin-bottom: 1rem;
 		transition: all 250ms;
 	}
-	.standard:hover, .open-slider:hover, .close-slider:hover {
+	.standard:hover,
+	.open-slider:hover,
+	.close-slider:hover {
 		background: var(--color-red);
 		transform: translateY(-2px);
 		box-shadow: rgba(2, 39, 61, 1) 0 4px 12px;
@@ -221,7 +214,6 @@
 			width: 2rem;
 		}
 		.close-slider:hover {
-
 		}
 		.close-slider.visible {
 			display: flex;

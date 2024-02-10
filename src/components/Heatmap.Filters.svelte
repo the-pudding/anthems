@@ -124,11 +124,9 @@
 					{/key}
 				</button>
 			</span>
-			<button class="clear" on:click={clear}>Clear<Icon
-				name={"x"}
-				size="1.5rem"
-				stroke="white"
-			/></button>
+			<button class="clear" on:click={clear}
+				>Clear<Icon name={"x"} size="1.5rem" stroke="white" /></button
+			>
 		</div>
 	</div>
 
