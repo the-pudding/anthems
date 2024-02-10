@@ -38,17 +38,6 @@
 			dispatch("tap", dir);
 		}
 	};
-
-	function hideTapperOverlay() {
-		haltTap = false;
-		tapperOverlayVisible = false;
-	}
-
-	$: visibleArrows = directions.filter((d) =>
-		typeof showArrows === "boolean" ? showArrows : showArrows.includes(d)
-	);
-	$: haltTap =
-		$currentPhraseI == 0 && $currentStepI == 0 && tapperOverlayVisible;
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -57,7 +46,6 @@
 	{#each directions as dir}
 		<button
 			on:click={dispatch("tap", dir)}
-			class:haltTap
 			style="width: {getW(dir)}; height: {getH(dir)};"
 			aria-label={dir}
 			class="{dir} {arrowPosition}"
@@ -67,34 +55,9 @@
 		</button>
 	{/each}
 </section>
-{#if $currentPhraseI == 0 && $currentStepI == 0 && tapperOverlayVisible}
-	<section
-		class="tapper-overlay"
-		on:click={hideTapperOverlay}
-		transition:fade={{ duration: 500 }}
-	>
-		<div class="left-overlay">
-			<div>
-				<ChevronLeft color={arrowStroke} strokeWidth={arrowStrokeWidth} />
-				<p>Prev</p>
-			</div>
-		</div>
-		<div class="right-overlay">
-			<p class="directions">
-				Click right to go forward and left to go back. You can also use the
-				arrow keys on your keyboard.
-			</p>
-			<div>
-				<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} />
-				<p>Next</p>
-			</div>
-		</div>
-	</section>
-{/if}
 
 <style>
-	.tapper,
-	.tapper-overlay {
+	.tapper {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -102,60 +65,6 @@
 		height: 100%;
 		z-index: 1;
 		pointer-events: none;
-	}
-	.tapper-overlay {
-		z-index: 999;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		height: calc(100svh - 1rem);
-		width: calc(100% - 1rem);
-		margin: 0.5rem 0 0 0.5rem;
-		pointer-events: auto;
-	}
-	.left-overlay,
-	.right-overlay {
-		height: 100%;
-		background: rgba(124, 164, 174, 0.85);
-		outline: 2px solid var(--color-fg);
-		position: relative;
-		font-family: var(--sans);
-		font-weight: 700;
-		color: var(--color-extra-dark-blue);
-	}
-	.left-overlay {
-		width: 20%;
-		margin-right: 1rem;
-	}
-	.right-overlay {
-		width: 80%;
-	}
-	.directions {
-		position: absolute;
-		left: 0;
-		top: 45%;
-		transform: translate(0%, -50%);
-		font-size: var(--24px);
-		padding: 0 0 0 3rem;
-		width: 50%;
-	}
-	.left-overlay div,
-	.right-overlay div {
-		position: absolute;
-		top: 45%;
-		padding: 0 0.5rem;
-	}
-	.left-overlay div {
-		left: 0;
-	}
-	.right-overlay div {
-		right: 0;
-	}
-	.left-overlay div p,
-	.right-overlay div p {
-		margin: 0;
-		text-transform: uppercase;
-		font-size: var(--12px);
 	}
 	button {
 		position: absolute;

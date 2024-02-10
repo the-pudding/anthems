@@ -60,7 +60,7 @@
 			{@const phraseIndex = `phrase${[i]}_diva`}
 			{@const phraseMissing = !data[phraseIndex]}
 			{@const background = phraseMissing
-				? "url(assets/x-paper.png) no-repeat center"
+				? "url(assets/x-paper.png) center center / 50% no-repeat"
 				: `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
 			<Box
 				{i}

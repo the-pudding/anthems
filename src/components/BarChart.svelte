@@ -42,7 +42,7 @@
 		}}
 		x={xKey}
 		y={yKey}
-		yScale={scaleBand().paddingInner(0.4)}
+		yScale={scaleBand().paddingInner(0.3)}
 		yDomain={data.map((d) => d[yKey])}
 		xDomain={[0, null]}
 		{data}
@@ -76,7 +76,7 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		margin-bottom: 2.5rem;
-		font-size: var(--18px);
+		font-size: var(--16px);
 		width: calc(100% - 2rem);
 		max-width: 50rem;
 	}
