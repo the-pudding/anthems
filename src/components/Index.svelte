@@ -74,10 +74,4 @@
 		height: 100svh;
 		overflow: hidden;
 	}
-
-	@media (max-width: 600px) {
-		article {
-			padding: 0.5rem 0.5rem 0 0.5rem;
-		}
-	}
 </style>

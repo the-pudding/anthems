@@ -92,9 +92,18 @@
 		background: var(--color-extra-dark-blue);
 		border: 3px solid var(--color-grey-blue);
 		height: 100%;
-		padding: 1rem 2rem;
 		display: flex;
 		position: relative;
+	}
+	:global(.tap-directions) {
+		font-family: var(--sans);
+		color: var(--color-red);
+		padding-right: 2.75rem;
+		font-weight: 700;
+		background-image: url(assets/keyboard.png);
+		background-size: 2.25rem;
+		background-repeat: no-repeat;
+		background-position: top right;
 	}
 	.line-wrapper {
 		display: flex;
@@ -105,18 +114,19 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+		padding: 1.5rem 1.5rem 3rem 1.5rem;
 	}
 	h2 {
 		font-family: Newsagent;
-		font-size: 4rem;
+		font-size: 5rem;
 		display: flex;
 		justify-content: space-evenly;
 		margin-bottom: 0;
 	}
 	.text {
 		margin-bottom: 3rem;
-		margin-left: 3rem;
-		max-width: 600px;
+		margin-left: 2rem;
+		max-width: 700px;
 		pointer-events: auto;
 	}
 	.text p {
@@ -139,6 +149,9 @@
 		}
 		h2 {
 			font-size: 2.25rem;
+		}
+		main {
+			padding: 1.5rem 1.5rem 3rem 3rem;
 		}
 	}
 

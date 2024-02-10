@@ -64,13 +64,13 @@
 		font-weight: 700;
 		text-transform: uppercase;
 		margin: 0 auto 2.5rem auto;
-		font-size: var(--18px);
-		width: calc(100% - 2rem);
+		font-size: var(--16px);
+		width: 100%;
 		max-width: 50rem;
-		padding: 0 0 0 6.5rem;
+		padding: 0
 	}
 	.legend {
-		width: calc(100% - 2rem);
+		width: 100%;
 		max-width: 50rem;
 		margin: 0 auto 1rem auto;
 		display: flex;
@@ -79,10 +79,10 @@
 		font-family: var(--sans);
 		font-size: var(--14px);
 		color: var(--color-fg);
-		padding: 0 0 0 4rem;
+		padding: 0;
 	}
 	.legend p:first-of-type {
-		margin: 0 0 0 2.5rem;
+		margin: 0;
 	}
 	.legend p:last-of-type {
 		margin: 0;
@@ -93,6 +93,7 @@
 		position: relative;
 	}
 	.face {
+		width: 25%;
 		position: absolute;
 		top: 40%;
 		transform: translate(0, -45%);

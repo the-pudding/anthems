@@ -67,6 +67,9 @@
 	.phrase-box:hover {
 		outline: 2px solid var(--color-red) !important;
 	}
+	.missing {
+		background-size: 50%;
+	}
 	.missing:hover {
 		cursor: not-allowed;
 		outline: 0 !important;

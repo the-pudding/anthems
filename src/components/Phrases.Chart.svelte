@@ -73,7 +73,7 @@
 		height: 100%;
 	}
 	.text {
-		max-width: 600px;
+		max-width: 700px;
 		pointer-events: auto;
 		line-height: 1.75;
 		margin-left: 6rem;

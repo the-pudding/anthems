@@ -94,11 +94,11 @@
 		font-size: var(--16px);
 		padding: 1rem;
 		background: var(--color-fg);
+		transition: all 250ms;
 	}
 	button.begin:hover {
 		background: var(--color-red);
 		transform: translateY(-2px);
-		transition: all 250ms;
 		box-shadow: rgba(2, 39, 61, 1) 0 4px 12px;
 	}
 	button.begin.visible {

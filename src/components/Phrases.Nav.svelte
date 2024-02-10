@@ -92,6 +92,7 @@
 		z-index: 2;
 		position: relative;
 		pointer-events: auto;
+		padding: 0 1rem 1rem 1rem;
 	}
 	.bar-wrapper {
 		flex: 1;

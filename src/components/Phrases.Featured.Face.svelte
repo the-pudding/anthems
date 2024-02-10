@@ -207,6 +207,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		direction: ltr;
 	}
 	.pic.long-hair {
 		margin-top: 1rem;
