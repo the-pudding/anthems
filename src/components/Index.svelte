@@ -1,4 +1,5 @@
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
 	import Title from "$components/Title.svelte";
 	import Intro from "$components/Intro.svelte";
 	import Phrases from "$components/Phrases.svelte";
@@ -18,6 +19,22 @@
 			} else {
 				$soundOn = false;
 			}
+		});
+
+		const playable = document.querySelectorAll(".playable");
+		playable.forEach((el) => {
+			const text = el.innerText;
+			const id = el.dataset.id;
+			const phraseI = el.dataset.phrase;
+			el.innerText = "";
+			new PlayableText({
+				target: el,
+				props: {
+					id,
+					phraseI,
+					text
+				}
+			});
 		});
 	});
 </script>

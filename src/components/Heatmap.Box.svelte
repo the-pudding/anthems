@@ -59,7 +59,7 @@
 		color: var(--color-grey-blue);
 	}
 	.expanded {
-		width: 60%;
+		width: 30%;
 	}
 	.playing {
 		outline: 2px solid var(--color-red) !important;
@@ -70,5 +70,11 @@
 	.missing:hover {
 		cursor: not-allowed;
 		outline: 0 !important;
+	}
+
+	@media (max-width: 600px) {
+		.expanded {
+			width: 30%;
+		}
 	}
 </style>

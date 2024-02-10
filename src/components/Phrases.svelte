@@ -11,21 +11,7 @@
 		playing
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
-	import ids from "$data/ids.csv";
 	import _ from "lodash";
-
-	// const findTopDivas = () => {
-	// 	const topDivas = [];
-	// 	_.range(16).forEach((i) => {
-	// 		const sorted = _.orderBy(ids, (d) => +d[`phrase${i}_diva`], "desc");
-	// 		const topIds = sorted.slice(0, 3).map((d) => {
-	// 			return d.id;
-	// 		});
-	// 		topDivas.push({ i: i, ids: topIds });
-	// 	});
-	// 	console.log(topDivas);
-	// };
-	// findTopDivas();
 
 	let sliderEl;
 

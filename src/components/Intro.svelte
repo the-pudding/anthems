@@ -1,7 +1,6 @@
 <script>
 	import Scrolly from "$components/helpers/Scrolly.svelte";
 	import Lines from "$components/Lines.svelte";
-	import Icon from "$components/helpers/Icon.svelte";
 	import { onMount } from "svelte";
 	import viewport from "$stores/viewport.js";
 	import ids from "$data/ids.csv";
@@ -15,8 +14,6 @@
 		inTitle
 	} from "$stores/misc.js";
 	import { fade } from "svelte/transition";
-	import play from "$svg/play.svg";
-	import pause from "$svg/pause.svg";
 	import inView from "$actions/inView.js";
 	import { base } from "$app/paths";
 
@@ -66,29 +63,6 @@
 		if (!videoEl) return;
 		videoEl.pause();
 	};
-
-	const playableText = () => {
-		// const playableText = document.querySelectorAll(`#intro span.playable`);
-		// playableText.forEach((el) => {
-		// 	el.addEventListener("click", () => {
-		// 		const id = el.dataset.id;
-		// 		const phraseI = el.dataset.phrase;
-		// 		if ($playing && $playing.id === id && $playing.phraseI === phraseI) {
-		// 			$playing = undefined;
-		// 			el.children[0].style.opacity = 1;
-		// 			el.children[1].style.opacity = 0;
-		// 		} else {
-		// 			$playing = { id, phraseI };
-		// 			el.children[0].style.opacity = 0;
-		// 			el.children[1].style.opacity = 1;
-		// 		}
-		// 	});
-		// 	// on end, switch to play
-		// 	el.insertAdjacentHTML("beforeend", play);
-		// 	el.insertAdjacentHTML("beforeend", pause);
-		// 	el.children[1].style.opacity = 0;
-		// });
-	};
 	const sectionEnter = () => {
 		if ($entered) {
 			$inIntro = true;
@@ -123,8 +97,6 @@
 		$inTitle || ($inIntro && (step === undefined || step === 0 || step === 1));
 
 	onMount(async () => {
-		playableText();
-
 		// Load line data
 		const isMobile = $viewport.width <= 600;
 		const module = await import(
