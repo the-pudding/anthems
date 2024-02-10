@@ -196,6 +196,7 @@
 	img.clickable:not(.highlight):hover {
 		opacity: 0.5;
 		cursor: pointer;
+		transition: all calc(var(--1s) * 0.5) ease-in-out;
 	}
 	img:not(.clickable):hover {
 		cursor: default;
@@ -210,6 +211,7 @@
 		flex-direction: column;
 		align-items: center;
 		direction: ltr;
+		transition: all calc(var(--1s) * 0.5) ease-in-out;
 	}
 	.pic.long-hair {
 		margin-top: 1rem;
@@ -217,6 +219,7 @@
 	.pic:hover p {
 		visibility: visible;
 		font-weight: 700;
+		transition: all calc(var(--1s) * 0.5) ease-in-out;
 	}
 	.pic-wrapper {
 		width: 80%;

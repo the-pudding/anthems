@@ -3,6 +3,7 @@
 	export let label = "";
 	export let disabled = false;
 	export let value = options.length ? options[0].value : "";
+	export let ariaLabel = "";
 
 	const id = `select-${Math.floor(Math.random() * 1000000)}`;
 </script>
@@ -11,7 +12,7 @@
 	{#if label}
 		<label for={id}>{label}</label>
 	{/if}
-	<select {id} bind:value {disabled}>
+	<select {id} bind:value {disabled} aria-label={ariaLabel}>
 		{#each options as option}
 			<option value={option.value}>{option.label || option.value}</option>
 		{/each}
@@ -37,7 +38,7 @@
 		font-family: inherit;
 		font-size: 1em;
 		cursor: pointer;
-		background: var(--color-white);
+		background: var(--color-fg);
 		color: var(--color-gray-900);
 		border: 2px solid var(--color-gray-900);
 		border-radius: 4px;
@@ -68,7 +69,7 @@
 	}
 
 	select:hover {
-		background: var(--color-gray-100);
+		background: #fbf3df;
 	}
 
 	select:focus {
@@ -82,13 +83,13 @@
 
 	@media (max-width: 600px) {
 		select {
-			height: 35px;
+			height: 2.75rem;
 			font-size: var(--14px);
 		}
 		.select:after {
 			width: 0.8em;
 			height: 0.8em;
-			bottom: 1em;
+			bottom: 1.1em;
 		}
 	}
 </style>

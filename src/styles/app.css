@@ -18,7 +18,7 @@
 	--z-overlay: 1000;
 
 	/* presets (used in reset.css) */
-	--border-radius: 2px;
+	--border-radius: 4px;
 	--font-body: var(--serif);
 	--font-form: var(--sans);
 	--color-bg: #032e47;

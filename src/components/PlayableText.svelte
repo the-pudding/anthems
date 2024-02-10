@@ -34,21 +34,25 @@
 		color: var(--color-bg);
 		text-transform: uppercase;
 		font-weight: bold;
-		margin: 0 0.4rem;
-		padding: 0.25rem 0.5rem;
+		margin: 0;
+		padding: 0.25rem 0.35rem 0.25rem 0.5rem;
 		border-radius: 0.25rem;
 		white-space: nowrap;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+		background-size: 1rem;
 	}
 	button:hover {
-		background: var(--color-gray-200);
+		background: #fbf3df;
+		transform: translateY(-1px);
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
 	div {
 		display: inline-block;
 		width: 1.5em;
 		height: 1.5em;
-		margin-left: 0.5rem;
-		transform: translate(0, 1px);
+		margin-left: 0.25rem;
 		background-position: center;
-		background-size: cover;
+		background-size: 1.25rem;
+		background-repeat: no-repeat;
 	}
 </style>

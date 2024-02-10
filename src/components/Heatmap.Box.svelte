@@ -31,6 +31,7 @@
 </script>
 
 <button
+	aria-label="phrase-{i}"
 	class="phrase-box phrase-box-{i}"
 	class:expanded
 	class:playing={isPlaying}
@@ -57,7 +58,7 @@
 		color: var(--color-grey-blue);
 	}
 	.expanded {
-		width: 30%;
+		width: 60%;
 	}
 	.playing {
 		outline: 2px solid var(--color-red) !important;
@@ -74,8 +75,8 @@
 	}
 
 	@media (max-width: 600px) {
-		.expanded {
-			width: 30%;
+		.missing {
+			background-size: 100%;
 		}
 	}
 </style>

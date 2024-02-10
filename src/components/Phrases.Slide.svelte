@@ -4,6 +4,7 @@
 	import Slide from "$components/helpers/Slider.Slide.svelte";
 	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
 	import ids from "$data/ids.csv";
+	import Loading from "$components/Loading.svelte";
 
 	export let phrase;
 	export let slideI;
@@ -73,7 +74,7 @@
 						showStandard={phraseI !== 0 || $currentStepI >= 1}
 					/>
 				{:else}
-					<p>loading...</p>
+					<Loading pos={true}/>
 				{/if}
 			</div>
 			<h2>
@@ -88,20 +89,26 @@
 <style>
 	.slide {
 		background: var(--color-extra-dark-blue);
-		border: 3px solid var(--color-grey-blue);
+		border: 2px solid var(--color-grey-blue);
 		height: 100%;
 		display: flex;
 		position: relative;
+		padding: 1rem 1rem 0 1rem;
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
 	:global(.tap-directions) {
 		font-family: var(--sans);
-		color: var(--color-red);
-		padding-right: 2.75rem;
+		color: var(--color-fg);
+		padding: 0.5rem 3.5rem 0.5rem 0.5rem;
 		font-weight: 700;
 		background-image: url(assets/keyboard.png);
 		background-size: 2.25rem;
 		background-repeat: no-repeat;
-		background-position: top right;
+		background-position: center right 0.75rem;
+		display: inline-block;
+		border: 1px solid var(--color-red);
+		border-radius: 4px;
+		margin-top: 0.5rem;
 	}
 	.line-wrapper {
 		display: flex;
@@ -116,7 +123,7 @@
 	}
 	h2 {
 		font-family: Newsagent;
-		font-size: 5rem;
+		font-size: 3.75rem;
 		display: flex;
 		justify-content: space-evenly;
 		margin-bottom: 0;
@@ -146,10 +153,13 @@
 			flex-direction: column;
 		}
 		h2 {
-			font-size: 2.25rem;
+			font-size: 2.75rem;
 		}
 		main {
 			padding: 1.5rem 1.5rem 3rem 3rem;
+		}
+		.text {
+			margin-left: 0rem;
 		}
 	}
 
@@ -160,6 +170,9 @@
 	}
 
 	@media (max-width: 600px) {
+		.main {
+			padding: 1rem 1rem 3rem 1rem;
+		}
 		.slide {
 			padding: 0.5rem 1rem;
 		}
@@ -173,13 +186,16 @@
 			margin-bottom: 0;
 		}
 		.text p {
-			line-height: 1.7;
+			line-height: 1.8;
 		}
 	}
 
 	@media (max-width: 400px) {
 		h2 {
 			font-size: 1.6rem;
+		}
+		.slide {
+			padding: 0.75rem 0.75rem 0 0.75rem;
 		}
 	}
 </style>
