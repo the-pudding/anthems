@@ -1,9 +1,6 @@
 <script>
 	import { LayerCake, Svg } from "layercake";
-
 	import Line from "$components/layercake/Line.svelte";
-	import AxisX from "$components/layercake/AxisX.svg.svelte";
-	import AxisY from "$components/layercake/AxisY.svg.svelte";
 
 	export let data;
 

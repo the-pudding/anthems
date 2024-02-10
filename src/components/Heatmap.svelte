@@ -3,7 +3,7 @@
 	import ids from "$data/ids.csv";
 	import Row from "$components/Heatmap.Row.svelte";
 	import copy from "$data/copy.json";
-	import { playing } from "$stores/misc.js";
+	import { playing, entered } from "$stores/misc.js";
 
 	let sortedFilteredIds = ids.filter((d) => d.id !== "standard");
 	let activeColumn;
@@ -21,8 +21,9 @@
 		$playing = undefined;
 	};
 	const scrollToTop = () => {
+		if (!$entered) return;
 		const heatmap = document.querySelector("#heatmap");
-		if (heatmap) first.scrollIntoView();
+		if (heatmap) heatmap.scrollIntoView();
 	};
 
 	$: sortedFilteredIds, scrollToTop();

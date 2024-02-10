@@ -12,6 +12,12 @@
 	export let activeCell;
 
 	const { performer, event, year, key } = getPerformerData(data.id);
+	const phraseStartsAndEnds = _.range(0, 16).map((i) => {
+		return {
+			start: +data[`phrase${[i]}_start`],
+			end: +data[`phrase${[i]}_end`]
+		};
+	});
 
 	const playAll = () => {
 		const id = data.id;
@@ -21,13 +27,22 @@
 			$playing = { id, phraseI: undefined };
 		}
 	};
-	const trackPhrase = () => {
-		// TODO
-		// calculate which phrase we're on
-		// make that activeCell
+	const updateActiveCell = () => {
+		if (!currentPhraseI === undefined || currentPhraseI === -1) {
+			return;
+		} else {
+			activeCell = { row: data.id, col: currentPhraseI };
+		}
 	};
 
-	//$: if ($playing && $playing.phraseI === undefined) trackPhrase($currentTime);
+	$: playingMeFull =
+		$playing && $playing.id === data.id && $playing.phraseI === undefined;
+	$: currentPhraseI = playingMeFull
+		? phraseStartsAndEnds.findIndex(
+				(d) => d.start <= $currentTime && d.end >= $currentTime
+		  )
+		: undefined;
+	$: currentPhraseI, updateActiveCell();
 	$: mobile = $viewport.width < 600;
 	$: paused = $playing?.id !== data.id;
 </script>
