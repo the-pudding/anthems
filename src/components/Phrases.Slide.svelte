@@ -2,16 +2,18 @@
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
-	import { currentStepI, currentPhraseI } from "$stores/misc.js";
+	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
 	import ids from "$data/ids.csv";
 
 	export let phrase;
 	export let slideI;
+	export let active;
 
 	let loaded = false;
 	let phrasePitch;
 	let data;
-	let highlight;
+
+	$: highlight = active ? $playing?.id : undefined;
 
 	const allIds = ids.map((d) => d.id);
 	const preLoad = 2; // start loading data n phrases before
@@ -40,9 +42,6 @@
 				};
 			});
 	};
-	const onNewStep = () => {
-		highlight = undefined;
-	};
 	const load = async () => {
 		const module = await import(`$data/pitch/desktop/phrase${phraseI}.csv`);
 		loaded = true;
@@ -51,7 +50,6 @@
 	};
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
-	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
 	$: phraseI = phrase.phraseI;
 </script>
 

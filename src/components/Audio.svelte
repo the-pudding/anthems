@@ -15,7 +15,6 @@
 				.map((d) => d.featured.map((f) => f.id))
 		)
 	);
-	// TODO: load these lazily?
 	const remainingIds = ids
 		.map((d) => d.id)
 		.filter((d) => !allFeaturedIds.includes(d));
@@ -41,7 +40,7 @@
 		const checkTime = () => {
 			$currentTime = audioEl.currentTime;
 			if ($currentTime >= end) {
-				$playing = undefined;
+				// $playing = undefined;
 				audioEl.pause();
 				audioEl.currentTime = start;
 				cancelAnimationFrame(f);

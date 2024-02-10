@@ -1,6 +1,7 @@
 <script>
 	import getPerformerData from "$utils/getPerformerData.js";
 	import aliciaSvg from "$svg/silhouettes/silhouettes_alicia-keys.svg";
+	import amberSvg from "$svg/silhouettes/silhouettes_amber-riley.svg";
 	import anthonySvg from "$svg/silhouettes/silhouettes_anthony-hamilton.svg";
 	import arethaSvg from "$svg/silhouettes/silhouettes_aretha-franklin.svg";
 	import beyonceSvg from "$svg/silhouettes/silhouettes_beyonce.svg";
@@ -58,6 +59,7 @@
 
 	const faceSvgs = {
 		"alicia-keys": aliciaSvg,
+		"amber-riley": amberSvg,
 		"anthony-hamilton": anthonySvg,
 		"aretha-franklin": arethaSvg,
 		beyonce: beyonceSvg,
