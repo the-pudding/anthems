@@ -6,6 +6,7 @@
 	import getPerformerData from "$utils/getPerformerData.js";
 	import viewport from "$stores/viewport.js";
 
+	export let i;
 	export let data;
 	export let activeColumn;
 	export let activeCell;
@@ -31,7 +32,7 @@
 	$: paused = $playing?.id !== data.id;
 </script>
 
-<div class="heatmap-row">
+<div class="heatmap-row" class:first={i === 0}>
 	<div class="details-wrapper">
 		<button
 			id={`${data.id}-heatmap-btn`}

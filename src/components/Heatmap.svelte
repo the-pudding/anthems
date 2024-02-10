@@ -8,6 +8,7 @@
 	let sortedFilteredIds = ids.filter((d) => d.id !== "standard");
 	let activeColumn;
 	let activeCell;
+	let sectionEl;
 
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
@@ -19,6 +20,12 @@
 
 		$playing = undefined;
 	};
+	const scrollToTop = () => {
+		const heatmap = document.querySelector("#heatmap");
+		if (heatmap) first.scrollIntoView();
+	};
+
+	$: sortedFilteredIds, scrollToTop();
 </script>
 
 <div id="transition-to-heatmap">
@@ -44,8 +51,8 @@
 	</div>
 
 	<div class="performer-rows">
-		{#each sortedFilteredIds as performance (performance.id)}
-			<Row data={performance} bind:activeColumn bind:activeCell />
+		{#each sortedFilteredIds as performance, i (performance.id)}
+			<Row {i} data={performance} bind:activeColumn bind:activeCell />
 		{/each}
 	</div>
 </section>
@@ -54,6 +61,7 @@
 	section {
 		width: 100%;
 		margin-top: 8rem;
+		position: relative;
 	}
 	#transition-to-heatmap {
 		padding-top: 4rem;
