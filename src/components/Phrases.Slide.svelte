@@ -1,12 +1,9 @@
 <script>
-	import ErrorFinder from "$components/ErrorFinder.svelte";
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
-	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
+	import { currentStepI, currentPhraseI } from "$stores/misc.js";
 	import ids from "$data/ids.csv";
-	import play from "$svg/play.svg";
-	import { onMount } from "svelte";
 
 	export let phrase;
 	export let slideI;
@@ -52,32 +49,10 @@
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 	};
-	const playableText = () => {
-		// const playableText = document.querySelectorAll(
-		// 	`#slide-${slideI} span.playable`
-		// );
-		// playableText.forEach((el) => {
-		// 	el.addEventListener("click", () => {
-		// 		const id = el.dataset.id;
-		// 		if (highlight === id) {
-		// 			highlight = undefined;
-		// 			$playing = undefined;
-		// 		} else {
-		// 			if (id !== "standard") highlight = id;
-		// 			$playing = { id, phraseI };
-		// 		}
-		// 	});
-		// 	el.insertAdjacentHTML("beforeend", play);
-		// });
-	};
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: if ($currentPhraseI === phraseI) onNewStep($currentStepI);
 	$: phraseI = phrase.phraseI;
-
-	onMount(() => {
-		playableText();
-	});
 </script>
 
 <Slide index={slideI}>
@@ -160,22 +135,6 @@
 	}
 	.text p.visible {
 		display: block;
-	}
-	:global(span.playable) {
-		background: var(--color-fg);
-		color: var(--color-bg);
-		font-family: var(--sans);
-		text-transform: uppercase;
-		font-weight: bold;
-		margin: 0 0.4rem;
-		padding: 0.25rem 2rem 0.25rem 0.5rem;
-		border-radius: 2px;
-		position: relative;
-		white-space: nowrap;
-	}
-	:global(span.playable):hover {
-		cursor: pointer;
-		background: var(--color-gray-100);
 	}
 
 	@media (max-width: 1200px) {

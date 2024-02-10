@@ -42,7 +42,7 @@
 			{#each stanzas as stanza, i}
 				<div class="stanza-image-wrap" style="animation-delay: {i}s">
 					<img
-						src="assets/stanza{stanza}.png"
+						src="assets/lyrics/stanza{stanza}.png"
 						alt="Francis Scott Key's handwritten lyrics to the Star Spangeled Banner"
 					/>
 				</div>

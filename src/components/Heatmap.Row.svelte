@@ -125,7 +125,9 @@
 		background: var(--color-red);
 	}
 	.name,
-	.event {
+	.event,
+	.key {
+		font-family: var(--sans);
 		color: var(--color-fg);
 		margin: 0;
 		padding: 0;
@@ -134,11 +136,6 @@
 	.name {
 		font-family: Newsagent;
 		font-size: var(--28px);
-	}
-	.event,
-	.key {
-		font-family: var(--sans);
-		margin: 0;
 	}
 	.box-wrapper {
 		flex: 1;
