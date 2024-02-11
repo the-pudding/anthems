@@ -43,13 +43,27 @@
 		x={xKey}
 		y={yKey}
 		yScale={scaleBand().paddingInner(0.3)}
-		yDomain={data.map((d) => d[yKey])}
+		yDomain={active && animate
+			? _.orderBy(data, (d) => +d[xKey], "desc").map((d) => d[yKey])
+			: data.map((d) => d[yKey])}
 		xDomain={[0, null]}
 		{data}
 	>
 		<Svg>
-			<AxisY gridlines={false} baseline={false} formatTick={yFormat} />
-			<Bar fill="var(--color-grey-blue)" {showNumber} {highlight} />
+			<AxisY
+				gridlines={false}
+				baseline={false}
+				formatTick={yFormat}
+				{animate}
+				{active}
+			/>
+			<Bar
+				fill="var(--color-grey-blue)"
+				{showNumber}
+				{highlight}
+				{animate}
+				{active}
+			/>
 
 			{#if showLegend}
 				<LineMarker value={0} label="Standard" />

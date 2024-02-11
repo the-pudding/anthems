@@ -3,10 +3,12 @@
   Generates an SVG y-axis. This component is also configured to detect if your y-scale is an ordinal scale. If so, it will place the markers in the middle of the bandwidth.
  -->
 <script>
-	import { Ticket } from "lucide-svelte";
 	import { getContext } from "svelte";
 
-	const { padding, xRange, yScale } = getContext("LayerCake");
+	const { data, y, padding, xRange, yScale, yGet } = getContext("LayerCake");
+
+	export let animate = false;
+	export let active;
 
 	/** @type {Boolean} [gridlines=true] - Extend lines from the ticks into the chart space */
 	export let gridlines = true;
@@ -47,41 +49,81 @@
 </script>
 
 <g class="axis y-axis" transform="translate({-$padding.left}, 0)">
-	{#each tickVals as tick (tick)}
-		<g
-			class="tick tick-{tick}"
-			transform="translate({$xRange[0] +
-				(isBandwidth ? $padding.left : 0)}, {$yScale(tick)})"
-		>
-			{#if gridlines !== false}
-				<line
-					class="gridline"
-					x2="100%"
-					y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
-					y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
-				></line>
-			{/if}
-			{#if tickMarks === true}
-				<line
-					class="tick-mark"
-					x1="0"
-					x2={isBandwidth ? -6 : 6}
-					y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
-					y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
-				></line>
-			{/if}
-			<text
-				class:bandwidth={isBandwidth}
-				class:small={isBandwidth && tickVals.length > 8}
-				x={xTick}
-				y={isBandwidth ? $yScale.bandwidth() / 2 + yTick : yTick}
-				dx={isBandwidth ? -9 : dxTick}
-				dy={isBandwidth ? 4 : dyTick}
-				style="text-anchor:{isBandwidth ? 'end' : textAnchor};"
-				>{formatTick(tick)}</text
+	{#if isBandwidth}
+		{#each $data as d, i ($y(d))}
+			<g
+				class="tick tick-{$y(d)}"
+				class:animate={animate && active}
+				transform="translate({$xRange[0] +
+					(isBandwidth ? $padding.left : 0)}, {$yGet(d)})"
 			>
-		</g>
-	{/each}
+				{#if gridlines !== false}
+					<line
+						class="gridline"
+						x2="100%"
+						y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+						y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+					></line>
+				{/if}
+				{#if tickMarks === true}
+					<line
+						class="tick-mark"
+						x1="0"
+						x2={isBandwidth ? -6 : 6}
+						y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+						y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+					></line>
+				{/if}
+				<text
+					class:bandwidth={isBandwidth}
+					class:small={isBandwidth && tickVals.length > 8}
+					x={xTick}
+					y={isBandwidth ? $yScale.bandwidth() / 2 + yTick : yTick}
+					dx={isBandwidth ? -9 : dxTick}
+					dy={isBandwidth ? 4 : dyTick}
+					style="text-anchor:{isBandwidth ? 'end' : textAnchor};"
+					>{formatTick($y(d))}</text
+				>
+			</g>
+		{/each}
+	{:else}
+		{#each tickVals as tick (tick)}
+			<g
+				class="tick tick-{tick}"
+				class:animate={animate && active}
+				transform="translate({$xRange[0] +
+					(isBandwidth ? $padding.left : 0)}, {$yScale(tick)})"
+			>
+				{#if gridlines !== false}
+					<line
+						class="gridline"
+						x2="100%"
+						y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+						y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+					></line>
+				{/if}
+				{#if tickMarks === true}
+					<line
+						class="tick-mark"
+						x1="0"
+						x2={isBandwidth ? -6 : 6}
+						y1={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+						y2={isBandwidth ? $yScale.bandwidth() / 2 : 0}
+					></line>
+				{/if}
+				<text
+					class:bandwidth={isBandwidth}
+					class:small={isBandwidth && tickVals.length > 8}
+					x={xTick}
+					y={isBandwidth ? $yScale.bandwidth() / 2 + yTick : yTick}
+					dx={isBandwidth ? -9 : dxTick}
+					dy={isBandwidth ? 4 : dyTick}
+					style="text-anchor:{isBandwidth ? 'end' : textAnchor};"
+					>{formatTick(tick)}</text
+				>
+			</g>
+		{/each}
+	{/if}
 </g>
 
 <style>
@@ -113,6 +155,13 @@
 
 	.tick.tick-0 line {
 		stroke-dasharray: 0;
+	}
+
+	g.animate {
+		transition: none;
+	}
+	g.animate.animate {
+		transition: transform var(--1s) var(--1s);
 	}
 
 	@media (max-width: 600px) {

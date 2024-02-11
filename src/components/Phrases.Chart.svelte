@@ -17,6 +17,10 @@
 	const lyrics = copy.slides
 		.filter((d) => d.type === "phrase")
 		.map((d) => d.lyrics);
+
+	// $currentSlideI === slideI
+	// 				? _.orderBy(divaByPhrase, (d) => +d.avg_diva, "desc")
+	// 				:
 </script>
 
 <Slide index={slideI}>
@@ -39,7 +43,7 @@
 				/>
 			{:else if id === "phrase"}
 				<BarChart
-					data={_.orderBy(divaByPhrase, (d) => +d.avg_diva, "desc")}
+					data={divaByPhrase}
 					title={"Average Diva Score by Phrase"}
 					yKey={"phrase_i"}
 					yFormat={(d) =>
