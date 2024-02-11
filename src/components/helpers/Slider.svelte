@@ -24,7 +24,7 @@ Usage:
 </Slider>
 -->
 <script>
-	import { setContext, onMount } from "svelte";
+	import { setContext, onMount, tick } from "svelte";
 	import { writable } from "svelte/store";
 
 	export let direction = "horizontal";

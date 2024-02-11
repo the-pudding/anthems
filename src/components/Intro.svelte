@@ -134,6 +134,7 @@
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
 		<video
+			playsinline
 			bind:this={videoEl}
 			id="maya-vid"
 			muted={!$soundOn}

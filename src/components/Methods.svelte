@@ -1,5 +1,31 @@
 <script>
+	import { onMount, tick } from "svelte";
+	import { locked, entered } from "$stores/misc.js";
 	import copy from "$data/copy.json";
+
+	const handleMethodsHash = async () => {
+		if (!$entered) {
+			window.location.href = "/";
+		} else {
+			$locked = false;
+			await tick();
+			const el = document.getElementById("methods");
+			if (el) el.scrollIntoView();
+		}
+	};
+
+	onMount(async () => {
+		const checkHash = async () => {
+			if (window.location.hash === "#methods") {
+				await handleMethodsHash();
+			}
+		};
+		window.addEventListener("hashchange", checkHash);
+		await checkHash();
+		return () => {
+			window.removeEventListener("hashchange", checkHash);
+		};
+	});
 </script>
 
 <section id="methods">

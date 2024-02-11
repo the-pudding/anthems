@@ -64,7 +64,7 @@
 		position: relative;
 	}
 	#transition-to-heatmap {
-		padding-top: 4rem;
+		padding: 4rem 1rem 0 1rem;
 		max-width: 600px;
 		margin: auto;
 	}
