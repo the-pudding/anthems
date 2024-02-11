@@ -81,7 +81,7 @@
 	.chart {
 		flex: 1;
 		width: 100%;
-		max-width: 600px;
+		max-width: 50em;
 		margin: 2rem auto 0 auto;
 		display: flex;
 		flex-direction: column;

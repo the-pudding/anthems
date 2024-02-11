@@ -41,10 +41,10 @@
 	<div class="chart-wrapper" bind:clientWidth={width}>
 		<div class="line" />
 
-		{#each data as { id_start, similarity_score }}
+		{#each _.orderBy(data, (d) => +d.similarity_score) as { id_start, similarity_score }, i}
 			{@const left = xScale(+similarity_score)}
 			<div class="face" style:left={`${left}px`}>
-				<Face id={ids[id_start]} name={id_start} clickable={false} />
+				<Face id={ids[id_start]} name={id_start} clickable={false} {i} />
 			</div>
 		{/each}
 	</div>
@@ -123,6 +123,9 @@
 		.legend p:first-of-type,
 		.legend p:last-of-type {
 			margin: 0;
+		}
+		.face {
+			top: 43%;
 		}
 	}
 </style>

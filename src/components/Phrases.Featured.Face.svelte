@@ -54,6 +54,7 @@
 	export let highlight;
 	export let phraseI;
 	export let clickable = true;
+	export let i;
 
 	const { performer } = getPerformerData(id);
 
@@ -170,10 +171,13 @@
 		mounted = true;
 		updateStroke();
 	});
+
+	const bump = ["billy-joel", "mary-j-blige"];
 </script>
 
 <button
 	class="pic"
+	class:clickable
 	class:long-hair={longHair.includes(name)}
 	on:click={onClick}
 >
@@ -189,9 +193,10 @@
 			src={`assets/cutouts/${name}.png`}
 		/>
 	</div>
+
 	<p
-		class:hide={!clickable}
 		class:highlight={highlight && highlight.startsWith(name)}
+		class:bump={!clickable && bump.includes(name)}
 	>
 		{performer}
 	</p>
@@ -207,11 +212,10 @@
 		opacity: 0.5;
 		cursor: pointer;
 	}
-	img:not(.clickable):hover {
-		cursor: default;
+	.pic:not(.clickable) {
+		pointer-events: none;
 	}
 	.pic {
-		/* width: 7rem; */
 		position: relative;
 		background: none;
 		padding: 0;
@@ -224,26 +228,9 @@
 	.pic.long-hair {
 		margin-top: 1rem;
 	}
-	.pic:hover p {
-		visibility: visible;
-		font-weight: 700;
-	}
 	.pic-wrapper {
 		width: 80%;
-		/* width: 6rem; */
 		position: relative;
-	}
-	.crown {
-		position: absolute;
-		top: -8%;
-		left: 15%;
-		transform: rotate(-20deg);
-		font-size: 2.5rem;
-		visibility: hidden;
-		z-index: 3;
-	}
-	.crown.visible {
-		visibility: visible;
 	}
 	.svg-wrapper {
 		position: absolute;
@@ -266,8 +253,8 @@
 		color: var(--color-red);
 		font-weight: 700;
 	}
-	p.hide {
-		visibility: hidden;
+	p.bump {
+		transform: translate(0, 3rem);
 	}
 
 	@media (max-width: 1000px) {
