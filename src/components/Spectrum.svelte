@@ -44,7 +44,7 @@
 		{#each _.orderBy(data, (d) => +d.similarity_score) as { id_start, similarity_score }, i}
 			{@const left = xScale(+similarity_score)}
 			<div class="face" style:left={`${left}px`}>
-				<Face id={ids[id_start]} name={id_start} clickable={false} {i} />
+				<Face id={ids[id_start]} name={id_start} clickable={false} />
 			</div>
 		{/each}
 	</div>

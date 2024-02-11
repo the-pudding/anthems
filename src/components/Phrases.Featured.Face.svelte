@@ -54,7 +54,6 @@
 	export let highlight;
 	export let phraseI;
 	export let clickable = true;
-	export let i;
 
 	const { performer } = getPerformerData(id);
 
@@ -128,6 +127,7 @@
 		"Billy Joel"
 	];
 	const longHair = ["kelly-clarkson", "carrie-underwood", "jordin-sparks"];
+	const bump = ["billy-joel", "mary-j-blige"];
 
 	const onClick = () => {
 		if (!clickable) return;
@@ -171,8 +171,6 @@
 		mounted = true;
 		updateStroke();
 	});
-
-	const bump = ["billy-joel", "mary-j-blige"];
 </script>
 
 <button
@@ -200,6 +198,10 @@
 	>
 		{performer}
 	</p>
+
+	{#if name === "chaka-khan" && phraseI === 9}
+		<span class="crown">👑</span>
+	{/if}
 </button>
 
 <style>
@@ -255,6 +257,14 @@
 	}
 	p.bump {
 		transform: translate(0, 3rem);
+	}
+	.crown {
+		position: absolute;
+		z-index: 2;
+		font-size: 2.2rem;
+		top: -0.5rem;
+		left: 55%;
+		transform: translate(-50%, 0) rotate(15deg);
 	}
 
 	@media (max-width: 1000px) {
