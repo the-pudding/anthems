@@ -11,8 +11,7 @@
 	import inView from "$actions/inView.js";
 	import { tick } from "svelte";
 	import { fade } from "svelte/transition";
-
-	const stanzas = [0, 1, 2, 3, 4, 5, 6, 7];
+	import _ from "lodash";
 
 	const onMute = () => {
 		$userMuted = !$userMuted;
@@ -39,7 +38,7 @@
 <section id="title" use:inView on:enter={sectionEnter} on:exit={sectionExit}>
 	{#if $inTitle}
 		<div class="handwritting-wrapper" transition:fade={{ duration: 500 }}>
-			{#each stanzas as stanza, i}
+			{#each _.range(8) as stanza, i}
 				<div class="stanza-image-wrap" style="animation-delay: {i}s">
 					<img
 						src="assets/lyrics/stanza{stanza}.png"
@@ -76,6 +75,7 @@
 		font-size: 12rem;
 		line-height: 0.75;
 		padding: 1rem 0 4rem 0;
+		max-width: 500px;
 	}
 	.prehed {
 		font-size: 1.3rem;
