@@ -47,13 +47,13 @@
 
 	<div class="faces" class:visible={sliderOpen}>
 		<h3>Top divas</h3>
-		{#each featured as { id, type }, i}
+		{#each featured.filter((d) => d.type !== "hidden") as { id, type }, i}
 			{#if type === "our-pick" && i > 0 && featured[i - 1].type === "top"}
 				<h3>Our picks</h3>
 			{/if}
 
 			<div class="face">
-				<Face {id} bind:highlight {phraseI} />
+				<Face {id} name={id.split("_")[0]} bind:highlight {phraseI} />
 			</div>
 		{/each}
 	</div>

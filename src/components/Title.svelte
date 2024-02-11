@@ -50,7 +50,8 @@
 		</div>
 	{/if}
 
-	<div class="hed">{@html copy.hed}</div>
+	<div class="prehed">{@html copy.prehed}</div>
+	<h1>{@html copy.hed}</h1>
 	<div class="byline">{@html copy.byline}</div>
 
 	<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
@@ -76,7 +77,7 @@
 		line-height: 0.75;
 		padding: 1rem 0 4rem 0;
 	}
-	.hed {
+	.prehed {
 		font-size: 1.3rem;
 		max-width: 500px;
 	}
@@ -154,7 +155,7 @@
 		section {
 			padding: 2rem 2rem 0 2rem;
 		}
-		.hed {
+		.prehed {
 			padding-right: 2rem;
 			font-size: 1rem;
 			margin-top: 3rem;

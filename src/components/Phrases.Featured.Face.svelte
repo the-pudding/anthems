@@ -50,11 +50,11 @@
 	import _ from "lodash";
 
 	export let id;
+	export let name;
 	export let highlight;
 	export let phraseI;
 	export let clickable = true;
 
-	let mounted = false;
 	const { performer } = getPerformerData(id);
 
 	const faceSvgs = {
@@ -146,20 +146,25 @@
 		);
 		svgs.forEach((svg) => {
 			const id = svg.id.replace("_face", "");
+			const name = id.split("_")[0];
 			const path = svg.querySelector("path");
 			path.style.stroke =
-				highlight === id ? "var(--color-red)" : "var(--color-fg)";
-			path.style.strokeWidth = highlight === id ? "30px" : "15px";
+				highlight && highlight.startsWith(name)
+					? "var(--color-red)"
+					: "var(--color-fg)";
+			path.style.strokeWidth =
+				highlight && highlight.startsWith(name) ? "30px" : "15px";
 		});
 	};
 
-	$: name = id.split("_")[0];
 	$: highlight, updateStroke();
 
 	function setMargins(performer) {
 		let bottomMargin = extraMarginsList.includes(performer) ? -0.75 : 0;
 		return bottomMargin;
 	}
+
+	let mounted = false;
 
 	onMount(() => {
 		mounted = true;
@@ -169,7 +174,7 @@
 
 <button
 	class="pic"
-	class:long-hair={longHair.some((d) => id.startsWith(d))}
+	class:long-hair={longHair.includes(name)}
 	on:click={onClick}
 >
 	<div class="pic-wrapper" style="margin-bottom:{setMargins(performer)}rem">
@@ -179,12 +184,17 @@
 
 		<img
 			alt={`headshot of ${_.startCase(name)}`}
-			class:highlight={id === highlight}
+			class:highlight={highlight && highlight.startsWith(name)}
 			class:clickable
 			src={`assets/cutouts/${name}.png`}
 		/>
 	</div>
-	<p class:hide={!clickable} class:highlight={id === highlight}>{performer}</p>
+	<p
+		class:hide={!clickable}
+		class:highlight={highlight && highlight.startsWith(name)}
+	>
+		{performer}
+	</p>
 </button>
 
 <style>

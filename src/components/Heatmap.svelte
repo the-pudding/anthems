@@ -9,8 +9,6 @@
 	let activeColumn;
 	let activeCell;
 
-	$: console.log($playing);
-
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	const onColumnClick = (i) => {

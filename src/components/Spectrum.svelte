@@ -44,7 +44,7 @@
 		{#each data as { id_start, similarity_score }}
 			{@const left = xScale(+similarity_score)}
 			<div class="face" style:left={`${left}px`}>
-				<Face id={ids[id_start]} clickable={false} />
+				<Face id={ids[id_start]} name={id_start} clickable={false} />
 			</div>
 		{/each}
 	</div>
@@ -67,7 +67,7 @@
 		font-size: var(--16px);
 		width: 100%;
 		max-width: 50rem;
-		padding: 0
+		padding: 0;
 	}
 	.legend {
 		width: 100%;
