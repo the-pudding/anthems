@@ -55,7 +55,7 @@
 
 	<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
 
-	<button class="icon mute" on:click={onMute}>
+	<button class="icon mute" class:muted={!$soundOn} on:click={onMute}>
 		{#key $soundOn}
 			<Icon name={`volume-${$soundOn ? "2" : "x"}`} size="2rem" fill="none" />
 		{/key}
@@ -148,7 +148,8 @@
 	.mute:hover {
 		transform: translateY(-2px);
 	}
-	:global(.mute:hover span svg) {
+	:global(.mute:hover span svg),
+	:global(.mute.muted span svg) {
 		stroke: var(--color-red);
 	}
 	@media (max-width: 600px) {
