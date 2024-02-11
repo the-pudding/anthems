@@ -5,6 +5,7 @@
 	import play from "$svg/play.svg";
 	import Icon from "$components/helpers/Icon.svelte";
 	import { fade } from "svelte/transition";
+	import viewport from "$stores/viewport.js";
 
 	export let phraseI;
 	export let featured;
@@ -28,22 +29,32 @@
 </script>
 
 <div class="wrapper">
+	<button class="standard" on:click={selectStandard}
+		>Standard <span>{@html play}</span></button
+	>
 	{#if sliderOpen}
 		<button
 			class="close-slider"
 			on:click={closeSlider}
 			class:visible={sliderOpen}
-			in:fade={{ duration: 500, delay: 1000 }}
-			><Icon name={"x"} size="1rem" stroke="white" />
+			in:fade={{ duration: 250, delay: 500 }}
+			><p>Hide divas</p>
+			<Icon name={"x"} size="1rem" stroke="white" />
+		</button>
+	{:else}
+		<button class="open-slider" on:click={openSlider}
+			in:fade={{ duration: 250, delay: 500 }}
+			>Show divas
+			<Icon name={"star"} size="1rem" stroke="white" />
 		</button>
 	{/if}
-	<button class="standard" on:click={selectStandard}
-		>Standard <span>{@html play}</span></button
-	>
-	<button class="open-slider" on:click={openSlider}
-		>Show divas
-		<Icon name={"star"} size="1rem" stroke="white" />
-	</button>
+	<!-- {#if !sliderOpen}
+		<button class="open-slider" on:click={openSlider}
+			in:fade={{ duration: 500, delay: 1000 }}
+			>Show divas
+			<Icon name={"star"} size="1rem" stroke="white" />
+		</button>
+	{/if} -->
 	<div class="faces-wrapper" class:visible={sliderOpen}>
 		<div class="faces">
 			<h3>Top divas</h3>
@@ -85,6 +96,9 @@
 		overflow: scroll;
 		direction: rtl;
 	}
+	.faces:last-child {
+			padding-bottom: 2rem;
+		}
 	h3 {
 		font-size: 1rem;
 		font-family: var(--sans);
@@ -119,9 +133,10 @@
 	.close-slider:hover {
 		background: var(--color-red);
 		transform: translateY(-2px);
+		color: var(--color-extra-dark-blue);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
-	.open-slider:hover {
+	.open-slider:hover, .close-slider:hover {
 		border: 1px solid var(--color-red);
 		color: var(--color-extra-dark-blue);
 	}
@@ -136,11 +151,10 @@
 	:global(.standard span svg path) {
 		fill: var(--color-fg);
 	}
-	.open-slider {
+	.open-slider, .close-slider {
 		display: none;
 		border: 1px solid var(--color-fg);
 		background: transparent;
-		text-transform: uppercase;
 		font-weight: 700;
 		height: 2.5rem;
 		padding: 0.5rem;
@@ -148,10 +162,10 @@
 		border-radius: 4px;
 		transition: all calc(var(--1s) * 0.5) ease-in-out;
 	}
-	:global(.open-slider span) {
+	:global(.open-slider span, .close-slider span) {
 		margin: 0.125rem 0 0 0.25rem;
 	}
-	:global(.open-slider svg polygon) {
+	:global(.open-slider svg polygon, .close-slider svg polygon) {
 		stroke: var(--color-fg);
 		fill: var(--color-fg);
 	}
@@ -160,9 +174,30 @@
 	}
 
 	@media (max-width: 1000px) {
-		.open-slider {
+		.faces:last-child {
+			padding-right: 4rem;
+			padding-bottom: 0;
+		}
+		.open-slider, .close-slider {
 			display: flex;
 			align-items: center;
+		}
+		.close-slider {
+			width: 2.5rem;
+			height: 2.5rem;
+			z-index: 999;
+			border-radius: 50%;
+			background: var(--color-red);
+			border: 1px solid var(--color-red);
+		}
+		:global(.close-slider svg path) {
+			stroke: var(--color-extra-dark-blue);
+		}
+		.close-slider p {
+			display: none;
+		}
+		:global(.close-slider span) {
+			margin: 0.125rem 0 0 0;
 		}
 		.wrapper {
 			flex-direction: row;
@@ -188,7 +223,6 @@
 			margin-right: 0;
 			margin-bottom: 0;
 			padding-top: 0;
-			padding-right: 5rem;
 			top: 0;
 			left: 0;
 		}
@@ -222,23 +256,6 @@
 		.show-more.visible {
 			display: flex;
 		}
-		.close-slider {
-			position: absolute;
-			top: 1.5rem;
-			right: 2rem;
-			z-index: 10;
-			display: none;
-			background: var(--color-fg);
-			border-radius: 50%;
-			height: 2.5rem;
-			width: 2.5rem;
-			z-index: 999;
-			transition: all calc(var(--1s) * 0.25) ease-in-out;
-			box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
-		}
-		.close-slider:hover {
-			box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
-		}
 		.close-slider.visible {
 			display: flex;
 			justify-content: center;
@@ -250,29 +267,44 @@
 	}
 	@media (max-width: 600px) {
 		.wrapper {
-			padding: 1rem 3.5rem 0 1rem;
+			padding: 0 3.5rem 0 0;
 		}
 		.faces {
 			margin-right: 4rem;
 		}
-		.close-slider {
-			top: 5rem;
-			right: 1.25rem;
+		.face:last-of-type {
+			margin-right: 4rem;
 		}
-		.open-slider, .standard {
+		.open-slider, .standard, .close-slider {
 			font-size: var(--14px);
+		}
+		.open-slider, .close-slider {
+			position: absolute;
+			top: -3.5rem;
+			left: 8.5rem;
+		}
+		.close-slider {
+			width: auto;
+			height: auto;
+			border-radius: 4px;
+			background: var(--color-red);
+			border: 1px solid var(--color-red);
+		}
+		.close-slider p {
+			display: inline-block;
+			margin: 0;
+			color: var(--color-extra-dark-blue);
+		}
+		.standard {
+			position: absolute;
+			top: -3.5rem;
+			left: 0;
+		}
+		:global(.close-slider span) {
+			margin: 0.125rem 0 0 0.25rem;
 		}
 		:global(.standard span svg) {
 			margin: -0.4rem 0 0 0;
-		}
-	}
-	@media (max-width: 600px) {
-		.wrapper {
-			padding: 0 3.5rem 0 0;
-		}
-		.close-slider {
-			top: 4rem;
-			right: 0.8rem;
 		}
 	}
 </style>

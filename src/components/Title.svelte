@@ -183,33 +183,12 @@
 			margin-top: 1rem;
 			max-width:400px;
 		}
-		.mute {
-			background: var(--color-grey-blue);
-			border-radius: 50%;
-			height: 2.5rem;
-			width: 2.5rem;
-			top: 2.75rem;
-			right: 2.5rem;
-		}
-		.mute:hover {
-			background: var(--color-red);
-		}
-		:global(.mute span svg) {
-			margin-top: 1px;
-			width: 1.25rem;
-			height: 1.25rem;
-		}
-		:global(.mute span svg path, .mute span svg polygon, .mute span svg line) {
-			stroke: var(--color-extra-dark-blue);
-		}
 		.stanza-image-wrap {
 			margin: -0.5rem 0;
 		}
-	}
-	@media (max-width: 600px) {
 		.mute {
-			top: 2rem;
-			right: 2rem;
+			top: 0.35rem;
+			right: 1rem;
 		}
 	}
 </style>
