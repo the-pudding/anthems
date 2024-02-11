@@ -28,7 +28,7 @@
 		}
 	};
 	const updateActiveCell = () => {
-		if (!currentPhraseI === undefined || currentPhraseI === -1) {
+		if (currentPhraseI === undefined || currentPhraseI === -1) {
 			return;
 		} else {
 			activeCell = { row: data.id, col: currentPhraseI };
