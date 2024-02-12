@@ -151,6 +151,7 @@
 				intro={true}
 				{isolate}
 				{featuredIds}
+				{videoVisible}
 				hideAll={videoVisible || $inTitle}
 			/>
 		{:else}
@@ -181,8 +182,8 @@
 		position: sticky;
 		z-index: 1;
 		height: 500px;
-		top: 50%;
-		transform: translate(0, -75%);
+		top: 25%;
+		transform: translate(0, -25%);
 		padding: 0 2rem;
 		pointer-events: none;
 	}

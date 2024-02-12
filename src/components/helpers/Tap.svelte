@@ -55,9 +55,20 @@
 		</button>
 	{/each}
 </section>
+<section class="tapper-overlay">
+	{#each directions as dir}
+		<button class="{dir}-hint" on:click={dispatch("tap", dir)}>
+			{#if dir == "left"}
+				<ChevronLeft color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+			{:else}
+				<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+			{/if}
+		</button>
+	{/each}
+</section>
 
 <style>
-	.tapper {
+	.tapper, .tapper-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -65,6 +76,50 @@
 		height: 100%;
 		z-index: 1;
 		pointer-events: none;
+	}
+	.tapper-overlay {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		z-index: 999;
+	}
+	.left-hint, .right-hint {
+		background: var(--color-fg);
+		opacity: 0.75;
+		height: 6rem;
+		width: 6rem;
+		display: flex;
+		align-items: center;
+		z-index: 999;
+		pointer-events: auto;
+		position: abosolute;
+		top: 50%;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+	}
+	.left-hint {
+		transform: translate(-50%, -100%);
+		justify-content: flex-end;
+		padding: 0 0.5rem 0 0;
+		border-radius: 0 3rem 3rem 0;
+		left: 0;
+	}
+	.left-hint:hover {
+		transform: translate(-40%, -100%);
+		opacity: 1;
+		background: var(--color-red);
+	}
+	.right-hint {
+		transform: translate(50%, -100%);
+		justify-content: flex-start;
+		padding: 0 0 0 0.5rem;
+		border-radius: 3rem 0 0 3rem;
+		right: 0;
+	}
+	.right-hint:hover {
+		transform: translate(40%, -100%);
+		opacity: 1;
+		background: var(--color-red);
 	}
 	button {
 		position: absolute;
@@ -203,6 +258,16 @@
 			padding: 0 0 0 1rem;
 			font-size: var(--18px);
 			width: 70%;
+		}
+		.left-hint, .right-hint {
+			height: 4rem;
+			width: 4rem;
+		}
+		.left-hint {
+			padding: 0 0.25rem 0 0;
+		}
+		.right-hint {
+			padding: 0 0 0 0.25rem;
 		}
 	}
 </style>

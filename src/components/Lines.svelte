@@ -15,6 +15,7 @@
 	export let showStandard;
 	export let intro;
 	export let hideAll;
+	export let videoVisible;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -38,15 +39,22 @@
 </script>
 
 <div class="chart-container">
+	{#if intro}
+		<div class="chart-header-slot">
+			{#if !videoVisible}
+				<h3>Vocal Pitch Throughout Anthem</h3>
+			{/if}
+		</div>
+	{/if}
 	<LayerCake
 		padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
 		x={xKey}
 		y={yKey}
 		z={zKey}
 		{zScale}
-		zDomain={data.map((d) => d.id)}
+		zDomain={[data.map((d) => d.id)]}
 		yNice={4}
-		yDomain={[0, null]}
+		yDomain={[0, 600]}
 		{flatData}
 		{data}
 	>
@@ -80,5 +88,18 @@
 	.chart-container {
 		width: 100%;
 		height: 100%;
+	}
+	.chart-header-slot {
+		width: 100%;
+		margin-top: 3rem;
+		height: 3rem;
+	}
+	h3 {
+		font-family: var(--sans);
+		font-weight: 700;
+		font-size: var(--16px);
+		color: var(--color-grey-blue);
+		margin: 0 0 1rem 0;
+		text-transform: uppercase;
 	}
 </style>

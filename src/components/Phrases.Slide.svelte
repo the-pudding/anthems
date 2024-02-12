@@ -148,6 +148,8 @@
 		margin-bottom: 3rem;
 		margin-left: 2rem;
 		max-width: 700px;
+		height: 10rem;
+		overflow-y: hidden;
 		pointer-events: auto;
 	}
 	.text p {
@@ -161,6 +163,9 @@
 	@media (max-width: 1200px) {
 		h2 {
 			font-size: 2.75rem;
+		}
+		.text {
+			height: 15rem;
 		}
 	}
 
@@ -176,6 +181,7 @@
 		}
 		.text {
 			margin-left: 0rem;
+			height: 20rem;
 		}
 	}
 
@@ -199,6 +205,7 @@
 		.text {
 			font-size: var(--14px);
 			margin: 0;
+			height: 15rem;
 		}
 		.text p {
 			line-height: 2;
@@ -211,6 +218,9 @@
 		}
 		.slide {
 			padding: 0.75rem 0.75rem 0 0.75rem;
+		}
+		.text {
+			height: 18rem;
 		}
 	}
 </style>

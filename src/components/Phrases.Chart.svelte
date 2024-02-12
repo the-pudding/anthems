@@ -80,7 +80,7 @@
 		max-width: 700px;
 		pointer-events: auto;
 		line-height: 1.8;
-		margin-left: 6rem;
+		margin: 2rem auto 0 auto;
 	}
 	.chart {
 		flex: 1;

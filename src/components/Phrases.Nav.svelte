@@ -1,5 +1,5 @@
 <script>
-	import { currentPhraseI, currentStepI, locked } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI, currentSlideI, locked } from "$stores/misc.js";
 	import _ from "lodash";
 	import copy from "$data/copy.json";
 	import { tick } from "svelte";
@@ -42,17 +42,28 @@
 			dropdownI = $currentPhraseI;
 		}
 	}
+
+	// function setFraction($currentPhraseI) {
+	// 	const prevSlide = $currentSlideI == 0 ? 0 : $currentSlideI - 1;
+	// 	console.log(prevSlide, $currentSlideI)
+	// 	if (prevSlide == $currentSlideI) {
+	// 		let phraseMatch = phrases.find((el) => el.i == $currentSlideI);
+	// 		let numSteps = phraseMatch.steps.length;
+	// 		return `${$currentPhraseI + 1}/${numSteps}`
+	// 	}
+	// }
 	$: xScale = scaleLinear()
 		.domain([0, 15])
 		.range([0, progressWidth || 0]);
 	$: $currentPhraseI, updateDropdown();
 	$: pulse = $currentPhraseI == 15;
+	// $: fractionText = setFraction($currentStepI);
 </script>
 
 <div class="progress">
 	<div class="bar-wrapper" bind:clientWidth={progressWidth}>
 		<div class="horiz-bar"></div>
-		<div class="select-wrapper" style={`left: ${xScale($currentPhraseI)}px`}>
+		<div class="select-wrapper" style={`left: ${xScale($currentStepI)}px`}>
 			<select
 				bind:value={selected}
 				on:change={() => onChange(selected)}
@@ -65,6 +76,7 @@
 				{/each}
 			</select>
 		</div>
+		<!-- <p class="slide-hint" style={`left: ${xScale($currentPhraseI)}px`}>{fractionText}</p> -->
 	</div>
 
 	<div class="skip">
@@ -108,6 +120,15 @@
 	.select-wrapper:hover {
 		background: #fbf3df;
 	}
+	.slide-hint {
+		position: absolute;
+		color: var(--color-grey-blue);
+		top: 1.5rem;
+		transform: translate(-50%, 0);
+		font-family: var(--sans);
+		font-size: var(--14px);
+		transition: left calc(var(--1s) * 0.5) linear;
+	}
 	select {
 		width: 100%;
 		overflow: hidden;
@@ -122,8 +143,8 @@
 		left: 0;
 		top: 50%;
 		width: 100%;
-		height: 2px;
-		border-top: 2px solid var(--color-grey-blue);
+		height: 1px;
+		border-top: 1px solid var(--color-grey-blue);
 		z-index: 1;
 	}
 	.circle {
