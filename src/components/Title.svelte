@@ -185,5 +185,8 @@
 		.stanza-image-wrap {
 			margin: -0.5rem 0;
 		}
+		.begin-wrapper {
+			margin-top: 1rem;
+		}
 	}
 </style>

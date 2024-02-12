@@ -48,11 +48,14 @@
 		loaded = true;
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
+
+		// preload featured audio here
+		// just blobs, return true
 	};
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: phraseI = phrase.phraseI;
-	$: displayDots = data ? "none" : "flex"
+	$: displayDots = data ? "none" : "flex";
 </script>
 
 <Slide index={slideI}>
@@ -74,10 +77,8 @@
 						featuredIds={phrase.featured.map((d) => d.id)}
 						showStandard={phraseI !== 0 || $currentStepI >= 1}
 					/>
-				{:else}
-					{#if !loaded}
-						<Loading pos={true} display={displayDots}/>
-					{/if}
+				{:else if !loaded}
+					<Loading pos={true} display={displayDots} />
 				{/if}
 			</div>
 			<h2>
