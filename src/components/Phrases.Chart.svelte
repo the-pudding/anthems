@@ -85,7 +85,7 @@
 	}
 	.chart {
 		flex: 1;
-		min-height: 500px;
+		/* min-height: 500px; */
 		width: 100%;
 		max-width: 50em;
 		margin: 2rem auto 0 auto;
@@ -96,6 +96,7 @@
 	@media (max-width: 600px) {
 		.container {
 			padding-top: 0;
+			overflow: visible;
 		}
 		.chart {
 			margin-top: 1rem;

@@ -146,7 +146,7 @@
 	.line-wrapper {
 		display: flex;
 		flex: 1;
-		min-height: 200px;
+		/* min-height: 200px; */
 		height: 100%;
 	}
 	.main {
@@ -213,6 +213,7 @@
 		}
 		.slide {
 			padding: 0.5rem 1rem;
+			overflow: visible;
 		}
 		h2 {
 			font-size: 1.75rem;

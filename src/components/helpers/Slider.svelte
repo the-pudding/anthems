@@ -24,6 +24,8 @@ Usage:
 </Slider>
 -->
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
+
 	import { setContext, onMount, tick } from "svelte";
 	import { writable } from "svelte/store";
 
@@ -92,7 +94,28 @@ Usage:
 	};
 	$: setContext("Slider", context);
 
+	const playableText = () => {
+		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
+		console.log({ playable });
+		playable.forEach((el) => {
+			const text = el.innerText;
+			const id = el.dataset.id;
+			const phraseI = el.dataset.phrase;
+			el.innerText = "";
+			new PlayableText({
+				target: el,
+				props: {
+					id,
+					phraseI,
+					text
+				}
+			});
+		});
+	};
+
 	onMount(() => {
+		playableText();
+
 		children = translateEl.children.length;
 		count = children;
 		_count.set(count);

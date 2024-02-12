@@ -16,7 +16,6 @@
 
 	const play = () => {
 		if (!audioEl || !id) return;
-		console.log("play");
 
 		cancelAnimationFrame(f);
 
@@ -32,7 +31,6 @@
 		const checkTime = () => {
 			$currentTime = audioEl.currentTime;
 			if ($currentTime >= end) {
-				console.log("this pause");
 				audioEl.pause();
 				audioEl.currentTime = start;
 				cancelAnimationFrame(f);
@@ -45,7 +43,6 @@
 	};
 	const pause = () => {
 		if (!audioEl || paused) return;
-		console.log("pause");
 		audioEl.pause();
 		cancelAnimationFrame(f);
 	};

@@ -1,5 +1,4 @@
 <script>
-	import PlayableText from "$components/PlayableText.svelte";
 	import Chart from "$components/Phrases.Chart.svelte";
 	import Nav from "$components/Phrases.Nav.svelte";
 	import Slide from "$components/Phrases.Slide.svelte";
@@ -57,24 +56,6 @@
 	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
-
-	onMount(() => {
-		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
-		playable.forEach((el) => {
-			const text = el.innerText;
-			const id = el.dataset.id;
-			const phraseI = el.dataset.phrase;
-			el.innerText = "";
-			new PlayableText({
-				target: el,
-				props: {
-					id,
-					phraseI,
-					text
-				}
-			});
-		});
-	});
 </script>
 
 <section id="phrase-by-phrase">

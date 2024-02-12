@@ -54,7 +54,7 @@
 	<div class="faces-wrapper" class:visible={sliderOpen}>
 		<div class="faces">
 			<h3>Top divas</h3>
-			{#each featured as { id, type }, i}
+			{#each featured.filter((d) => d.type !== "hidden") as { id, type }, i}
 				{#if type === "our-pick" && i > 0 && featured[i - 1].type === "top"}
 					<h3>Our picks</h3>
 				{/if}
