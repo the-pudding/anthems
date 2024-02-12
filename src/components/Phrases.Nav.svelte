@@ -19,13 +19,6 @@
 		selectEl = document.querySelector("#nav-phrases");
 	});
 
-	const onClick = (i) => {
-		const phraseI = _.findIndex(copy.slides, (d) => +d.phraseI === i);
-		if (phraseI !== -1) {
-			sliderEl.jump(phraseI);
-			$currentStepI = 0;
-		}
-	};
 	const skip = async () => {
 		$locked = false;
 		await tick();
