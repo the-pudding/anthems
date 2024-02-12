@@ -115,20 +115,27 @@
 		padding: 1rem;
 		border-radius: 4px;
 		background: var(--color-fg);
+		border: 1px solid var(--color-fg);
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 	button.begin:nth-of-type(2) {
 		margin-top: 0.75rem;
 		padding: 0.5rem 1rem;
 		font-size: 0.9rem;
-		background: var(--color-gray-400);
+		background: var(--color-extra-dark-blue);
+		border: 1px solid var(--color-fg);
+		color: var(--color-fg);
 	}
 	button.begin span {
 		margin-left: 0.5rem;
 		transform: translate(0, 2px);
 	}
+	:global(.begin svg path, .begin svg polygon) {
+		fill: none;
+	}
 	button.begin:hover {
 		background: var(--color-red);
+		border: 1px solid var(--color-red);
 		transform: translateY(-2px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
