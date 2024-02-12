@@ -12,7 +12,8 @@ const getPerformerData = (id) => {
 		.replace("Mary J Blige", "Mary J. Blige")
 		.replace("Her", "H.E.R.")
 		.replace("Leann Rimes", "LeAnn Rimes")
-		.replace("Brian Mcknight", "Brian McKnight");
+		.replace("Brian Mcknight", "Brian McKnight")
+		.replace("Reba Mcentire", "Reba McEntire");
 	const event = _.startCase(id.split("_")[1].replace(/-/g, " "))
 		.replace("Nba", "NBA")
 		.replace("Wnba", "WNBA")

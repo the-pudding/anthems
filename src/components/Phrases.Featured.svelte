@@ -42,7 +42,9 @@
 			<Icon name={"x"} size="1rem" stroke="white" />
 		</button>
 	{:else}
-		<button class="open-slider" on:click={openSlider}
+		<button
+			class="open-slider"
+			on:click={openSlider}
 			in:fade={{ duration: 250, delay: 500 }}
 			>Show divas
 			<Icon name={"star"} size="1rem" stroke="white" />
@@ -64,7 +66,7 @@
 				{/if}
 
 				<div class="face">
-					<Face {id} bind:highlight {phraseI} />
+					<Face {id} name={id.split("_")[0]} bind:highlight {phraseI} />
 				</div>
 			{/each}
 		</div>
@@ -97,8 +99,8 @@
 		direction: rtl;
 	}
 	.faces:last-child {
-			padding-bottom: 2rem;
-		}
+		padding-bottom: 2rem;
+	}
 	h3 {
 		font-size: 1rem;
 		font-family: var(--sans);
@@ -136,7 +138,8 @@
 		color: var(--color-extra-dark-blue);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
-	.open-slider:hover, .close-slider:hover {
+	.open-slider:hover,
+	.close-slider:hover {
 		border: 1px solid var(--color-red);
 		color: var(--color-extra-dark-blue);
 	}
@@ -151,7 +154,8 @@
 	:global(.standard span svg path) {
 		fill: var(--color-fg);
 	}
-	.open-slider, .close-slider {
+	.open-slider,
+	.close-slider {
 		display: none;
 		border: 1px solid var(--color-fg);
 		background: transparent;
@@ -178,7 +182,8 @@
 			padding-right: 4rem;
 			padding-bottom: 0;
 		}
-		.open-slider, .close-slider {
+		.open-slider,
+		.close-slider {
 			display: flex;
 			align-items: center;
 		}
@@ -214,7 +219,10 @@
 		}
 		.faces-wrapper {
 			position: absolute;
-			transition: height calc(var(--1s) * 0.7) ease-in-out, padding-top calc(var(--1s) * 0.7) ease-in-out, padding-bottom calc(var(--1s) * 0.7) ease-in-out;
+			transition:
+				height calc(var(--1s) * 0.7) ease-in-out,
+				padding-top calc(var(--1s) * 0.7) ease-in-out,
+				padding-bottom calc(var(--1s) * 0.7) ease-in-out;
 			border-bottom: 1px solid var(--color-grey-blue);
 			background: var(--color-extra-dark-blue);
 			width: 100%;
@@ -275,10 +283,13 @@
 		.face:last-of-type {
 			margin-right: 4rem;
 		}
-		.open-slider, .standard, .close-slider {
+		.open-slider,
+		.standard,
+		.close-slider {
 			font-size: var(--14px);
 		}
-		.open-slider, .close-slider {
+		.open-slider,
+		.close-slider {
 			position: absolute;
 			top: -3.5rem;
 			left: 8.5rem;

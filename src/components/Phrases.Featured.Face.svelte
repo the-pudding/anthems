@@ -149,12 +149,15 @@
 			const id = svg.id.replace("_face", "");
 			const name = id.split("_")[0];
 			const path = svg.querySelector("path");
-			path.style.stroke =
-				highlight && highlight.startsWith(name)
-					? "var(--color-red)"
-					: "var(--color-fg)";
-			path.style.strokeWidth =
-				highlight && highlight.startsWith(name) ? "30px" : "15px";
+
+			if (path) {
+				path.style.stroke =
+					highlight && highlight.startsWith(name)
+						? "var(--color-red)"
+						: "var(--color-fg)";
+				path.style.strokeWidth =
+					highlight && highlight.startsWith(name) ? "30px" : "15px";
+			}
 		});
 	};
 

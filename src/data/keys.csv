@@ -7,7 +7,7 @@ steps_from_C,key,count
 -1,B,4
 0,C,6
 1,C#,5
-2,D,6
+2,D,7
 3,Eb,14
 4,E,15
 5,F,15
@@ -15,3 +15,4 @@ steps_from_C,key,count
 7,G,13
 8,Ab,10
 9,A,3
+10,Bb,1
