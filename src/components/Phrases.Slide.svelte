@@ -2,9 +2,15 @@
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
-	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
+	import {
+		entered,
+		currentStepI,
+		currentPhraseI,
+		playing
+	} from "$stores/misc.js";
 	import ids from "$data/ids.csv";
 	import Loading from "$components/Loading.svelte";
+	import loadAudio from "$utils/loadAudio.js";
 
 	export let phrase;
 	export let slideI;
@@ -44,16 +50,26 @@
 			});
 	};
 	const load = async () => {
+		// load data for lines
 		const module = await import(`$data/pitch/desktop/phrase${phraseI}.csv`);
 		loaded = true;
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 
-		// preload featured audio here
-		// just blobs, return true
+		// load audio
+		const promises = phrase.featured.map((d) =>
+			loadAudio(`assets/vocals/${d.id}.mp3`)
+		);
+		Promise.all(promises)
+			.then(() => {
+				loaded = true;
+			})
+			.catch((error) => {
+				console.error("error loading audio");
+			});
 	};
 
-	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
+	$: if ($entered && !loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: phraseI = phrase.phraseI;
 	$: displayDots = data ? "none" : "flex";
 </script>

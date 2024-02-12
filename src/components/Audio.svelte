@@ -4,6 +4,7 @@
 	import { base } from "$app/paths";
 	import { currentTime, soundOn } from "$stores/misc.js";
 	import { onMount, tick } from "svelte";
+	import loadAudio from "$utils/loadAudio.js";
 
 	export let id;
 	export let phraseI;
@@ -14,7 +15,10 @@
 	let paused;
 
 	const play = () => {
-		if (!audioEl) return;
+		if (!audioEl || !id) return;
+		console.log("play");
+
+		cancelAnimationFrame(f);
 
 		const start = +ids.find((d) => d.id === id)[`phrase${phraseI || 0}_start`];
 		const end =
@@ -28,6 +32,7 @@
 		const checkTime = () => {
 			$currentTime = audioEl.currentTime;
 			if ($currentTime >= end) {
+				console.log("this pause");
 				audioEl.pause();
 				audioEl.currentTime = start;
 				cancelAnimationFrame(f);
@@ -40,6 +45,7 @@
 	};
 	const pause = () => {
 		if (!audioEl || paused) return;
+		console.log("pause");
 		audioEl.pause();
 		cancelAnimationFrame(f);
 	};
@@ -71,6 +77,8 @@
 	onMount(async () => {
 		await tick();
 		setupEvents();
+		await loadAudio(`assets/vocals/whitney-houston_super-bowl_1991.mp3`);
+		await loadAudio(`assets/vocals/fergie_nba-allstar-game_2018.mp3`);
 	});
 </script>
 
