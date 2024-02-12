@@ -151,7 +151,8 @@
 		fill: var(--color-fg);
 	}
 	.tick text.small {
-		font-size: 1.2rem;
+		font-size: 1rem;
+		font-family: var(--sans);
 		font-variant-alternates: normal;
 	}
 
@@ -171,7 +172,7 @@
 			font-size: 1rem;
 		}
 		.tick text.small {
-			font-size: var(--14px);
+			font-size: var(--12px);
 		}
 	}
 </style>

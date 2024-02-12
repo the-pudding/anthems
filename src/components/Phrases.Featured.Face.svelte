@@ -280,7 +280,7 @@
 	@media (max-width: 1000px) {
 		img {
 			height: 100%;
-			width: auto;
+			width: 100%;
 		}
 		.pic-wrapper {
 			width: 70%;

@@ -43,7 +43,7 @@
 				<div class="stanza-image-wrap" style="animation-delay: {i}s">
 					<img
 						src="assets/lyrics/stanza{stanza}.png"
-						alt="Francis Scott Key's handwritten lyrics to the Star Spangeled Banner"
+						alt="Francis Scott Key's handwritten lyrics to the Star Spangled Banner"
 					/>
 				</div>
 			{/each}
@@ -100,6 +100,8 @@
 	.begin-wrapper {
 		width: 100%;
 		margin-top: 2rem;
+		position: relative;
+		z-index: 1000;
 	}
 	button.begin {
 		visibility: hidden;

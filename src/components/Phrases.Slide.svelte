@@ -52,6 +52,7 @@
 
 	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: phraseI = phrase.phraseI;
+	$: displayDots = data ? "none" : "flex"
 </script>
 
 <Slide index={slideI}>
@@ -74,7 +75,9 @@
 						showStandard={phraseI !== 0 || $currentStepI >= 1}
 					/>
 				{:else}
-					<Loading pos={true}/>
+					{#if !loaded}
+						<Loading pos={true} display={displayDots}/>
+					{/if}
 				{/if}
 			</div>
 			<h2>
@@ -99,16 +102,28 @@
 	:global(.tap-directions) {
 		font-family: var(--sans);
 		color: var(--color-fg);
-		padding: 0.5rem 3.5rem 0.5rem 0.5rem;
+		padding: 0.25rem 3.5rem 0.25rem 0.5rem;
 		font-weight: 700;
-		background-image: url(assets/keyboard.png);
+		background-image: url("/assets/keyboard.png");
 		background-size: 2.25rem;
 		background-repeat: no-repeat;
 		background-position: center right 0.75rem;
 		display: inline-block;
 		border: 1px solid var(--color-red);
 		border-radius: 4px;
-		margin-top: 0.5rem;
+	}
+	:global(.data-directions) {
+		font-family: var(--sans);
+		color: var(--color-fg);
+		padding: 0.25rem 2.75rem 0.25rem 0.5rem;
+		font-weight: 700;
+		background-image: url("/assets/down-chevron.png");
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: center right 0.75rem;
+		display: inline-block;
+		border: 1px solid var(--color-red);
+		border-radius: 4px;
 	}
 	.line-wrapper {
 		display: flex;
@@ -171,7 +186,7 @@
 
 	@media (max-width: 600px) {
 		.main {
-			padding: 1rem 1rem 3rem 1rem;
+			padding: 0rem 1rem 2rem 1rem;
 		}
 		.slide {
 			padding: 0.5rem 1rem;
@@ -182,11 +197,10 @@
 		}
 		.text {
 			font-size: var(--14px);
-			margin-left: 0;
-			margin-bottom: 0;
+			margin: 0;
 		}
 		.text p {
-			line-height: 1.8;
+			line-height: 2;
 		}
 	}
 

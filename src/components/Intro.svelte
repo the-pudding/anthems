@@ -184,6 +184,7 @@
 		top: 50%;
 		transform: translate(0, -75%);
 		padding: 0 2rem;
+		pointer-events: none;
 	}
 	.maya-vid-wrapper {
 		position: fixed;

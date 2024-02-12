@@ -79,7 +79,7 @@
 	.text {
 		max-width: 700px;
 		pointer-events: auto;
-		line-height: 1.75;
+		line-height: 1.8;
 		margin-left: 6rem;
 	}
 	.chart {
@@ -93,14 +93,14 @@
 
 	@media (max-width: 600px) {
 		.container {
-			padding-top: 3rem;
+			padding-top: 0;
 		}
 		.chart {
 			margin-top: 1rem;
 		}
 		.text {
 			font-size: var(--14px);
-			margin-left: 0;
+			margin: 0;
 		}
 	}
 </style>
