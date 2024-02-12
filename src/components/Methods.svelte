@@ -40,6 +40,7 @@
 		max-width: 700px;
 		margin: auto;
 		margin-top: 8rem;
+		padding: 0 1rem;
 	}
 	h2 {
 		font-family: Newsagent;

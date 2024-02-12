@@ -53,7 +53,7 @@
 		.domain([0, 15])
 		.range([0, progressWidth || 0]);
 	$: $currentPhraseI, updateDropdown();
-	$: pulse = $locked && $currentPhraseI == 15;
+	$: pulse = $currentPhraseI == 15;
 </script>
 
 <div class="progress">
@@ -64,6 +64,7 @@
 				bind:value={selected}
 				on:change={() => onChange(selected)}
 				name="phrases"
+				aria-label="select a phrase"
 				id="nav-phrases"
 			>
 				{#each phrases as phrase}
@@ -103,13 +104,16 @@
 		position: absolute;
 		width: 100%;
 		top: 50%;
-		height: 2rem;
+		padding: 0.25rem;
 		transform: translate(-50%, -50%);
 		width: 7rem;
 		background: var(--color-fg);
-		border-radius: 1rem;
+		border-radius: 4px;
 		z-index: 999;
 		transition: left calc(var(--1s) * 0.5) linear;
+	}
+	.select-wrapper:hover {
+		background: #fbf3df;
 	}
 	select {
 		width: 100%;
@@ -130,8 +134,8 @@
 		z-index: 1;
 	}
 	.circle {
-		width: 1rem;
-		height: 1rem;
+		width: 2rem;
+		height: 2rem;
 		border-radius: 50%;
 		background: var(--color-grey-blue);
 		line-height: calc(2rem - 8px);
@@ -139,7 +143,7 @@
 	.circle:hover {
 		cursor: pointer;
 		transform: scale(1.25);
-		transition: all 250ms;
+		transition: all calc(var(--1s) * 0.25) linear;
 	}
 	.active {
 		width: auto;
@@ -164,9 +168,15 @@
 	}
 	.skip .circle {
 		background: var(--color-red);
-		width: 1.75rem;
-		height: 1.75rem;
-		margin-right: 0.5rem;
+		width: 2.5rem;
+		height: 2.5rem;
+		margin-right: 0.65rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	:global(.skip .circle svg) {
+		margin-top: 5px;
 	}
 	.pulse {
 		animation: pulse-animation calc(var(--1s) * 1.25) infinite;
@@ -187,9 +197,16 @@
 		}
 	}
 
+	@media (max-width: 800px) {
+		.progress {
+			max-width: 500px;
+		}
+	}
+
 	@media (max-width: 600px) {
 		.progress {
 			height: 4rem;
+			max-width: none;
 		}
 		.circle {
 			width: 4rem;

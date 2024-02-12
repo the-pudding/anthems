@@ -146,11 +146,13 @@
 	}
 	.tick text.bandwidth {
 		font-family: "Newsagent";
+		font-variant-alternates: swash(fancy);
 		font-size: 1.8rem;
 		fill: var(--color-fg);
 	}
 	.tick text.small {
 		font-size: 1.2rem;
+		font-variant-alternates: normal;
 	}
 
 	.tick.tick-0 line {

@@ -228,8 +228,8 @@
 	.step p {
 		padding: 1rem;
 		pointer-events: auto;
-		line-height: 1.65;
-		text-shadow: 2px 2px 4px var(--color-black);
+		line-height: 1.8;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 	}
 	:global(.step p span) {
 		text-shadow: none;
@@ -265,8 +265,9 @@
 		}
 		.step p {
 			font-size: var(--14px);
-			background: rgb(2 39 61 / 90%);
+			background: rgb(2 39 61 / 95%);
 			margin: 0 1rem;
+			box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 		}
 	}
 </style>

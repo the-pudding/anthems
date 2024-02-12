@@ -35,7 +35,7 @@
 
 	@media (max-width: 600px) {
 		.slide {
-			padding: 1rem;
+			padding: 4rem 1rem 1rem 1rem;
 		}
 	}
 </style>

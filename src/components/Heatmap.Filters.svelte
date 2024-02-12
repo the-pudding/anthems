@@ -113,8 +113,8 @@
 		<h3>Sort by</h3>
 		<div class="dropdowns">
 			<span>
-				<Select options={sortOptions} bind:value={sort} />
-				<button class="order" on:click={order}>
+				<Select options={sortOptions} bind:value={sort} ariaLabel="sort by"/>
+				<button class="order" on:click={order} aria-label="order">
 					{#key sortDir}
 						<Icon
 							name={`arrow-${sortDir === "asc" ? "up" : "down"}`}
@@ -134,15 +134,15 @@
 		<h3>Filter by</h3>
 		<div class="dropdowns">
 			<span>
-				<Select options={eventOptions} bind:value={event} />
+				<Select options={eventOptions} bind:value={event} ariaLabel="filter by event"/>
 			</span>
 
 			<span>
-				<Select options={performerOptions} bind:value={performer} />
+				<Select options={performerOptions} bind:value={performer} ariaLabel="filter by performer"/>
 			</span>
 
 			<span>
-				<Select options={genreOptions} bind:value={genre} />
+				<Select options={genreOptions} bind:value={genre} ariaLabel="filter by genre" />
 			</span>
 		</div>
 	</div>
@@ -153,7 +153,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: start;
-		padding: 1rem 6rem 0.5rem 1rem;
+		padding: 1rem 6rem 0.5rem 1.5rem;
 		background: var(--color-extra-dark-blue);
 	}
 	button {
@@ -161,7 +161,7 @@
 		color: var(--color-fg);
 	}
 	button.order {
-		width: 3rem;
+		width: 2rem;
 		padding: 0;
 	}
 	button.clear {
@@ -169,8 +169,9 @@
 		border: 1px solid var(--color-fg);
 		display: flex;
 		align-items: center;
-		transition: all 250ms;
-		margin: 0 0 0 0.5rem;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+		margin: 0 0 0 1rem;
+		border-radius: 4px;
 	}
 	:global(button.clear span) {
 		margin: 0 0 0 0.25rem;
@@ -181,6 +182,7 @@
 		border: 1px solid var(--color-red);
 		background: var(--color-red);
 		transform: translateY(-2px);
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
 	span {
 		display: flex;
@@ -193,7 +195,7 @@
 		font-family: var(--sans);
 		color: var(--color-grey-blue);
 		font-weight: bold;
-		margin: 0;
+		margin: 0 0 0.25rem 0;
 	}
 	.sort-by,
 	.filter-by {
@@ -214,6 +216,7 @@
 		align-items: center;
 		justify-content: space-between;
 		width: 100%;
+		height: 2.5rem;
 	}
 	.filter-by span {
 		display: inline-block;
@@ -223,14 +226,13 @@
 	@media (max-width: 800px) {
 		.filters {
 			flex-direction: column;
-			padding: 0.5rem;
-			border-bottom: 1px solid var(--color-fg);
+			padding: 1rem 1rem 0rem 1rem;
 		}
 		.sort-by .dropdowns {
-			justify-content: space-between;
+			justify-content: start;
 		}
-		span {
-			align-items: end;
+		button.clear {
+			height: 2.75rem;
 		}
 	}
 </style>

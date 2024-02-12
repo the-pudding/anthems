@@ -54,13 +54,14 @@
 			class="play-btn"
 			class:playing={!paused}
 			on:click={playAll}
+			aria-label="play"
 		>
 			{#key paused}
 				<Icon
 					name={paused ? "play" : "pause"}
 					fill={"var(--color-dark-blue)"}
 					stroke={"transparent"}
-					size={mobile ? ".75rem" : "1.25em"}
+					size={mobile ? "1rem" : "1.25em"}
 					strokeWidth={0}
 				/>
 			{/key}
@@ -80,7 +81,7 @@
 			{@const phraseIndex = `phrase${[i]}_diva`}
 			{@const phraseMissing = !data[phraseIndex]}
 			{@const background = phraseMissing
-				? "url(assets/x-paper.png) center center / 50% no-repeat"
+				? "url(assets/x-paper.png) center center / 65% no-repeat"
 				: `rgba(124, 164, 174, ${data[phraseIndex] / 1000})`}
 			<Box
 				{i}
@@ -102,7 +103,7 @@
 		border-top: 1px solid var(--color-fg);
 		display: flex;
 		align-items: center;
-		padding: 0.5rem 1rem;
+		padding: 0.5rem 1.5rem;
 	}
 	.heatmap-row:first-of-type {
 		border-top: none;
@@ -127,7 +128,8 @@
 		justify-content: center;
 		align-items: center;
 		margin: 0.4rem 0.5rem 0 0;
-		transition: all 250ms;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
 	.play-btn:hover {
 		background: var(--color-red);
@@ -167,7 +169,7 @@
 		.heatmap-row {
 			flex-direction: column;
 			align-items: start;
-			padding: 0.5rem;
+			padding: 0.5rem 1rem;
 		}
 		.details-wrapper {
 			width: 100%;
@@ -183,6 +185,7 @@
 		.top-row {
 			display: flex;
 			flex-direction: row;
+			align-items: center;
 		}
 		.name,
 		.event,
@@ -190,13 +193,17 @@
 			font-size: 13px;
 		}
 		.name {
-			font-family: var(--serif);
-			font-weight: bold;
+			font-size: var(--20px);
+			font-family: "Newsagent";
 			margin-right: 0.5rem;
 		}
+		.event {
+			padding-top: 0.25rem;
+		}
 		.play-btn {
-			height: 1.25rem;
-			width: 1.25rem;
+			height: 1.75rem;
+			width: 1.75rem;
+			margin: 0rem 0.5rem 0 0;
 		}
 		:global(.play-btn span) {
 			padding: 0.1rem 0 0 0;

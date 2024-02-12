@@ -11,6 +11,7 @@
 	import inView from "$actions/inView.js";
 	import { tick } from "svelte";
 	import { fade } from "svelte/transition";
+	import Loading from "$components/Loading.svelte";
 	import _ from "lodash";
 
 	const onMute = () => {
@@ -53,9 +54,15 @@
 	<h1>{@html copy.hed}</h1>
 	<div class="byline">{@html copy.byline}</div>
 
-	<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
+	<div class="begin-wrapper">
+		{#if $loaded}
+			<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
+		{:else} 
+			<Loading />
+		{/if}
+	</div>
 
-	<button class="icon mute" class:muted={!$soundOn} on:click={onMute}>
+	<button class="icon mute" on:click={onMute} aria-label="mute">
 		{#key $soundOn}
 			<Icon name={`volume-${$soundOn ? "2" : "x"}`} size="2rem" fill="none" />
 		{/key}
@@ -69,23 +76,30 @@
 		padding: 3rem 3rem 0 3rem;
 		margin-bottom: 3rem;
 	}
-	:global(h1) {
+	h1 {
 		font-family: "Newsagent";
 		font-variant-alternates: swash(fancy);
-		font-size: 12rem;
-		line-height: 0.75;
+		font-size: var(--160px);
+		line-height: 0.8;
 		padding: 1rem 0 4rem 0;
-		max-width: 500px;
+		max-width: 600px;
 	}
 	.prehed {
+		font-family: var(--serif);
 		font-size: 1.3rem;
 		max-width: 500px;
+		margin: 0;
+		padding-right: 4rem;
 	}
 	:global(.enable-audio) {
 		color: var(--color-grey-blue);
 	}
 	.byline {
 		font-family: var(--sans);
+	}
+	.begin-wrapper {
+		width: 100%;
+		margin-top: 2rem;
 	}
 	button.begin {
 		visibility: hidden;
@@ -94,13 +108,14 @@
 		font-weight: 700;
 		font-size: var(--16px);
 		padding: 1rem;
+		border-radius: 4px;
 		background: var(--color-fg);
-		transition: all 250ms;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 	button.begin:hover {
 		background: var(--color-red);
 		transform: translateY(-2px);
-		box-shadow: rgba(2, 39, 61, 1) 0 4px 12px;
+		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
 	}
 	button.begin.visible {
 		visibility: visible;
@@ -139,11 +154,11 @@
 	}
 	.mute {
 		position: fixed;
-		top: 2rem;
-		right: 2rem;
+		top: 2.25rem;
+		right: 1.5rem;
 		background: none;
 		z-index: 10;
-		transition: all 250ms;
+		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 	.mute:hover {
 		transform: translateY(-2px);
@@ -157,16 +172,24 @@
 			padding: 2rem 2rem 0 2rem;
 		}
 		.prehed {
+			font-family: var(--serif);
 			padding-right: 2rem;
 			font-size: 1rem;
-			margin-top: 3rem;
+			max-width:400px;
 		}
-		:global(h1) {
-			font-size: 6rem;
+		h1 {
+			padding-right: 2rem;
+			font-size: var(--96px);
+			line-height: 0.9;
+			margin-top: 1rem;
+			max-width:400px;
+		}
+		.stanza-image-wrap {
+			margin: -0.5rem 0;
 		}
 		.mute {
-			top: 1.5rem;
-			right: 1.5rem;
+			top: 0.35rem;
+			right: 1rem;
 		}
 	}
 </style>
