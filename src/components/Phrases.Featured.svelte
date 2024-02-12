@@ -1,11 +1,10 @@
 <script>
 	import Face from "$components/Phrases.Featured.Face.svelte";
-	import { playing } from "$stores/misc.js";
+	import { currentPhraseI, currentStepI, playing } from "$stores/misc.js";
 	import _ from "lodash";
 	import play from "$svg/play.svg";
 	import Icon from "$components/helpers/Icon.svelte";
 	import { fade } from "svelte/transition";
-	import viewport from "$stores/viewport.js";
 
 	export let phraseI;
 	export let featured;
@@ -26,9 +25,11 @@
 	const closeSlider = () => {
 		sliderOpen = false;
 	};
+
+	$: visible = $currentPhraseI !== 0 || $currentStepI > 2;
 </script>
 
-<div class="wrapper">
+<div class="wrapper" class:visible>
 	<button class="standard" on:click={selectStandard}
 		>Standard <span>{@html play}</span></button
 	>
@@ -50,13 +51,6 @@
 			<Icon name={"star"} size="1rem" stroke="white" />
 		</button>
 	{/if}
-	<!-- {#if !sliderOpen}
-		<button class="open-slider" on:click={openSlider}
-			in:fade={{ duration: 500, delay: 1000 }}
-			>Show divas
-			<Icon name={"star"} size="1rem" stroke="white" />
-		</button>
-	{/if} -->
 	<div class="faces-wrapper" class:visible={sliderOpen}>
 		<div class="faces">
 			<h3>Top divas</h3>
@@ -79,6 +73,11 @@
 		flex-direction: column;
 		padding: 0.5rem 4rem 0 0;
 		align-items: center;
+		opacity: 0;
+		transition: opacity var(--1s);
+	}
+	.wrapper.visible {
+		opacity: 1;
 	}
 	button {
 		pointer-events: auto;
