@@ -28,7 +28,7 @@
 			}
 		});
 
-		const playable = document.querySelectorAll(".playable");
+		const playable = document.querySelectorAll("#intro .playable");
 		playable.forEach((el) => {
 			const text = el.innerText;
 			const id = el.dataset.id;

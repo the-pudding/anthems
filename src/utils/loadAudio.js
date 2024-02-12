@@ -1,5 +1,4 @@
 export default function loadAudio(src) {
-	console.log("loading", src);
 	return new Promise((resolve, reject) => {
 		const request = new XMLHttpRequest();
 		request.open("GET", src, true);

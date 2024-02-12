@@ -1,4 +1,5 @@
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
 	import Chart from "$components/Phrases.Chart.svelte";
 	import Nav from "$components/Phrases.Nav.svelte";
 	import Slide from "$components/Phrases.Slide.svelte";
@@ -13,7 +14,7 @@
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import _ from "lodash";
-	import { tick } from "svelte";
+	import { onMount, tick } from "svelte";
 
 	let sliderEl;
 
@@ -43,13 +44,11 @@
 			}
 		}
 	};
-
 	const slides = copy.slides.map((d) => ({
 		...d,
 		i: +d.i,
 		phraseI: +d.phraseI
 	}));
-
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	$: currentSlide = slides[$currentSlideI];
@@ -57,6 +56,24 @@
 	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
+
+	onMount(() => {
+		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
+		playable.forEach((el) => {
+			const text = el.innerText;
+			const id = el.dataset.id;
+			const phraseI = el.dataset.phrase;
+			el.innerText = "";
+			new PlayableText({
+				target: el,
+				props: {
+					id,
+					phraseI,
+					text
+				}
+			});
+		});
+	});
 </script>
 
 <section id="phrase-by-phrase">
