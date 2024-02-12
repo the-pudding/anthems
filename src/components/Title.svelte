@@ -12,8 +12,7 @@
 	import { tick } from "svelte";
 	import { fade } from "svelte/transition";
 	import Loading from "$components/Loading.svelte";
-
-	const stanzas = [0, 1, 2, 3, 4, 5, 6, 7];
+	import _ from "lodash";
 
 	const onMute = () => {
 		$userMuted = !$userMuted;
@@ -40,7 +39,7 @@
 <section id="title" use:inView on:enter={sectionEnter} on:exit={sectionExit}>
 	{#if $inTitle}
 		<div class="handwritting-wrapper" transition:fade={{ duration: 500 }}>
-			{#each stanzas as stanza, i}
+			{#each _.range(8) as stanza, i}
 				<div class="stanza-image-wrap" style="animation-delay: {i}s">
 					<img
 						src="assets/lyrics/stanza{stanza}.png"
@@ -51,7 +50,7 @@
 		</div>
 	{/if}
 
-	<p class="prehed">{@html copy.prehed}</p>
+	<div class="prehed">{@html copy.prehed}</div>
 	<h1>{@html copy.hed}</h1>
 	<div class="byline">{@html copy.byline}</div>
 
@@ -83,7 +82,7 @@
 		font-size: var(--160px);
 		line-height: 0.8;
 		padding: 1rem 0 4rem 0;
-		max-width:600px;
+		max-width: 600px;
 	}
 	.prehed {
 		font-family: var(--serif);
@@ -164,7 +163,8 @@
 	.mute:hover {
 		transform: translateY(-2px);
 	}
-	:global(.mute:hover span svg) {
+	:global(.mute:hover span svg),
+	:global(.mute.muted span svg) {
 		stroke: var(--color-red);
 	}
 	@media (max-width: 600px) {
@@ -173,6 +173,7 @@
 		}
 		.prehed {
 			font-family: var(--serif);
+			padding-right: 2rem;
 			font-size: 1rem;
 			max-width:400px;
 		}

@@ -12,6 +12,7 @@
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import _ from "lodash";
+	import { swipe } from "$actions/swipe.js";
 
 	let sliderEl;
 
@@ -50,8 +51,16 @@
 	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
+
+	const onSwipeLeft = () => {
+		onTap({ detail: "right" });
+	};
+	const onSwipeRight = () => {
+		onTap({ detail: "left" });
+	};
 </script>
 
+<!-- <section id="phrase-by-phrase" use:swipe={{ onSwipeLeft, onSwipeRight }}> -->
 <section id="phrase-by-phrase">
 	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
 		{#each slides as slide}

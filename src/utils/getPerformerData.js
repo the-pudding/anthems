@@ -31,7 +31,11 @@ const getPerformerData = (id) => {
 	const key = row.key;
 	const stepsFromC = +row.steps_from_C;
 	const divaScore = +row["overall_diva"];
-	return { performer, event, year, genre, key, stepsFromC, divaScore };
+	const rank =
+		_.orderBy(ids, (d) => +d.overall_diva, "desc").findIndex(
+			(row) => row.id === id
+		) + 1;
+	return { performer, event, year, genre, key, stepsFromC, divaScore, rank };
 };
 
 export default getPerformerData;

@@ -11,7 +11,7 @@
 	export let activeColumn;
 	export let activeCell;
 
-	const { performer, event, year, key } = getPerformerData(data.id);
+	const { performer, event, year, key, rank } = getPerformerData(data.id);
 	const phraseStartsAndEnds = _.range(0, 16).map((i) => {
 		return {
 			start: +data[`phrase${[i]}_start`],
@@ -28,7 +28,7 @@
 		}
 	};
 	const updateActiveCell = () => {
-		if (!currentPhraseI === undefined || currentPhraseI === -1) {
+		if (currentPhraseI === undefined || currentPhraseI === -1) {
 			return;
 		} else {
 			activeCell = { row: data.id, col: currentPhraseI };
@@ -67,9 +67,13 @@
 			{/key}
 		</button>
 		<div class="details">
-			<p class="name">{performer}</p>
-			<p class="event"><strong>{year}</strong> {event}</p>
-			<p class="key">key: {key}</p>
+			<div class="top-row">
+				<p class="name">{performer}</p>
+				<p class="event">{year} {event}</p>
+			</div>
+			<p class="rank">
+				<strong>#{rank}</strong> Diva / Key: {key}
+			</p>
 		</div>
 	</div>
 	<div class="box-wrapper">
@@ -144,7 +148,7 @@
 	}
 	.name,
 	.event,
-	.key {
+	.rank {
 		font-family: var(--sans);
 		color: var(--color-fg);
 		margin: 0;
@@ -175,11 +179,18 @@
 			width: 100%;
 		}
 		.details {
+			flex-direction: column;
+			width: 100%;
+		}
+		.top-row {
+			display: flex;
 			flex-direction: row;
 			align-items: center;
 		}
-		.key {
-			display: none;
+		.name,
+		.event,
+		.rank {
+			font-size: 13px;
 		}
 		.name {
 			font-size: var(--20px);
