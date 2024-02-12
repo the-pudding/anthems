@@ -1,23 +1,14 @@
 <script>
 	import copy from "$data/copy.json";
+	import Mute from "$components/Mute.svelte";
 	import Icon from "$components/helpers/Icon.svelte";
-	import {
-		soundOn,
-		userMuted,
-		loaded,
-		inTitle,
-		entered
-	} from "$stores/misc.js";
+	import { loaded, inTitle, entered, soundOn } from "$stores/misc.js";
 	import inView from "$actions/inView.js";
 	import { tick } from "svelte";
 	import { fade } from "svelte/transition";
 	import Loading from "$components/Loading.svelte";
 	import _ from "lodash";
 
-	const onMute = () => {
-		$userMuted = !$userMuted;
-		$soundOn = !$soundOn;
-	};
 	const sectionEnter = () => {
 		if ($entered) {
 			$inTitle = true;
@@ -28,8 +19,10 @@
 			$inTitle = false;
 		}
 	};
-	const enter = async () => {
+	const enter = async (withAudio) => {
+		$soundOn = withAudio;
 		$entered = true;
+
 		await tick();
 		const introEl = document.querySelector("#intro");
 		introEl.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -56,17 +49,23 @@
 
 	<div class="begin-wrapper">
 		{#if $loaded}
-			<button class="begin" class:visible={$loaded} on:click={enter}>Begin</button>
-		{:else} 
+			<button class="begin" class:visible={$loaded} on:click={() => enter(true)}
+				>Begin with Audio
+				<span><Icon name="volume-2" /></span>
+			</button>
+			<button
+				class="begin no-audio"
+				class:visible={$loaded}
+				on:click={() => enter(false)}
+				>Begin Muted
+				<span><Icon name="volume-x" /></span>
+			</button>
+		{:else}
 			<Loading />
 		{/if}
 	</div>
 
-	<button class="icon mute" on:click={onMute} aria-label="mute">
-		{#key $soundOn}
-			<Icon name={`volume-${$soundOn ? "2" : "x"}`} size="2rem" fill="none" />
-		{/key}
-	</button>
+	<Mute />
 </section>
 
 <style>
@@ -102,17 +101,31 @@
 		margin-top: 2rem;
 		position: relative;
 		z-index: 1000;
+		display: flex;
+		flex-direction: column;
+		align-items: start;
 	}
 	button.begin {
 		visibility: hidden;
+		display: flex;
+		align-items: center;
 		margin-top: 3rem;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		font-weight: 700;
-		font-size: var(--16px);
 		padding: 1rem;
 		border-radius: 4px;
 		background: var(--color-fg);
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
+	}
+	button.begin:nth-of-type(2) {
+		margin-top: 0.75rem;
+		padding: 0.5rem 1rem;
+		font-size: 0.9rem;
+		background: var(--color-gray-400);
+	}
+	button.begin span {
+		margin-left: 0.5rem;
+		transform: translate(0, 2px);
 	}
 	button.begin:hover {
 		background: var(--color-red);
@@ -151,24 +164,7 @@
 		height: 100%;
 		object-fit: cover;
 	}
-	.icon {
-		color: var(--color-grey-blue);
-	}
-	.mute {
-		position: fixed;
-		top: 2.25rem;
-		right: 1.5rem;
-		background: none;
-		z-index: 10;
-		transition: all calc(var(--1s) * 0.25) ease-in-out;
-	}
-	.mute:hover {
-		transform: translateY(-2px);
-	}
-	:global(.mute:hover span svg),
-	:global(.mute.muted span svg) {
-		stroke: var(--color-red);
-	}
+
 	@media (max-width: 600px) {
 		section {
 			padding: 2rem 2rem 0 2rem;
@@ -177,21 +173,17 @@
 			font-family: var(--serif);
 			padding-right: 2rem;
 			font-size: 1rem;
-			max-width:400px;
+			max-width: 400px;
 		}
 		h1 {
 			padding-right: 2rem;
 			font-size: var(--96px);
 			line-height: 0.9;
 			margin-top: 1rem;
-			max-width:400px;
+			max-width: 400px;
 		}
 		.stanza-image-wrap {
 			margin: -0.5rem 0;
-		}
-		.mute {
-			top: 0.35rem;
-			right: 1rem;
 		}
 	}
 </style>
