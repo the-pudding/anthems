@@ -1,5 +1,10 @@
 <script>
-	import { currentPhraseI, currentStepI, currentSlideI, locked } from "$stores/misc.js";
+	import {
+		currentPhraseI,
+		currentStepI,
+		currentSlideI,
+		locked
+	} from "$stores/misc.js";
 	import _ from "lodash";
 	import copy from "$data/copy.json";
 	import { tick } from "svelte";
@@ -43,22 +48,11 @@
 			dropdownI = $currentPhraseI;
 		}
 	}
-
-	// function setFraction($currentPhraseI) {
-	// 	const prevSlide = $currentSlideI == 0 ? 0 : $currentSlideI - 1;
-	// 	console.log(prevSlide, $currentSlideI)
-	// 	if (prevSlide == $currentSlideI) {
-	// 		let phraseMatch = phrases.find((el) => el.i == $currentSlideI);
-	// 		let numSteps = phraseMatch.steps.length;
-	// 		return `${$currentPhraseI + 1}/${numSteps}`
-	// 	}
-	// }
 	$: xScale = scaleLinear()
 		.domain([0, 15])
 		.range([0, progressWidth || 0]);
 	$: $currentPhraseI, updateDropdown();
 	$: pulse = $currentPhraseI == 15;
-	// $: fractionText = setFraction($currentStepI);
 	$: navW = $viewport.width >= 600 ? xScale($currentPhraseI) : -16;
 </script>
 

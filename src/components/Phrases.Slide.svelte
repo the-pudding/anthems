@@ -2,9 +2,15 @@
 	import Featured from "$components/Phrases.Featured.svelte";
 	import Lines from "$components/Lines.svelte";
 	import Slide from "$components/helpers/Slider.Slide.svelte";
-	import { currentStepI, currentPhraseI, playing } from "$stores/misc.js";
+	import {
+		entered,
+		currentStepI,
+		currentPhraseI,
+		playing
+	} from "$stores/misc.js";
 	import ids from "$data/ids.csv";
 	import Loading from "$components/Loading.svelte";
+	import loadAudio from "$utils/loadAudio.js";
 
 	export let phrase;
 	export let slideI;
@@ -44,16 +50,26 @@
 			});
 	};
 	const load = async () => {
+		// load data for lines
 		const module = await import(`$data/pitch/desktop/phrase${phraseI}.csv`);
 		loaded = true;
 		phrasePitch = castFloat(module.default);
 		data = prepareLineData();
 
-		// preload featured audio here
-		// just blobs, return true
+		// load audio
+		const promises = phrase.featured.map((d) =>
+			loadAudio(`assets/vocals/${d.id}.mp3`)
+		);
+		Promise.all(promises)
+			.then(() => {
+				loaded = true;
+			})
+			.catch((error) => {
+				console.error("error loading audio");
+			});
 	};
 
-	$: if (!loaded && $currentPhraseI >= phraseI - preLoad) load();
+	$: if ($entered && !loaded && $currentPhraseI >= phraseI - preLoad) load();
 	$: phraseI = phrase.phraseI;
 	$: displayDots = data ? "none" : "flex";
 </script>
@@ -99,6 +115,7 @@
 		position: relative;
 		padding: 1rem 1rem 0 1rem;
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
+		overflow: scroll;
 	}
 	:global(.tap-directions) {
 		font-family: var(--sans);
@@ -129,6 +146,7 @@
 	.line-wrapper {
 		display: flex;
 		flex: 1;
+		min-height: 200px;
 		height: 100%;
 	}
 	.main {
@@ -145,7 +163,6 @@
 		margin-bottom: 0;
 	}
 	.text {
-		margin-bottom: 3rem;
 		margin-left: 2rem;
 		max-width: 700px;
 		height: 10rem;
@@ -181,7 +198,6 @@
 		}
 		.text {
 			margin-left: 0rem;
-			height: 20rem;
 		}
 	}
 
@@ -205,7 +221,6 @@
 		.text {
 			font-size: var(--14px);
 			margin: 0;
-			height: 15rem;
 		}
 		.text p {
 			line-height: 2;

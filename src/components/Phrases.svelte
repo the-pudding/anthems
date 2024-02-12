@@ -45,13 +45,11 @@
 			}
 		}
 	};
-
 	const slides = copy.slides.map((d) => ({
 		...d,
 		i: +d.i,
 		phraseI: +d.phraseI
 	}));
-
 	const phrases = copy.slides.filter((d) => d.type === "phrase");
 
 	$: currentSlide = slides[$currentSlideI];
@@ -60,8 +58,8 @@
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
 
-	function updatePlayableText() {
-		const playable = document.querySelectorAll(".playable");
+	onMount(() => {
+		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
 		playable.forEach((el) => {
 			const text = el.innerText;
 			const id = el.dataset.id;
@@ -76,12 +74,7 @@
 				}
 			});
 		});
-	}
-	onMount(() => {
-		updatePlayableText();
 	});
-	// $: updatePlayableText($entered)
-	$: console.log($entered);
 </script>
 
 <section id="phrase-by-phrase">
@@ -125,6 +118,7 @@
 		opacity: 0.5;
 		height: 100%;
 		pointer-events: none;
+		overflow: scroll;
 	}
 	.slide-wrapper.chart {
 		opacity: 0.1;

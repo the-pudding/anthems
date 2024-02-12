@@ -7,7 +7,14 @@
 	import Audio from "$components/Audio.svelte";
 	import Methods from "$components/Methods.svelte";
 	import Footer from "$components/Footer.svelte";
-	import { locked, entered, ios, userMuted, soundOn } from "$stores/misc.js";
+	import {
+		locked,
+		entered,
+		ios,
+		userMuted,
+		soundOn,
+		playing
+	} from "$stores/misc.js";
 	import { onMount } from "svelte";
 
 	onMount(() => {
@@ -21,7 +28,7 @@
 			}
 		});
 
-		const playable = document.querySelectorAll(".playable");
+		const playable = document.querySelectorAll("#intro .playable");
 		playable.forEach((el) => {
 			const text = el.innerText;
 			const id = el.dataset.id;
@@ -53,7 +60,8 @@
 		<Methods />
 		<Footer />
 	</div>
-	<Audio />
+
+	<Audio id={$playing?.id} phraseI={$playing?.phraseI} />
 </article>
 
 <style>
