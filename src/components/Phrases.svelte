@@ -10,7 +10,8 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		locked
+		locked,
+		entered
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import _ from "lodash";
@@ -77,27 +78,29 @@
 </script>
 
 <section id="phrase-by-phrase">
-	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
-		{#each slides as slide}
-			{@const active = +slide.i === $currentSlideI}
-			<div
-				class="slide-wrapper"
-				class:chart={slide.type === "chart"}
-				class:active
-			>
-				{#if slide.type === "phrase"}
-					<Slide slideI={+slide.i} phrase={slide} {active} />
-				{:else if slide.type === "chart"}
-					<Chart
-						slideI={+slide.i}
-						id={slide.chart}
-						text={slide.text}
-						active={+slide.i === $currentSlideI}
-					/>
-				{/if}
-			</div>
-		{/each}
-	</Slider>
+	{#key $entered}
+		<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
+			{#each slides as slide}
+				{@const active = +slide.i === $currentSlideI}
+				<div
+					class="slide-wrapper"
+					class:chart={slide.type === "chart"}
+					class:active
+				>
+					{#if slide.type === "phrase"}
+						<Slide slideI={+slide.i} phrase={slide} {active} />
+					{:else if slide.type === "chart"}
+						<Chart
+							slideI={+slide.i}
+							id={slide.chart}
+							text={slide.text}
+							active={+slide.i === $currentSlideI}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</Slider>
+	{/key}
 
 	<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 

@@ -1,5 +1,5 @@
 <script>
-	import { ChevronLeft, ChevronRight } from "lucide-svelte";
+	import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-svelte";
 	import { createEventDispatcher } from "svelte";
 	import {
 		currentPhraseI,
@@ -61,7 +61,11 @@
 			{#if dir == "left"}
 				<ChevronLeft color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
 			{:else}
-				<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+				{#if $currentPhraseI == 15}
+					<ChevronDown color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+				{:else}
+					<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+				{/if}
 			{/if}
 		</button>
 	{/each}

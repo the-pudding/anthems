@@ -1,7 +1,7 @@
 <script>
-	export let title = "Quantifying the Diva-ness of 138 National Anthem Performances";
-	export let description = "We isolated the vocals of 138 US National Anthem performances and compared each performer's pitch to the standard to see who is the ultimate diva.";
-	export let url = "https://pudding.cool/01/2024/anthems";
+	export let title = "Quantifying the Diva-ness of 139 National Anthem Performances";
+	export let description = "We isolated the vocals of 139 US National Anthem performances and compared each performer's pitch to the standard to see who is the ultimate diva.";
+	export let url = "https://pudding.cool/02/2024/anthems";
 	export let keywords = "national anthem, us, usa, star spangled banner, diva";
 	export let preloadFont = [];
 </script>

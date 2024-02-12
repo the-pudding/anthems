@@ -133,14 +133,17 @@
 >
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
-		<video
-			playsinline
-			bind:this={videoEl}
-			id="maya-vid"
-			muted={!$soundOn}
-			poster="/assets/video/maya-poster.jpg"
-		>
-		</video>
+			<video
+				playsinline
+				bind:this={videoEl}
+				id="maya-vid"
+				muted={!$soundOn}
+				poster="/assets/video/maya-poster.jpg"
+			>
+			</video>
+			{#if !videoEl}
+				<img id="maya-img" src="/assets/video/maya-poster.jpg" alt="maya rudoply singing the national anthem on snl" />
+			{/if}
 	</div>
 
 	<div class="spacer" />
@@ -213,7 +216,7 @@
 		mix-blend-mode: multiply;
 		opacity: 0.5;
 	}
-	#maya-vid {
+	#maya-img {
 		position: fixed;
 		right: 0;
 		bottom: 0;
@@ -222,6 +225,17 @@
 		object-fit: cover;
 		filter: saturate(0%);
 		z-index: 1;
+		visibility: visible;
+	}
+	#maya-vid {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		min-width: 100%;
+		min-height: 100%;
+		object-fit: cover;
+		filter: saturate(0%);
+		z-index: 2;
 	}
 	.step {
 		margin: 75vh 0 75vh 5rem;
