@@ -37,7 +37,7 @@
 		padding={{
 			top: showAvg && showLegend ? 30 : 0,
 			bottom: 50,
-			left: longestLabel.length * 5 + 20,
+			left: longestLabel.length * 5 + 50,
 			right: 50
 		}}
 		x={xKey}

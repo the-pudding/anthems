@@ -75,6 +75,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
+		overflow: scroll;
 	}
 	.text {
 		max-width: 700px;
@@ -84,6 +85,7 @@
 	}
 	.chart {
 		flex: 1;
+		min-height: 500px;
 		width: 100%;
 		max-width: 50em;
 		margin: 2rem auto 0 auto;

@@ -98,6 +98,7 @@
 		opacity: 0.5;
 		height: 100%;
 		pointer-events: none;
+		overflow: scroll;
 	}
 	.slide-wrapper.chart {
 		opacity: 0.1;

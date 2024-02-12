@@ -1,38 +1,26 @@
 <script>
-	import copy from "$data/copy.json";
 	import _ from "lodash";
 	import ids from "$data/ids.csv";
-	import { playing, currentTime, soundOn } from "$stores/misc.js";
-	import { onMount } from "svelte";
+	import { base } from "$app/paths";
+	import { currentTime, soundOn } from "$stores/misc.js";
+	import { onMount, tick } from "svelte";
 
-	let mounted = false;
+	export let id;
+	export let phraseI;
+
+	let audioEl;
 	let f;
+	let loaded = false;
+	let paused;
 
-	const allFeaturedIds = _.uniq(
-		_.flatten(
-			copy.slides
-				.filter((d) => d.featured)
-				.map((d) => d.featured.map((f) => f.id))
-		)
-	);
-	const remainingIds = ids
-		.map((d) => d.id)
-		.filter((d) => !allFeaturedIds.includes(d));
+	const play = () => {
+		if (!audioEl) return;
 
-	$: if ($playing) playAudio($playing);
-	$: if ($playing === undefined) pauseAudio();
-
-	const playAudio = ({ id, phraseI }) => {
-		if (!mounted || !id) return;
-
-		pauseAudio();
-
-		const audioEl = document.getElementById(`${id}-audio`);
 		const start = +ids.find((d) => d.id === id)[`phrase${phraseI || 0}_start`];
 		const end =
 			phraseI !== undefined
 				? +ids.find((d) => d.id === id)[`phrase${phraseI}_end`]
-				: audioEl.duration;
+				: +ids.find((d) => d.id === id)[`phrase15_end`];
 
 		audioEl.currentTime = start;
 		audioEl.play();
@@ -40,7 +28,6 @@
 		const checkTime = () => {
 			$currentTime = audioEl.currentTime;
 			if ($currentTime >= end) {
-				// $playing = undefined;
 				audioEl.pause();
 				audioEl.currentTime = start;
 				cancelAnimationFrame(f);
@@ -51,28 +38,40 @@
 
 		f = requestAnimationFrame(checkTime);
 	};
-	const pauseAudio = () => {
-		if (!mounted) return;
-
-		const allAudioEls = document.querySelectorAll("audio");
-		const playing = Array.from(allAudioEls).filter((d) => !d.paused);
-
-		if (playing.length) {
-			cancelAnimationFrame(f);
-			playing.forEach((el) => {
-				el.pause();
-			});
-		}
+	const pause = () => {
+		if (!audioEl || paused) return;
+		audioEl.pause();
+		cancelAnimationFrame(f);
 	};
 
-	onMount(() => {
-		mounted = true;
+	const updateSource = () => {
+		loaded = false;
+		const src = `${base}/assets/vocals/${id}.mp3`;
+		audioEl.src = src;
+		audioEl.load();
+	};
+	const onVisibilityChange = () => {
+		const hidden = document.hidden;
+		if (hidden && paused === false) pause();
+		else if (!hidden) play();
+	};
+	const setupEvents = () => {
+		audioEl.addEventListener("canplay", () => {
+			if (!loaded) {
+				loaded = true;
+				play();
+			}
+		});
+		document.addEventListener("visibilitychange", onVisibilityChange);
+	};
+
+	$: if (id) updateSource(phraseI);
+	$: if (!id) pause();
+
+	onMount(async () => {
+		await tick();
+		setupEvents();
 	});
 </script>
 
-{#each allFeaturedIds as id}
-	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} muted={!$soundOn} />
-{/each}
-{#each remainingIds as id}
-	<audio src={`assets/vocals/${id}.mp3`} id={`${id}-audio`} muted={!$soundOn} />
-{/each}
+<audio bind:this={audioEl} bind:paused muted={!$soundOn} />

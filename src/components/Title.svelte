@@ -74,6 +74,7 @@
 		position: relative;
 		padding: 3rem 3rem 0 3rem;
 		margin-bottom: 3rem;
+		overflow: scroll;
 	}
 	h1 {
 		font-family: "Newsagent";
