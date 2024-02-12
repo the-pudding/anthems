@@ -1,4 +1,5 @@
 <script>
+	import PlayableText from "$components/PlayableText.svelte";
 	import Chart from "$components/Phrases.Chart.svelte";
 	import Nav from "$components/Phrases.Nav.svelte";
 	import Slide from "$components/Phrases.Slide.svelte";
@@ -9,11 +10,12 @@
 		currentPhraseI,
 		currentStepI,
 		playing,
-		locked
+		locked,
+		entered
 	} from "$stores/misc.js";
 	import copy from "$data/copy.json";
 	import _ from "lodash";
-	import { tick } from "svelte";
+	import { onMount, tick } from "svelte";
 
 	let sliderEl;
 
@@ -57,30 +59,55 @@
 	$: $currentPhraseI = currentSlide.phraseI;
 	$: stepsInPhrase =
 		currentSlide.type === "chart" ? 1 : currentPhrase.steps.length;
+
+	function updatePlayableText() {
+		const playable = document.querySelectorAll(".playable");
+		playable.forEach((el) => {
+			const text = el.innerText;
+			const id = el.dataset.id;
+			const phraseI = el.dataset.phrase;
+			el.innerText = "";
+			new PlayableText({
+				target: el,
+				props: {
+					id,
+					phraseI,
+					text
+				}
+			});
+		});
+	}
+	onMount(() => {
+		updatePlayableText();
+	});
+	// $: updatePlayableText($entered)
+	$: console.log($entered);
 </script>
 
 <section id="phrase-by-phrase">
-	<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
-		{#each slides as slide}
-			{@const active = +slide.i === $currentSlideI}
-			<div
-				class="slide-wrapper"
-				class:chart={slide.type === "chart"}
-				class:active
-			>
-				{#if slide.type === "phrase"}
-					<Slide slideI={+slide.i} phrase={slide} {active} />
-				{:else if slide.type === "chart"}
-					<Chart
-						slideI={+slide.i}
-						id={slide.chart}
-						text={slide.text}
-						active={+slide.i === $currentSlideI}
-					/>
-				{/if}
-			</div>
-		{/each}
-	</Slider>
+	{#key $entered}
+		<Slider bind:this={sliderEl} bind:current={$currentSlideI}>
+			{#each slides as slide}
+				{@const active = +slide.i === $currentSlideI}
+				<div
+					class="slide-wrapper"
+					class:chart={slide.type === "chart"}
+					class:active
+				>
+					{#if slide.type === "phrase"}
+						<Slide slideI={+slide.i} phrase={slide} {active} />
+					{:else if slide.type === "chart"}
+						<Chart
+							slideI={+slide.i}
+							id={slide.chart}
+							text={slide.text}
+							active={+slide.i === $currentSlideI}
+						/>
+					{/if}
+				</div>
+			{/each}
+		</Slider>
+	{/key}
 
 	<Tap on:tap={onTap} full={true} enableKeyboard={true} size={"50%"} />
 

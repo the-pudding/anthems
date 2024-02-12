@@ -6,6 +6,7 @@
 	import Icon from "$components/helpers/Icon.svelte";
 	import { onMount } from "svelte";
 	import { scaleLinear } from "d3-scale";
+	import viewport from "$stores/viewport.js";
 
 	export let sliderEl;
 
@@ -58,12 +59,15 @@
 	$: $currentPhraseI, updateDropdown();
 	$: pulse = $currentPhraseI == 15;
 	// $: fractionText = setFraction($currentStepI);
+	$: navW = $viewport.width >= 600 ? xScale($currentPhraseI) : -16;
 </script>
 
 <div class="progress">
 	<div class="bar-wrapper" bind:clientWidth={progressWidth}>
-		<div class="horiz-bar"></div>
-		<div class="select-wrapper" style={`left: ${xScale($currentStepI)}px`}>
+		{#if $viewport.width >= 600}
+			<div class="horiz-bar"></div>
+		{/if}
+		<div class="select-wrapper" style={`left: ${navW}px`}>
 			<select
 				bind:value={selected}
 				on:change={() => onChange(selected)}

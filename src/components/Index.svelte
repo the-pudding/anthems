@@ -46,9 +46,9 @@
 	</div>
 
 	<div class="middle" class:locked={$locked} class:visible={$entered}>
-		{#key $entered}
+		<!-- {#key $entered} -->
 			<Phrases />
-		{/key}
+		<!-- {/key} -->
 		<Heatmap />
 		<Methods />
 		<Footer />
