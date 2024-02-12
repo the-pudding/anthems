@@ -74,7 +74,6 @@
 				{/each}
 			</select>
 		</div>
-		<!-- <p class="slide-hint" style={`left: ${xScale($currentPhraseI)}px`}>{fractionText}</p> -->
 	</div>
 
 	<div class="skip">
@@ -230,9 +229,6 @@
 			padding: 2px 4px;
 			font-size: 10px;
 			width: 4rem;
-		}
-		.more-data {
-			display: none;
 		}
 		.skip {
 			margin-left: 1rem;
