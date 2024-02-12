@@ -94,6 +94,7 @@
 		height: 100svh;
 		overflow: hidden;
 		position: relative;
+		width: 100%;
 	}
 	.slide-wrapper {
 		opacity: 0.5;

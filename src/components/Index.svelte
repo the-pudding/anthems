@@ -46,7 +46,9 @@
 	</div>
 
 	<div class="middle" class:locked={$locked} class:visible={$entered}>
-		<Phrases />
+		{#key $entered}
+			<Phrases />
+		{/key}
 		<Heatmap />
 		<Methods />
 		<Footer />
@@ -57,12 +59,14 @@
 <style>
 	article {
 		padding: 0;
+		width: 100%;
 	}
 	.start {
 		height: auto;
 		overflow: visible;
 	}
 	.middle {
+		width: 100%;
 		height: 100svh;
 		display: none;
 		overflow: visible;
