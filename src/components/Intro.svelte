@@ -78,6 +78,7 @@
 	};
 
 	$: step, onNewStep();
+	$: mobile = $viewport.width < 600;
 	$: videoVisible = $inIntro && !$inTitle && step === 2;
 	$: if (videoVisible) playVideo();
 	$: if (!videoVisible || !$inIntro) pauseVideo();
@@ -106,21 +107,26 @@
 		data = prepareLineData();
 
 		// Load Maya video
-		const src = `${base}/assets/video/maya-brave.mp4`;
-		const request = new XMLHttpRequest();
-		request.open("GET", src, true);
-		request.responseType = "blob";
-		request.onload = function () {
-			if (this.status === 200) {
-				const videoBlob = this.response;
-				const videoUrl = URL.createObjectURL(videoBlob);
-				if (videoEl) {
-					videoEl.src = videoUrl;
-					$loaded = true;
+		if (!mobile) {
+			const src = `${base}/assets/video/maya-brave.mp4`;
+			const request = new XMLHttpRequest();
+			request.open("GET", src, true);
+			request.responseType = "blob";
+			request.onload = function () {
+				if (this.status === 200) {
+					console.log("successful load video");
+					const videoBlob = this.response;
+					const videoUrl = URL.createObjectURL(videoBlob);
+					if (videoEl) {
+						videoEl.src = videoUrl;
+						$loaded = true;
+					}
 				}
-			}
-		};
-		request.send();
+			};
+			request.send();
+		} else {
+			$loaded = true;
+		}
 	});
 </script>
 
@@ -133,6 +139,8 @@
 >
 	<div class="maya-vid-wrapper" class:visible={videoVisible}>
 		<div class="vid-overlay"></div>
+
+		{#if !mobile}
 			<video
 				playsinline
 				bind:this={videoEl}
@@ -141,9 +149,14 @@
 				poster="/assets/video/maya-poster.jpg"
 			>
 			</video>
-			{#if !videoEl}
-				<img id="maya-img" src="/assets/video/maya-poster.jpg" alt="maya rudoply singing the national anthem on snl" />
-			{/if}
+		{/if}
+		{#if !$loaded || mobile}
+			<img
+				id="maya-img"
+				src="/assets/video/maya-poster.jpg"
+				alt="maya rudoply singing the national anthem on snl"
+			/>
+		{/if}
 	</div>
 
 	<div class="spacer" />

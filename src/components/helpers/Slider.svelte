@@ -96,7 +96,6 @@ Usage:
 
 	const playableText = () => {
 		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
-		console.log({ playable });
 		playable.forEach((el) => {
 			const text = el.innerText;
 			const id = el.dataset.id;
