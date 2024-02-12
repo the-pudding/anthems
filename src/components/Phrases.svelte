@@ -98,11 +98,13 @@
 	.slide-wrapper {
 		opacity: 0.5;
 		height: 100%;
+		pointer-events: none;
 	}
 	.slide-wrapper.chart {
 		opacity: 0.1;
 	}
 	.slide-wrapper.active {
 		opacity: 1;
+		pointer-events: auto;
 	}
 </style>
