@@ -79,7 +79,6 @@
 	$: if (highlight) calculateSegmentLengths();
 	$: $viewport.width, $currentPhraseI, calculateSegmentLengths();
 	$: $xScale.range(), ($data = $data);
-	$: mobile = $viewport.width < 600;
 
 	onMount(async () => {
 		await tick();
@@ -102,7 +101,7 @@
 				d={generatePath(group.pitch)}
 			/>
 
-			{#if featuredIds.includes(group.id) && !mobile}
+			{#if featuredIds.includes(group.id)}
 				<g class="segments">
 					{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI (`${group.id}-${phraseI}-${segmentI}`)}
 						{@const started = $currentTime > 0}

@@ -14,8 +14,6 @@
 	let loaded = false;
 	let paused;
 
-	$: console.log($currentTime);
-
 	const play = () => {
 		if (!audioEl || !id) return;
 

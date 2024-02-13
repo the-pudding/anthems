@@ -1,8 +1,8 @@
 <script>
-	export let title = "Quantifying the Diva-ness of 139 National Anthem Performances";
-	export let description = "We isolated the vocals of 139 US National Anthem performances and compared each performer's pitch to the standard to see who is the ultimate diva.";
-	export let url = "https://pudding.cool/02/2024/anthems";
-	export let keywords = "national anthem, us, usa, star spangled banner, diva";
+	export let title = "Title TK";
+	export let description = "Description TK";
+	export let url = "https://pudding.cool";
+	export let keywords = "";
 	export let preloadFont = [];
 </script>
 
@@ -29,7 +29,10 @@
 	<meta name="twitter:creator" content="@puddingviz" />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image:src" content="{url}/assets/social/social-twitter.jpg" />
+	<meta
+		name="twitter:image:src"
+		content="{url}/assets/social/social-twitter.jpg"
+	/>
 
 	<meta name="robots" content="max-image-preview:large" />
 

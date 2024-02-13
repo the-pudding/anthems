@@ -114,7 +114,6 @@
 			request.responseType = "blob";
 			request.onload = function () {
 				if (this.status === 200) {
-					console.log("successful load video");
 					const videoBlob = this.response;
 					const videoUrl = URL.createObjectURL(videoBlob);
 					if (videoEl) {
@@ -146,7 +145,7 @@
 				bind:this={videoEl}
 				id="maya-vid"
 				muted={!$soundOn}
-				poster="/assets/video/maya-poster.jpg"
+				poster={`${base}/assets/video/maya-poster.jpg`}
 			>
 			</video>
 		{/if}
