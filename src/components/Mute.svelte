@@ -29,9 +29,11 @@
 		background: none;
 		z-index: 10;
 		opacity: 0;
+		pointer-events: none;
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 	}
 	button.visible {
+		pointer-events: auto;
 		opacity: 1;
 	}
 	button:hover {
