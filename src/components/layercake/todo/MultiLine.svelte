@@ -6,12 +6,7 @@
 	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
-	import {
-		currentPhraseI,
-		playing,
-		currentTime,
-		audioCanPlay
-	} from "$stores/misc.js";
+	import { currentPhraseI, playing, audioCanPlay } from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 

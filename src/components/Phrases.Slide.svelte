@@ -86,13 +86,13 @@
 
 			<div class="line-wrapper">
 				{#if data}
-					<!-- <Lines
+					<Lines
 						{phraseI}
 						{data}
 						{highlight}
 						featuredIds={phrase.featured.map((d) => d.id)}
 						showStandard={phraseI !== 0 || $currentStepI >= 1}
-					/> -->
+					/>
 				{:else if !loaded}
 					<Loading pos={true} display={displayDots} />
 				{/if}
