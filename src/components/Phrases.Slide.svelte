@@ -115,7 +115,6 @@
 		position: relative;
 		padding: 1rem 1rem 0 1rem;
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
-		overflow: scroll;
 	}
 	:global(.tap-directions) {
 		font-family: var(--sans);
@@ -146,7 +145,6 @@
 	.line-wrapper {
 		display: flex;
 		flex: 1;
-		/* min-height: 200px; */
 		height: 100%;
 	}
 	.main {

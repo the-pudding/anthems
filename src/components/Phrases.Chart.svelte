@@ -75,17 +75,14 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		overflow: scroll;
 	}
 	.text {
-		max-width: 700px;
 		pointer-events: auto;
 		line-height: 1.8;
 		margin: 2rem auto 0 auto;
 	}
 	.chart {
 		flex: 1;
-		/* min-height: 500px; */
 		width: 100%;
 		max-width: 50em;
 		margin: 2rem auto 0 auto;
@@ -96,7 +93,6 @@
 	@media (max-width: 600px) {
 		.container {
 			padding-top: 0;
-			overflow: visible;
 		}
 		.chart {
 			margin-top: 1rem;
