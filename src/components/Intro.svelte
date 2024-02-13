@@ -41,7 +41,7 @@
 		);
 	};
 	const prepareLineData = () => {
-		return allIds.map((id) => {
+		return featuredIds.map((id) => {
 			const pitch = allPitch.map((d) => ({
 				timestamp: d.timestamp,
 				frequency: d[id]
@@ -163,6 +163,7 @@
 		{#if data}
 			<Lines
 				{data}
+				{step}
 				intro={true}
 				{isolate}
 				{featuredIds}

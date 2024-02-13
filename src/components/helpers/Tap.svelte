@@ -1,7 +1,7 @@
 <script>
 	import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-svelte";
 	import { createEventDispatcher } from "svelte";
-	import { currentPhraseI, locked } from "$stores/misc.js";
+	import { currentPhraseI, locked, currentStepI } from "$stores/misc.js";
 	import { tick } from "svelte";
 
 	export let debug = false;
@@ -59,27 +59,33 @@
 </section>
 <section class="tapper-overlay">
 	{#each directions as dir}
-		<button class="{dir}-hint" on:click={dispatch("tap", dir)}>
-			{#if dir == "left"}
-				<ChevronLeft
-					color={arrowStroke}
-					strokeWidth={arrowStrokeWidth}
-					size={"2rem"}
-				/>
-			{:else if $currentPhraseI == 15}
-				<ChevronDown
-					color={arrowStroke}
-					strokeWidth={arrowStrokeWidth}
-					size={"2rem"}
-				/>
-			{:else}
-				<ChevronRight
-					color={arrowStroke}
-					strokeWidth={arrowStrokeWidth}
-					size={"2rem"}
-				/>
+		{#if dir == "left"}
+			{#if $currentStepI !== 0}
+				<button class="{dir}-hint" on:click={dispatch("tap", dir)}>
+					<ChevronLeft
+						color={arrowStroke}
+						strokeWidth={arrowStrokeWidth}
+						size={"2rem"}
+					/>
+				</button>
 			{/if}
-		</button>
+		{:else}
+			<button class="{dir}-hint" class:bounceHint={$currentStepI == 0} on:click={dispatch("tap", dir)}>	
+				{#if $currentPhraseI == 15}
+					<ChevronDown
+							color={arrowStroke}
+							strokeWidth={arrowStrokeWidth}
+							size={"2rem"}
+						/>	
+				{:else}
+					<ChevronRight
+						color={arrowStroke}
+						strokeWidth={arrowStrokeWidth}
+						size={"2rem"}
+					/>
+				{/if}
+			</button>
+		{/if}
 	{/each}
 </section>
 
@@ -138,6 +144,22 @@
 		transform: translate(40%, -100%);
 		opacity: 1;
 		background: var(--color-red);
+	}
+	.bounceHint {
+		background: var(--color-red);
+		opacity: 1;
+		animation: bounce 1.5s infinite linear;
+	}
+	@keyframes bounce {
+		0% {
+			transform: translate(50%, -100%);
+		}
+		50% {
+			transform: translate(40%, -100%);
+		}
+		100% {
+			transform: translate(50%, -100%);
+		}
 	}
 	button {
 		position: absolute;
