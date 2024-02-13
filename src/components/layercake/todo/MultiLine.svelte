@@ -6,7 +6,12 @@
 	import { getContext, onMount, tick } from "svelte";
 	import { line, curveCardinal } from "d3-shape";
 	import viewport from "$stores/viewport.js";
-	import { currentPhraseI, playing, currentTime } from "$stores/misc.js";
+	import {
+		currentPhraseI,
+		playing,
+		currentTime,
+		audioCanPlay
+	} from "$stores/misc.js";
 
 	const { data, xGet, yGet, xScale } = getContext("LayerCake");
 
@@ -104,10 +109,10 @@
 			{#if featuredIds.includes(group.id)}
 				<g class="segments">
 					{#each segments(group.pitch, group.id) as { data, duration, delay }, segmentI (`${group.id}-${phraseI}-${segmentI}`)}
-						{@const started = $currentTime > 0}
-						{@const playingMe = $playing && $playing.id === group.id && started}
+						{@const playingMe =
+							$playing && $playing.id === group.id && $audioCanPlay}
 						{@const visible =
-							(isolated && playingMe) || (highlighted && started)}
+							(isolated && playingMe) || (highlighted && $audioCanPlay)}
 						<path
 							class={"animated"}
 							class:visible

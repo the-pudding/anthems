@@ -12,7 +12,8 @@ export const currentStepI = writable(0);
 
 export const soundOn = writable(true);
 export const userMuted = writable(false);
-export const playing = writable(undefined); // {id, phrase}
+export const playing = writable(undefined);
 export const currentTime = writable(undefined);
+export const audioCanPlay = writable(false);
 
 export const ios = writable(false);

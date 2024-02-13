@@ -2,7 +2,7 @@
 	import _ from "lodash";
 	import ids from "$data/ids.csv";
 	import { base } from "$app/paths";
-	import { currentTime, soundOn } from "$stores/misc.js";
+	import { currentTime, soundOn, audioCanPlay } from "$stores/misc.js";
 	import { onMount, tick } from "svelte";
 	import loadAudio from "$utils/loadAudio.js";
 
@@ -48,6 +48,7 @@
 	};
 
 	const updateSource = () => {
+		$audioCanPlay = false;
 		loaded = false;
 		const src = `${base}/assets/vocals/${id}.mp3`;
 		audioEl.src = src;
@@ -61,6 +62,7 @@
 	const setupEvents = () => {
 		audioEl.addEventListener("canplay", () => {
 			if (!loaded) {
+				$audioCanPlay = true;
 				loaded = true;
 				play();
 			}
