@@ -78,9 +78,9 @@
 
 	<div class="skip">
 		<div class="circle" class:pulse on:click={skip}>
-			<Icon name="chevron-down" size="1.75rem" fill="none" />
+			<Icon name="chevron-down" size="1.75rem" fill="none"/>
 		</div>
-		<p class="more-data">More data</p>
+		<p class="more-data">Skip to more data</p>
 	</div>
 </div>
 
@@ -188,6 +188,9 @@
 	}
 	:global(.skip .circle svg) {
 		margin-top: 5px;
+	}
+	:global(.skip .circle svg path) {
+		stroke: var(--color-extra-dark-blue);
 	}
 	.pulse {
 		animation: pulse-animation calc(var(--1s) * 1.25) infinite;

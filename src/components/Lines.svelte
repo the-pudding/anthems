@@ -6,6 +6,7 @@
 	import AxisX from "$components/layercake/AxisX.svg.svelte";
 	import AxisY from "$components/layercake/AxisY.svg.svelte";
 	import _ from "lodash";
+	import { fade } from "svelte/transition";
 
 	export let data;
 	export let highlight;
@@ -16,6 +17,7 @@
 	export let intro;
 	export let hideAll;
 	export let videoVisible;
+	export let step;
 
 	const xKey = "timestamp";
 	const yKey = "frequency";
@@ -45,6 +47,9 @@
 				<h3>Vocal Pitch Throughout Anthem</h3>
 			{/if}
 		</div>
+		{#if !videoVisible && step >= 3}
+			<img id="intro-line-img" src="/assets/intro-lines.png" alt="vocal pitch lines throughout 138 performance" transition:fade />
+		{/if}
 	{/if}
 	<LayerCake
 		padding={{ top: 8, right: 10, bottom: 20, left: 25 }}
@@ -54,7 +59,7 @@
 		{zScale}
 		zDomain={[data.map((d) => d.id)]}
 		yNice={4}
-		yDomain={[0, 600]}
+		yDomain={[0, 900]}
 		{flatData}
 		{data}
 	>
@@ -66,7 +71,7 @@
 			/>
 			<AxisY
 				gridlines={false}
-				ticks={intro && !hideAll ? 2 : 0}
+				ticks={intro && !hideAll ? 3 : 0}
 				formatTick={(d) => `${d} Hz`}
 			/>
 			{#if showStandard}
@@ -94,6 +99,17 @@
 		margin-top: 3rem;
 		height: 3rem;
 	}
+	:global(#intro .layercake-container) {
+		z-index: 999;
+	}
+	#intro-line-img {
+		left: 2rem;
+		top: 3rem;
+		width: calc(100% - 4rem);
+		height: 500px;
+		position: absolute;
+		z-index: 1;
+	}
 	h3 {
 		font-family: var(--sans);
 		font-weight: 700;
@@ -101,5 +117,10 @@
 		color: var(--color-grey-blue);
 		margin: 0 0 1rem 0;
 		text-transform: uppercase;
+	}
+	@media (max-width: 600px) {
+		#intro-line-img {
+			height: 250px;
+		}
 	}
 </style>
