@@ -50,7 +50,7 @@
 		{#if !videoVisible && step >= 3}
 			<img
 				id="intro-line-img"
-				src="/assets/intro-lines.png"
+				src="assets/intro-lines.png"
 				alt="vocal pitch lines throughout 138 performance"
 				transition:fade
 			/>

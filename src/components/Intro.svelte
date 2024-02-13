@@ -151,8 +151,9 @@
 		{/if}
 		{#if !$loaded || mobile}
 			<img
+				class:visible={videoVisible}
 				id="maya-img"
-				src="/assets/video/maya-poster.jpg"
+				src="assets/video/maya-poster.jpg"
 				alt="maya rudoply singing the national anthem on snl"
 			/>
 		{/if}
@@ -236,6 +237,8 @@
 		object-fit: cover;
 		filter: saturate(0%);
 		z-index: 1;
+	}
+	#maya-img.visible {
 		visibility: visible;
 	}
 	#maya-vid {

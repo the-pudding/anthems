@@ -37,9 +37,9 @@
 	class:playing={isPlaying}
 	class:missing={phraseMissing}
 	style:background
-	on:click={() => playPhrase(i)}
+	on:click={phraseMissing ? null : () => playPhrase(i)}
 >
-	{#if expanded}
+	{#if expanded && !phraseMissing}
 		<Line data={lineData} />
 	{/if}
 </button>

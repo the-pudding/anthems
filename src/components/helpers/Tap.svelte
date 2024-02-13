@@ -60,7 +60,7 @@
 <section class="tapper-overlay">
 	{#each directions as dir}
 		{#if dir == "left"}
-			{#if $currentStepI !== 0}
+			{#if $currentPhraseI !== 0 || $currentStepI !== 0}
 				<button class="{dir}-hint" on:click={dispatch("tap", dir)}>
 					<ChevronLeft
 						color={arrowStroke}
@@ -70,13 +70,17 @@
 				</button>
 			{/if}
 		{:else}
-			<button class="{dir}-hint" class:bounceHint={$currentStepI == 0} on:click={dispatch("tap", dir)}>	
+			<button
+				class="{dir}-hint"
+				class:bounceHint={$currentStepI == 0}
+				on:click={dispatch("tap", dir)}
+			>
 				{#if $currentPhraseI == 15}
 					<ChevronDown
-							color={arrowStroke}
-							strokeWidth={arrowStrokeWidth}
-							size={"2rem"}
-						/>	
+						color={arrowStroke}
+						strokeWidth={arrowStrokeWidth}
+						size={"2rem"}
+					/>
 				{:else}
 					<ChevronRight
 						color={arrowStroke}

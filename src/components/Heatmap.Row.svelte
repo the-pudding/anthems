@@ -18,6 +18,7 @@
 			end: +data[`phrase${[i]}_end`]
 		};
 	});
+	const missingSome = phraseStartsAndEnds.some((d) => !d.start || !d.end);
 
 	const playAll = () => {
 		const id = data.id;
@@ -53,6 +54,7 @@
 			id={`${data.id}-heatmap-btn`}
 			class="play-btn"
 			class:playing={!paused}
+			class:visible={!missingSome}
 			on:click={playAll}
 			aria-label="play"
 		>
@@ -130,6 +132,10 @@
 		margin: 0.4rem 0.5rem 0 0;
 		transition: all calc(var(--1s) * 0.25) ease-in-out;
 		box-shadow: rgba(0, 0, 0, 0.25) 0 2px 8px;
+		visibility: hidden;
+	}
+	.play-btn.visible {
+		visibility: visible;
 	}
 	.play-btn:hover {
 		background: var(--color-red);

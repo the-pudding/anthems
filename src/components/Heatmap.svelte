@@ -44,14 +44,13 @@
 		</div>
 		<div class="top-row">
 			{#each phrases as phrase, i}
-				<button
+				<div
 					class="top-row-phrase top-row-phrase-{i}"
 					aria-label="phrase-{i}"
 					class:active={activeColumn === i}
-					on:click={() => onColumnClick(i)}
 				>
 					{phrase.lyrics}
-				</button>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -105,7 +104,11 @@
 		margin: 0 0.5rem;
 		height: 1.5rem;
 		border: 1px solid var(--color-fg);
-		background: linear-gradient(90deg, rgba(124, 164, 174, 0) 0%, rgba(124, 164, 174, 1) 100%);
+		background: linear-gradient(
+			90deg,
+			rgba(124, 164, 174, 0) 0%,
+			rgba(124, 164, 174, 1) 100%
+		);
 	}
 	.top-row {
 		padding: 0.5rem 1rem 0.5rem 16.5rem;
@@ -130,12 +133,6 @@
 		color: var(--color-fg);
 		padding: 0;
 		border-radius: 0;
-	}
-	.top-row-phrase:hover {
-		/* color: var(--color-red); */
-		font-weight: 700;
-		border-bottom: 3px solid var(--color-red);
-		/* background: var(--color-dark-blue); */
 	}
 	.active {
 		width: 30%;
