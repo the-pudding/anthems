@@ -97,10 +97,10 @@ Usage:
 	const playableText = () => {
 		const playable = document.querySelectorAll("#phrase-by-phrase .playable");
 		playable.forEach((el) => {
-			const text = el.innerText;
+			const text = el.textContent;
 			const id = el.dataset.id;
 			const phraseI = el.dataset.phrase;
-			el.innerText = "";
+			el.textContent = "";
 			new PlayableText({
 				target: el,
 				props: {
@@ -112,7 +112,8 @@ Usage:
 		});
 	};
 
-	onMount(() => {
+	onMount(async () => {
+		await tick();
 		playableText();
 
 		children = translateEl.children.length;

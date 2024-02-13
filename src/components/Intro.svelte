@@ -161,14 +161,14 @@
 	<div class="spacer" />
 	<div class="sticky">
 		{#if data}
-			<Lines
+			<!-- <Lines
 				{data}
 				intro={true}
 				{isolate}
 				{featuredIds}
 				{videoVisible}
 				hideAll={videoVisible || $inTitle}
-			/>
+			/> -->
 		{:else}
 			<!-- <p>Loading...</p> -->
 		{/if}

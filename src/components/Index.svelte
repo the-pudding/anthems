@@ -18,9 +18,6 @@
 	import { onMount } from "svelte";
 
 	onMount(() => {
-		// $locked = false;
-		// $entered = true;
-
 		$ios = !!navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
 		document.addEventListener("visibilitychange", (event) => {
