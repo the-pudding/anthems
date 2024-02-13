@@ -1,14 +1,8 @@
 <script>
 	import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-svelte";
 	import { createEventDispatcher } from "svelte";
-	import {
-		currentPhraseI,
-		currentSlideI,
-		currentStepI,
-		inIntro,
-		locked
-	} from "$stores/misc.js";
-	import { fade, fly } from "svelte/transition";
+	import { currentPhraseI, locked } from "$stores/misc.js";
+	import { tick } from "svelte";
 
 	export let debug = false;
 	export let enableKeyboard = false;
@@ -23,19 +17,27 @@
 	export let arrowPosition = "center"; // start, center, end
 
 	const dispatch = createEventDispatcher();
-	let tapperOverlayVisible = true;
+
+	const skip = async () => {
+		$locked = false;
+		await tick();
+		const heatmap = document.getElementById("transition-to-heatmap");
+		heatmap.scrollIntoView({ behavior: "smooth", block: "start" });
+	};
 
 	$: getW = (dir) =>
 		["left", "right"].includes(dir) ? size : full ? "100%" : size;
 	$: getH = (dir) =>
 		["up", "down"].includes(dir) ? size : full ? "100%" : size;
 
-	$: onKeyDown = (e) => {
+	$: onKeyDown = async (e) => {
 		const dir = e.key.replace("Arrow", "").toLowerCase();
 		const hasDir = directions.includes(dir);
 		if (enableKeyboard && hasDir) {
 			e.preventDefault();
 			dispatch("tap", dir);
+		} else if (dir === "down") {
+			await skip();
 		}
 	};
 </script>
@@ -59,20 +61,31 @@
 	{#each directions as dir}
 		<button class="{dir}-hint" on:click={dispatch("tap", dir)}>
 			{#if dir == "left"}
-				<ChevronLeft color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
+				<ChevronLeft
+					color={arrowStroke}
+					strokeWidth={arrowStrokeWidth}
+					size={"2rem"}
+				/>
+			{:else if $currentPhraseI == 15}
+				<ChevronDown
+					color={arrowStroke}
+					strokeWidth={arrowStrokeWidth}
+					size={"2rem"}
+				/>
 			{:else}
-				{#if $currentPhraseI == 15}
-					<ChevronDown color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
-				{:else}
-					<ChevronRight color={arrowStroke} strokeWidth={arrowStrokeWidth} size={"2rem"} />
-				{/if}
+				<ChevronRight
+					color={arrowStroke}
+					strokeWidth={arrowStrokeWidth}
+					size={"2rem"}
+				/>
 			{/if}
 		</button>
 	{/each}
 </section>
 
 <style>
-	.tapper, .tapper-overlay {
+	.tapper,
+	.tapper-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -88,7 +101,8 @@
 		align-items: center;
 		z-index: 999;
 	}
-	.left-hint, .right-hint {
+	.left-hint,
+	.right-hint {
 		background: var(--color-fg);
 		opacity: 0.75;
 		height: 6rem;
@@ -263,7 +277,8 @@
 			font-size: var(--18px);
 			width: 70%;
 		}
-		.left-hint, .right-hint {
+		.left-hint,
+		.right-hint {
 			height: 4rem;
 			width: 4rem;
 		}

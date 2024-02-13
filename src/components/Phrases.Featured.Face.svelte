@@ -178,6 +178,7 @@
 
 <button
 	class="pic"
+	tabindex="0"
 	class:clickable
 	class:long-hair={longHair.includes(name)}
 	on:click={onClick}
