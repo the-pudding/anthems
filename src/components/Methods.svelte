@@ -2,10 +2,11 @@
 	import { onMount, tick } from "svelte";
 	import { locked, entered } from "$stores/misc.js";
 	import copy from "$data/copy.json";
+	import { base } from "$app/paths";
 
 	const handleMethodsHash = async () => {
 		if (!$entered) {
-			window.location.href = "/";
+			window.location.href = `${base}`;
 		} else {
 			$locked = false;
 			await tick();
@@ -20,11 +21,7 @@
 				await handleMethodsHash();
 			}
 		};
-		window.addEventListener("hashchange", checkHash);
 		await checkHash();
-		return () => {
-			window.removeEventListener("hashchange", checkHash);
-		};
 	});
 </script>
 
